@@ -2,13 +2,16 @@ const express = require('express')
 const { createClient } = require('@supabase/supabase-js')
 const app = express()
 app.use(express.json())
-app.use(express.static('public'))
+const path = require('path')
+app.use(express.static(path.join(__dirname, 'public')))
 
 const supabase = createClient(
     process.env.SUPABASE_URL,
     process.env.SUPABASE_ANON_KEY
 )
-
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'))
+})
 // GET all posts (newest first)
 app.get('/api/posts', async (req, res) => {
     const { data, error } = await supabase
