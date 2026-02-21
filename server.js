@@ -63,6 +63,15 @@ app.delete('/api/posts/:id', async (req, res) => {
     if (error) return res.status(500).json({ error })
     res.json({ success: true })
 })
+app.post('/api/visit', async (req, res) => {
+    const { data } = await supabase.from('visits').select('count').single()
+    await supabase.from('visits').update({ count: data.count + 1 })
+    res.json({ count: data.count + 1 })
+})
 
+app.get('/api/visits', async (req, res) => {
+    const { data } = await supabase.from('visits').select('count').single()
+    res.json({ count: data.count })
+})
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => console.log('Running on port ' + PORT))

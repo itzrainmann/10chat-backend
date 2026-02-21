@@ -235,6 +235,12 @@
                     <a href="https://soundcloud.com/torinwastaken" target="_blank" style="color:#336699; display:block;">SoundCloud</a>
                 </div>
             </div>
+            <div class="myspace-box">
+    <div class="box-header">Visitors</div>
+    <div class="box-body" style="text-align:center; font-weight:bold; color:#336699;" id="visitor-count">
+        Loading...
+    </div>
+</div>
 
         </div>
 
@@ -357,7 +363,13 @@ async function submitPost() {
     document.getElementById('post-body').value = ''
     loadPosts()
 }
-
+async function trackVisit() {
+    const res = await fetch('/api/visit', { method: 'POST' })
+    const data = await res.json()
+    const el = document.getElementById('visitor-count')
+    if (el) el.innerText = 'Visitors: ' + data.count
+}
+trackVisit()
 loadPosts()
 </script>
 
