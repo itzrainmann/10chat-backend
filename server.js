@@ -4,7 +4,9 @@ const { createClient } = require('@supabase/supabase-js')
 const app = express()
 app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')))
-
+const fs = require('fs')
+console.log('Files in directory:', fs.readdirSync(__dirname))
+console.log('Public exists:', fs.existsSync(path.join(__dirname, 'public')))
 
 const supabase = createClient(
     process.env.SUPABASE_URL,
