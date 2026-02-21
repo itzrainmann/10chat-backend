@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Torin's Profile</title>
+<style>
+    body {
+        background-color: #d0d9e8;
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+        color: #000;
+    }
+
+    .page-wrapper {
+        max-width: 900px;
+        margin: 15px auto;
+    }
+
+    /* profile name banner */
+    .profile-banner {
+        background: linear-gradient(180deg, #7599bc, #4a77a8);
+        padding: 8px 12px;
+        color: #ffffff;
+        font-size: 18px;
+        font-weight: bold;
+        border: 1px solid #336699;
+    }
+
+    /* main two column layout */
+    .main-layout {
+        display: flex;
+        gap: 8px;
+        margin-top: 8px;
+    }
+
+    /* left column */
+    .left-col {
+        width: 220px;
+        flex-shrink: 0;
+    }
+
+    /* right column */
+    .right-col {
+        flex: 1;
+    }
+
+    /* the classic box */
+    .myspace-box {
+        background: #ffffff;
+        border: 1px solid #336699;
+        margin-bottom: 8px;
+    }
+
+    .myspace-box .box-header {
+        background: linear-gradient(180deg, #7599bc, #4a77a8);
+        color: #ffffff;
+        font-weight: bold;
+        padding: 4px 8px;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .myspace-box .box-body {
+        padding: 8px;
+        line-height: 1.7;
+    }
+
+    /* profile pic area */
+    .profile-pic {
+        width: 100%;
+        background: #ffffff;
+        border: 1px solid #336699;
+        margin-bottom: 8px;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .profile-pic .avatar {
+        width: 120px;
+        height: 120px;
+        background: #4a77a8;
+        margin: 0 auto 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 48px;
+        color: #fff;
+        border: 2px solid #336699;
+    }
+
+    .profile-pic .screen-name {
+        font-weight: bold;
+        font-size: 14px;
+        color: #336699;
+    }
+
+    .profile-pic .last-login {
+        font-size: 10px;
+        color: #999;
+        margin-top: 4px;
+    }
+
+    /* details table */
+    .details-table {
+        width: 100%;
+        font-size: 11px;
+    }
+
+    .details-table td {
+        padding: 2px 4px;
+        border-bottom: 1px dotted #ddd;
+        vertical-align: top;
+    }
+
+    .details-table td:first-child {
+        color: #336699;
+        font-weight: bold;
+        width: 70px;
+    }
+
+    /* blog entries */
+    .blog-entry {
+        border-bottom: 1px solid #ddd;
+        padding: 8px 0;
+    }
+
+    .blog-entry:last-child {
+        border-bottom: none;
+    }
+
+    .blog-entry .entry-title {
+        font-weight: bold;
+        color: #336699;
+        font-size: 13px;
+        margin-bottom: 4px;
+    }
+
+    .blog-entry .entry-date {
+        font-size: 10px;
+        color: #999;
+        margin-bottom: 6px;
+    }
+
+    .blog-entry .entry-body {
+        color: #333;
+        line-height: 1.7;
+    }
+
+    .blog-entry .entry-footer {
+        font-size: 10px;
+        color: #999;
+        margin-top: 6px;
+    }
+
+    .blog-entry .entry-footer span {
+        color: #336699;
+        cursor: pointer;
+    }
+
+    /* blurbs about me */
+    .blurb-header {
+        color: #336699;
+        font-weight: bold;
+        font-size: 12px;
+        margin-bottom: 4px;
+    }
+
+    /* mood */
+    .mood-bar {
+        background: #eef2f8;
+        border: 1px solid #336699;
+        padding: 5px 8px;
+        font-size: 11px;
+        margin-bottom: 8px;
+        color: #333;
+    }
+
+    .mood-bar span {
+        color: #336699;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+    <!-- NAME BANNER -->
+    <div class="profile-banner">Torin's Profile</div>
+
+    <!-- MAIN LAYOUT -->
+    <div class="main-layout">
+
+        <!-- LEFT COLUMN -->
+        <div class="left-col">
+
+            <!-- profile pic -->
+            <div class="profile-pic">
+                <img src="vsco6252cf4328a15.jpg" style="width:120px; height:120px; object-fit:cover; border:2px solid #336699;" />
+                <div class="screen-name">Torin</div>
+                <div class="last-login" id="last-login">Last Login: First visit</div>
+            </div>
+
+            <!-- mood -->
+            <div class="mood-bar">
+                Torin is: <span>Away</span> 🟡
+            </div>
+
+            <!-- details -->
+            <div class="myspace-box">
+                <div class="box-header">About Me</div>
+                <div class="box-body">
+                    <table class="details-table">
+                        <tr><td>Status:</td><td>Making music</td></tr>
+                        <tr><td>Location:</td><td>UK</td></tr>
+                        <tr><td>likes:</td><td>Music</td></tr>
+                        <tr><td>Role:</td><td>Producer / Writer</td></tr>
+                        <tr><td>Member:</td><td>Since 2026</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- now playing -->
+            <div class="myspace-box">
+                <div class="box-header">Now Playing</div>
+                <div class="box-body" style="text-align:center; color:#336699; font-weight:bold;">
+                    probably 80s
+                </div>
+            </div>
+
+            <!-- links -->
+            <div class="myspace-box">
+                <div class="box-header">Links</div>
+                <div class="box-body">
+                    <a href="https://soundcloud.com/torinwastaken" target="_blank" style="color:#336699; display:block;">SoundCloud</a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="right-col">
+
+            <!-- about me -->
+            <div class="myspace-box">
+                <div class="box-header">About Me</div>
+                <div class="box-body">
+                    <div class="blurb-header">About me:</div>
+                    <p>hey im torin, 25. i make all my own music — producing, mixing, mastering, writing, everything. mostly synthpop.</p>
+                    <br>
+                    <div class="blurb-header">Who I'd like to meet:</div>
+                    <p>no one. go away.</p>
+                </div>
+            </div>
+<!-- secret post box — only shows after password -->
+<div id="post-form" style="display:none; margin-bottom:8px;">
+    <div class="myspace-box">
+        <div class="box-header">New Post</div>
+        <div class="box-body">
+            <input id="post-title" placeholder="Title" style="width:100%; margin-bottom:6px; padding:4px; border:1px solid #336699; font-family:Arial; font-size:12px;" /><br>
+            <textarea id="post-body" placeholder="Write your post..." rows="5" style="width:100%; padding:4px; border:1px solid #336699; font-family:Arial; font-size:12px;"></textarea><br><br>
+            <button onclick="submitPost()" style="background:#4a77a8; color:#fff; border:none; padding:5px 15px; cursor:pointer; font-family:Arial;">Post</button>
+        </div>
+    </div>
+</div>
+            <!-- blog entries -->
+            <div class="myspace-box">
+                <div class="box-header" id="blog-header">Torin's Blog</div>
+                <div class="box-body" id="posts-container">
+                    Loading posts...
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+async function loadPosts() {
+    const response = await fetch('/api/posts')
+    const posts = await response.json()
+    const container = document.getElementById('posts-container')
+    container.innerHTML = ''
+    posts.forEach(post => {
+        container.innerHTML += `
+            <div class="blog-entry">
+                <div class="entry-title">${post.title}</div>
+                <div class="entry-date">${new Date(post.created_at).toLocaleDateString('en-GB')}</div>
+                <div class="entry-body">${post.body}</div>
+                <div class="entry-footer">
+                    <span onclick="likePost(${post.id})">👍 ${post.likes} likes</span>
+                </div>
+            </div>
+        `
+    })
+}
+
+async function likePost(id) {
+    await fetch('/api/posts/' + id + '/like', { method: 'POST' })
+    loadPosts()
+}
+// Save last visit time to browser storage
+const lastLogin = localStorage.getItem('lastLogin')
+if (lastLogin) {
+    document.getElementById('last-login').innerText = 'Last Login: ' + lastLogin
+}
+localStorage.setItem('lastLogin', new Date().toLocaleDateString('en-GB'))
+loadPosts()
+// Secret post form trigger
+let clickCount = 0
+let clickTimer
+document.getElementById('blog-header').addEventListener('click', () => {
+    clickCount++
+    clearTimeout(clickTimer)
+    clickTimer = setTimeout(() => clickCount = 0, 1000)
+    if (clickCount >= 3) {
+        const password = prompt('Password:')
+        if (password === 'Wookiee') {
+            document.getElementById('post-form').style.display = 'block'
+        }
+        clickCount = 0
+    }
+})
+
+async function submitPost() {
+    const title = document.getElementById('post-title').value
+    const body = document.getElementById('post-body').value
+    await fetch('/api/posts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, body })
+    })
+    document.getElementById('post-form').style.display = 'none'
+    document.getElementById('post-title').value = ''
+    document.getElementById('post-body').value = ''
+    loadPosts()
+}
+</script>
+
+</body>
+</html>
