@@ -10,9 +10,6 @@ const supabase = createClient(
     process.env.SUPABASE_URL,
     process.env.SUPABASE_ANON_KEY
 )
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'))
-})
 
 // GET all posts (newest first)
 app.get('/api/posts', async (req, res) => {
@@ -23,7 +20,9 @@ app.get('/api/posts', async (req, res) => {
     if (error) return res.status(500).json({ error })
     res.json(data)
 })
-
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'))
+})
 // POST a new post (admin only — keep this URL secret)
 app.post('/api/posts', async (req, res) => {
     const { title, body } = req.body
