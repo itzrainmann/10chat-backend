@@ -4,16 +4,17 @@ const { createClient } = require('@supabase/supabase-js')
 const app = express()
 app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')))
-const fs = require('fs')
-console.log('Files in directory:', fs.readdirSync(__dirname))
-console.log('Public exists:', fs.existsSync(path.join(__dirname, 'public')))
 
 const supabase = createClient(
     process.env.SUPABASE_URL,
     process.env.SUPABASE_ANON_KEY
 )
 
-// GET all posts (newest first)
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'))
+})
+
+// GET all posts
 app.get('/api/posts', async (req, res) => {
     const { data, error } = await supabase
         .from('posts')
@@ -22,10 +23,8 @@ app.get('/api/posts', async (req, res) => {
     if (error) return res.status(500).json({ error })
     res.json(data)
 })
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'))
-})
-// POST a new post (admin only — keep this URL secret)
+
+// POST new post
 app.post('/api/posts', async (req, res) => {
     const { title, body } = req.body
     const { data, error } = await supabase
@@ -42,6 +41,25 @@ app.post('/api/posts/:id/like', async (req, res) => {
         .from('posts').select('likes').eq('id', id).single()
     const { error } = await supabase.from('posts')
         .update({ likes: post.likes + 1 }).eq('id', id)
+    if (error) return res.status(500).json({ error })
+    res.json({ success: true })
+})
+
+// UNLIKE a post
+app.post('/api/posts/:id/unlike', async (req, res) => {
+    const { id } = req.params
+    const { data: post } = await supabase
+        .from('posts').select('likes').eq('id', id).single()
+    const { error } = await supabase.from('posts')
+        .update({ likes: Math.max(0, post.likes - 1) }).eq('id', id)
+    if (error) return res.status(500).json({ error })
+    res.json({ success: true })
+})
+
+// DELETE a post
+app.delete('/api/posts/:id', async (req, res) => {
+    const { id } = req.params
+    const { error } = await supabase.from('posts').delete().eq('id', id)
     if (error) return res.status(500).json({ error })
     res.json({ success: true })
 })

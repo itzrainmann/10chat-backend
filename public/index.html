@@ -335,6 +335,50 @@ async function submitPost() {
     document.getElementById('post-body').value = ''
     loadPosts()
 }
+let isAdmin = false
+
+async function loadPosts() {
+    const response = await fetch('/api/posts')
+    const posts = await response.json()
+    const container = document.getElementById('posts-container')
+    container.innerHTML = ''
+    posts.forEach(post => {
+        const liked = localStorage.getItem('liked_' + post.id)
+        container.innerHTML += `
+            <div class="blog-entry">
+                <div class="entry-title">${post.title}</div>
+                <div class="entry-date">${new Date(post.created_at).toLocaleDateString('en-GB')}</div>
+                <div class="entry-body">${post.body}</div>
+                <div class="entry-footer">
+                    <span onclick="toggleLike(${post.id})" style="cursor:pointer; color:${liked ? '#e0245e' : '#65676b'}">
+                        ${liked ? '👍' : '🔥'} ${post.likes}
+                    </span>
+                    ${isAdmin ? `<span onclick="deletePost(${post.id})" style="cursor:pointer; color:#cc0000; margin-left:15px;">🗑 delete</span>` : ''}
+                </div>
+            </div>
+        `
+    })
+}
+
+async function toggleLike(id) {
+    const liked = localStorage.getItem('liked_' + id)
+    const action = liked ? 'unlike' : 'like'
+    await fetch('/api/posts/' + id + '/' + action, { method: 'POST' })
+    if (liked) {
+        localStorage.removeItem('liked_' + id)
+    } else {
+        localStorage.setItem('liked_' + id, 'true')
+    }
+    loadPosts()
+}
+
+async function deletePost(id) {
+    if (!confirm('Delete this post?')) return
+    await fetch('/api/posts/' + id, { method: 'DELETE' })
+    loadPosts()
+}
+
+loadPosts()
 </script>
 
 </body>
