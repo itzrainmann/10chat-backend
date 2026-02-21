@@ -5,8 +5,8 @@ app.use(express.json())
 app.use(express.static('public'))
 
 const supabase = createClient(
-    'https://yyfgmikrtjcwvzvdotoq.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5ZmdtaWtydGpjd3Z6dmRvdG9xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MjI3NzgsImV4cCI6MjA4NzE5ODc3OH0.QvGwJyLgOwPfHdUnWS-r-6wvj7ODIK-gunpMHhTpScc'
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY
 )
 
 // GET all posts (newest first)
