@@ -4,9 +4,12 @@ const { createClient } = require('@supabase/supabase-js')
 const app = express()
 app.use(express.json())
 
-// Serve profile pages BEFORE static middleware
 app.get('/profile/:username', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'profile.html'))
+})
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'))
 })
 
 app.use(express.static(path.join(__dirname, 'public')))
@@ -28,10 +31,6 @@ const supabaseAdmin = createClient(
         }
     }
 )
-
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'))
-})
 
 // GET all posts
 app.get('/api/posts', async (req, res) => {
