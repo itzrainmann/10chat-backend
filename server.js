@@ -375,11 +375,10 @@ app.get('/api/friends/pending/:userId', async (req, res) => {
         .select('id, username, avatar_url')
         .in('id', senderIds)
 
-    // Merge request ID into profile objects
-    const pending = profiles.map(profile => {
-        const req = requests.find(r => r.sender_id === profile.id)
-        return { ...profile, requestId: req.id }
-    })
+const pending = profiles.map(profile => {
+    const friendReq = requests.find(r => r.sender_id === profile.id)
+    return { ...profile, requestId: friendReq.id }
+})
 
     res.json({ pending })
 })
