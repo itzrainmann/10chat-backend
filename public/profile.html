@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<!-- v2 -->
+<html>
+<head>
+<title>10Chat — Profile</title>
+<style>
+    body {
+        background-color: #d0d9e8;
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+        color: #000;
+        margin: 0;
+    }
+ 
+    .nav-bar {
+        background: linear-gradient(180deg, #4a77a8, #336699);
+        padding: 6px 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #ffffff;
+        font-size: 11px;
+    }
+
+    .nav-bar a {
+        color: #ffffff;
+        text-decoration: none;
+        margin-left: 12px;
+    }
+
+    .nav-bar a:hover { text-decoration: underline; }
+    .nav-left { font-weight: bold; font-size: 14px; letter-spacing: 1px; }
+    .nav-right { display: flex; align-items: center; gap: 10px; }
+
+    .page-wrapper {
+        max-width: 900px;
+        margin: 15px auto;
+    }
+
+    .profile-banner {
+        background: linear-gradient(180deg, #7599bc, #4a77a8);
+        padding: 8px 12px;
+        color: #fffafa;
+        font-size: 18px;
+        font-weight: bold;
+        border: 1px solid #336699;
+    }
+
+    .main-layout {
+        display: flex;
+        gap: 8px;
+        margin-top: 8px;
+    }
+
+    .left-col { width: 220px; flex-shrink: 0; }
+    .right-col { flex: 1; }
+
+    .myspace-box {
+        background: #ffffff;
+        border: 1px solid #336699;
+        margin-bottom: 8px;
+    }
+
+    .myspace-box .box-header {
+        background: linear-gradient(180deg, #7599bc, #4a77a8);
+        color: #ffffff;
+        font-weight: bold;
+        padding: 4px 8px;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .myspace-box .box-body {
+        padding: 8px;
+        line-height: 1.7;
+    }
+
+    .profile-pic-box {
+        background: #ffffff;
+        border: 1px solid #336699;
+        margin-bottom: 8px;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .profile-pic-box img {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border: 2px solid #336699;
+    }
+
+    .screen-name {
+        font-weight: bold;
+        font-size: 14px;
+        color: #336699;
+        margin-top: 6px;
+    }
+
+    .join-date {
+        font-size: 10px;
+        color: #999;
+        margin-top: 4px;
+    }
+
+    .status-bar {
+        background: #eef2f8;
+        border: 1px solid #336699;
+        padding: 5px 8px;
+        font-size: 11px;
+        margin-bottom: 8px;
+        color: #333;
+    }
+
+    .status-bar span {
+        color: #336699;
+        font-weight: bold;
+    }
+
+    .blog-entry {
+        border-bottom: 1px solid #ddd;
+        padding: 8px 0;
+    }
+
+    .blog-entry:last-child { border-bottom: none; }
+
+    .blog-entry .entry-title {
+        font-weight: bold;
+        color: #336699;
+        font-size: 13px;
+        margin-bottom: 4px;
+    }
+
+    .blog-entry .entry-date {
+        font-size: 10px;
+        color: #999;
+        margin-bottom: 6px;
+    }
+
+    .blog-entry .entry-body {
+        color: #333;
+        line-height: 1.7;
+    }
+
+    .edit-box {
+        background: #fff;
+        border: 1px solid #336699;
+        padding: 10px;
+        margin-bottom: 8px;
+        display: none;
+    }
+
+    .edit-box input, .edit-box textarea {
+        width: 100%;
+        padding: 4px;
+        margin-bottom: 8px;
+        border: 1px solid #336699;
+        font-family: Arial;
+        font-size: 12px;
+        box-sizing: border-box;
+    }
+
+    .edit-box button {
+        background: #4a77a8;
+        color: #fff;
+        border: none;
+        padding: 5px 14px;
+        cursor: pointer;
+        font-family: Arial;
+        font-size: 12px;
+    }
+</style>
+</head>
+<body>
+
+<div class="nav-bar">
+    <div class="nav-left"><a href="/" style="color:white; text-decoration:none;">10Chat</a></div>
+    <div class="nav-right">
+        <span id="nav-username"></span>
+        <a href="/login.html" id="nav-login">Log In</a>
+        <a href="/signup.html" id="nav-signup">Sign Up</a>
+        <a href="#" onclick="logOut()" id="nav-logout" style="display:none;">Log Out</a>
+    </div>
+</div>
+
+<div class="page-wrapper">
+    <div class="profile-banner" id="profile-banner">Loading...</div>
+
+    <div class="main-layout">
+        <div class="left-col">
+
+            <div class="profile-pic-box">
+                <img id="profile-avatar" src="/placeholder-avatar.png" onerror="this.style.display='none'" />
+                <div class="screen-name" id="profile-username"></div>
+                <div class="join-date" id="profile-joindate"></div>
+            </div>
+
+            <div class="status-bar">
+                Status: <span id="profile-status">—</span>
+            </div>
+
+            <div class="myspace-box">
+                <div class="box-header">About</div>
+                <div class="box-body" id="profile-bio">—</div>
+            </div>
+
+        </div>
+
+        <div class="right-col">
+
+            <!-- Edit profile box — only shows if it's your own profile -->
+            <div class="edit-box" id="edit-box">
+                <div class="myspace-box">
+                    <div class="box-header">Edit Profile</div>
+                    <div class="box-body">
+                        <input id="edit-status" placeholder="Status — what are you up to?" />
+                        <textarea id="edit-bio" placeholder="Bio — tell people about yourself" rows="4"></textarea>
+                        <button onclick="saveProfile()">Save</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="myspace-box">
+                <div class="box-header" id="posts-header">Posts</div>
+                <div class="box-body" id="posts-container">Loading...</div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+const loggedInUser = localStorage.getItem('username')
+const loggedInUserId = localStorage.getItem('userId')
+
+// Update nav
+if (loggedInUser) {
+    document.getElementById('nav-username').innerText = loggedInUser
+    document.getElementById('nav-login').style.display = 'none'
+    document.getElementById('nav-signup').style.display = 'none'
+    document.getElementById('nav-logout').style.display = 'block'
+}
+
+// Get username from URL — e.g. /profile/torin
+const pathParts = window.location.pathname.split('/')
+const profileUsername = pathParts[pathParts.length - 1]
+
+async function loadProfile() {
+    const res = await fetch('/api/profile/' + profileUsername)
+
+    if (res.status === 404) {
+        document.getElementById('profile-banner').innerText = 'User not found'
+        document.getElementById('posts-container').innerText = ''
+        return
+    }
+
+    const data = await res.json()
+    const profile = data.profile
+    const posts = data.posts
+
+    // Fill in profile info
+    document.getElementById('profile-banner').innerText = profile.username + "'s Profile"
+    document.getElementById('profile-username').innerText = profile.username
+    document.getElementById('profile-joindate').innerText = 'Member since ' + new Date(profile.created_at).toLocaleDateString('en-GB')
+    document.getElementById('profile-status').innerText = profile.status || '—'
+    document.getElementById('profile-bio').innerText = profile.bio || 'No bio yet.'
+    document.getElementById('posts-header').innerText = profile.username + "'s Posts"
+
+    if (profile.avatar_url) {
+        document.getElementById('profile-avatar').src = profile.avatar_url
+    }
+
+    // Show edit box if viewing your own profile
+    if (loggedInUser === profile.username) {
+        document.getElementById('edit-box').style.display = 'block'
+        document.getElementById('edit-status').value = profile.status || ''
+        document.getElementById('edit-bio').value = profile.bio || ''
+    }
+
+    // Load posts
+    const container = document.getElementById('posts-container')
+    if (posts.length === 0) {
+        container.innerText = 'No posts yet.'
+        return
+    }
+
+    container.innerHTML = ''
+    posts.forEach(post => {
+        container.innerHTML += `
+            <div class="blog-entry">
+                <div class="entry-title">${post.title}</div>
+                <div class="entry-date">${new Date(post.created_at).toLocaleDateString('en-GB')}</div>
+                <div class="entry-body">${post.body}</div>
+            </div>
+        `
+    })
+}
+
+async function saveProfile() {
+    const bio = document.getElementById('edit-bio').value
+    const status = document.getElementById('edit-status').value
+
+    await fetch('/api/profile/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: loggedInUserId, bio, status })
+    })
+
+    loadProfile()
+}
+
+async function logOut() {
+    await fetch('/api/logout', { method: 'POST' })
+    localStorage.removeItem('token')
+    localStorage.removeItem('username')
+    localStorage.removeItem('userId')
+    window.location.href = '/login.html'
+}
+
+loadProfile()
+</script>
+
+</body>
+</html>
