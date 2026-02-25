@@ -176,5 +176,47 @@ app.post('/api/logout', async (req, res) => {
     await supabase.auth.signOut()
     res.json({ success: true })
 })
+
+// GET a user's profile
+app.get('/api/profile/:username', async (req, res) => {
+    const { username } = req.params
+
+    const { data: profile, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('username', username)
+        .single()
+
+    if (error || !profile) {
+        return res.status(404).json({ error: 'User not found' })
+    }
+
+    // Get their posts too
+    const { data: posts } = await supabase
+        .from('posts')
+        .select('*')
+        .eq('user_id', profile.id)
+        .order('created_at', { ascending: false })
+
+    res.json({ profile, posts: posts || [] })
+})
+
+// UPDATE a user's profile
+app.post('/api/profile/update', async (req, res) => {
+    const { userId, bio, status } = req.body
+
+    const { error } = await supabase
+        .from('profiles')
+        .update({ bio, status })
+        .eq('id', userId)
+
+    if (error) return res.status(500).json({ error: error.message })
+    res.json({ success: true })
+})
+
+// Serve profile pages
+app.get('/profile/:username', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'profile.html'))
+})
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => console.log('Running on port ' + PORT))
