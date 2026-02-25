@@ -15,6 +15,39 @@
         margin: 15px auto;
     }
 
+    .nav-bar {
+    background: linear-gradient(180deg, #4a77a8, #336699);
+    padding: 6px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #ffffff;
+    font-size: 11px;
+    margin-bottom: 8px;
+}
+
+.nav-bar a {
+    color: #ffffff;
+    text-decoration: none;
+    margin-left: 12px;
+}
+
+.nav-bar a:hover {
+    text-decoration: underline;
+}
+
+.nav-left {
+    font-weight: bold;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
     /* profile name banner */
     .profile-banner {
         background: linear-gradient(180deg, #7599bc, #4a77a8);
@@ -182,6 +215,16 @@
 </style>
 </head>
 <body>
+
+<div class="nav-bar">
+    <div class="nav-left">10Chat</div>
+    <div class="nav-right" id="nav-right">
+        <span id="nav-username"></span>
+        <a href="/login.html" id="nav-login">Log In</a>
+        <a href="/signup.html" id="nav-signup">Sign Up</a>
+        <a href="#" onclick="logOut()" id="nav-logout" style="display:none;">Log Out</a>
+    </div>
+</div>
 
 <div class="page-wrapper">
 
@@ -371,6 +414,23 @@ async function trackVisit() {
 }
 trackVisit()
 loadPosts()
+
+// Check if logged in and update nav
+const loggedInUser = localStorage.getItem('username')
+if (loggedInUser) {
+    document.getElementById('nav-username').innerText = loggedInUser
+    document.getElementById('nav-login').style.display = 'none'
+    document.getElementById('nav-signup').style.display = 'none'
+    document.getElementById('nav-logout').style.display = 'block'
+}
+
+async function logOut() {
+    await fetch('/api/logout', { method: 'POST' })
+    localStorage.removeItem('token')
+    localStorage.removeItem('username')
+    localStorage.removeItem('userId')
+    window.location.href = '/login.html'
+}
 </script>
 
 </body>
