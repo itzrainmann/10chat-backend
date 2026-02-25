@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- v2 -->
+<!-- v4 — Phase 3: Friend System -->
 <html>
 <head>
 <title>10Chat — Profile</title>
@@ -11,7 +11,7 @@
         color: #000;
         margin: 0;
     }
- 
+
     .nav-bar {
         background: linear-gradient(180deg, #4a77a8, #336699);
         padding: 6px 12px;
@@ -104,6 +104,13 @@
         margin-top: 4px;
     }
 
+    .friend-count {
+        font-size: 11px;
+        color: #336699;
+        margin-top: 4px;
+        font-weight: bold;
+    }
+
     .status-bar {
         background: #eef2f8;
         border: 1px solid #336699;
@@ -118,6 +125,151 @@
         font-weight: bold;
     }
 
+    /* ── Friend action button ── */
+    .friend-btn {
+        display: inline-block;
+        margin-top: 8px;
+        padding: 4px 14px;
+        font-size: 11px;
+        font-family: Arial, sans-serif;
+        font-weight: bold;
+        border: 1px solid #336699;
+        cursor: pointer;
+        text-align: center;
+        width: calc(100% - 30px);
+    }
+
+    .friend-btn.add {
+        background: linear-gradient(180deg, #7599bc, #4a77a8);
+        color: #fff;
+    }
+
+    .friend-btn.add:hover { background: linear-gradient(180deg, #5d86af, #2e5a88); }
+
+    .friend-btn.pending {
+        background: #eef2f8;
+        color: #888;
+        border-color: #aaa;
+        cursor: default;
+    }
+
+    .friend-btn.accept {
+        background: linear-gradient(180deg, #77bc87, #3a9950);
+        color: #fff;
+        border-color: #2e7d3e;
+    }
+
+    .friend-btn.accept:hover { background: linear-gradient(180deg, #5aa56e, #2e7d3e); }
+
+    .friend-btn.decline {
+        background: linear-gradient(180deg, #c97070, #a83333);
+        color: #fff;
+        border-color: #7d2e2e;
+        margin-top: 4px;
+    }
+
+    .friend-btn.decline:hover { background: linear-gradient(180deg, #b05a5a, #8a2424); }
+
+    .friend-btn.unfriend {
+        background: #eef2f8;
+        color: #a83333;
+        border-color: #a83333;
+        margin-top: 4px;
+    }
+
+    .friend-btn.unfriend:hover { background: #fdeaea; }
+
+    /* ── Friends list grid ── */
+    .friends-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 8px;
+    }
+
+    .friend-tile {
+        text-align: center;
+        width: 70px;
+    }
+
+    .friend-tile img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border: 2px solid #336699;
+        display: block;
+        margin: 0 auto;
+    }
+
+    .friend-tile .friend-avatar-placeholder {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(180deg, #7599bc, #4a77a8);
+        border: 2px solid #336699;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 22px;
+        font-weight: bold;
+        margin: 0 auto;
+    }
+
+    .friend-tile a {
+        display: block;
+        font-size: 11px;
+        color: #336699;
+        text-decoration: none;
+        margin-top: 3px;
+        word-break: break-word;
+    }
+
+    .friend-tile a:hover { text-decoration: underline; }
+
+    /* ── Pending requests box ── */
+    .pending-request-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 5px 0;
+        border-bottom: 1px solid #dde5f0;
+    }
+
+    .pending-request-row:last-child { border-bottom: none; }
+
+    .pending-request-row .req-name {
+        color: #336699;
+        font-weight: bold;
+        font-size: 12px;
+        text-decoration: none;
+    }
+
+    .pending-request-row .req-name:hover { text-decoration: underline; }
+
+    .req-actions { display: flex; gap: 6px; }
+
+    .req-btn {
+        padding: 3px 10px;
+        font-size: 11px;
+        font-family: Arial;
+        font-weight: bold;
+        border: 1px solid;
+        cursor: pointer;
+    }
+
+    .req-btn.accept-small {
+        background: linear-gradient(180deg, #77bc87, #3a9950);
+        color: #fff;
+        border-color: #2e7d3e;
+    }
+
+    .req-btn.decline-small {
+        background: #eef2f8;
+        color: #a83333;
+        border-color: #a83333;
+    }
+
+    /* ── Blog posts ── */
     .blog-entry {
         border-bottom: 1px solid #ddd;
         padding: 8px 0;
@@ -143,6 +295,7 @@
         line-height: 1.7;
     }
 
+    /* ── Edit box ── */
     .edit-box {
         background: #fff;
         border: 1px solid #336699;
@@ -170,6 +323,12 @@
         font-family: Arial;
         font-size: 12px;
     }
+
+    .no-friends-msg {
+        color: #999;
+        font-style: italic;
+        font-size: 11px;
+    }
 </style>
 </head>
 <body>
@@ -188,12 +347,17 @@
     <div class="profile-banner" id="profile-banner">Loading...</div>
 
     <div class="main-layout">
+        <!-- LEFT COLUMN -->
         <div class="left-col">
 
             <div class="profile-pic-box">
                 <img id="profile-avatar" src="/placeholder-avatar.png" onerror="this.style.display='none'" />
                 <div class="screen-name" id="profile-username"></div>
                 <div class="join-date" id="profile-joindate"></div>
+                <div class="friend-count" id="profile-friend-count"></div>
+
+                <!-- Friend action area — hidden on own profile -->
+                <div id="friend-action-area"></div>
             </div>
 
             <div class="status-bar">
@@ -205,11 +369,26 @@
                 <div class="box-body" id="profile-bio">—</div>
             </div>
 
+            <!-- Friends list box -->
+            <div class="myspace-box" id="friends-box">
+                <div class="box-header" id="friends-box-header">Friends</div>
+                <div id="friends-grid-container" class="friends-grid">
+                    <span class="no-friends-msg">Loading...</span>
+                </div>
+            </div>
+
         </div>
 
+        <!-- RIGHT COLUMN -->
         <div class="right-col">
 
-            <!-- Edit profile box — only shows if it's your own profile -->
+            <!-- Pending friend requests — only shown on own profile -->
+            <div class="myspace-box" id="pending-box" style="display:none;">
+                <div class="box-header">Friend Requests</div>
+                <div class="box-body" id="pending-container">No pending requests.</div>
+            </div>
+
+            <!-- Edit profile box — only shown on own profile -->
             <div class="edit-box" id="edit-box">
                 <div class="myspace-box">
                     <div class="box-header">Edit Profile</div>
@@ -231,52 +410,71 @@
 </div>
 
 <script>
-const loggedInUser = localStorage.getItem('username')
+const loggedInUser   = localStorage.getItem('username')
 const loggedInUserId = localStorage.getItem('userId')
 
 // Update nav
 if (loggedInUser) {
     document.getElementById('nav-username').innerText = loggedInUser
-    document.getElementById('nav-login').style.display = 'none'
+    document.getElementById('nav-login').style.display  = 'none'
     document.getElementById('nav-signup').style.display = 'none'
     document.getElementById('nav-logout').style.display = 'block'
 }
 
-// Get username from URL — e.g. /profile/torin
-const pathParts = window.location.pathname.split('/')
+// Get username from URL
+const pathParts       = window.location.pathname.split('/')
 const profileUsername = pathParts[pathParts.length - 1]
+const isOwnProfile    = loggedInUser === profileUsername
 
+let currentProfileId  = null   // set after profile loads
+let currentRequestId  = null   // set after friend status loads
+
+// ─────────────────────────────────────────────
+//  LOAD PROFILE
+// ─────────────────────────────────────────────
 async function loadProfile() {
     const res = await fetch('/api/profile/' + profileUsername)
 
     if (res.status === 404) {
-        document.getElementById('profile-banner').innerText = 'User not found'
-        document.getElementById('posts-container').innerText = ''
+        document.getElementById('profile-banner').innerText   = 'User not found'
+        document.getElementById('posts-container').innerText  = ''
+        document.getElementById('friends-grid-container').innerHTML = ''
         return
     }
 
-    const data = await res.json()
+    const data    = await res.json()
     const profile = data.profile
-    const posts = data.posts
+    const posts   = data.posts
+
+    currentProfileId = profile.id
 
     // Fill in profile info
-    document.getElementById('profile-banner').innerText = profile.username + "'s Profile"
-    document.getElementById('profile-username').innerText = profile.username
-    document.getElementById('profile-joindate').innerText = 'Member since ' + new Date(profile.created_at).toLocaleDateString('en-GB')
-    document.getElementById('profile-status').innerText = profile.status || '—'
-    document.getElementById('profile-bio').innerText = profile.bio || 'No bio yet.'
-    document.getElementById('posts-header').innerText = profile.username + "'s Posts"
+    document.getElementById('profile-banner').innerText        = profile.username + "'s Profile"
+    document.getElementById('profile-username').innerText      = profile.username
+    document.getElementById('profile-joindate').innerText      = 'Member since ' + new Date(profile.created_at).toLocaleDateString('en-GB')
+    document.getElementById('profile-status').innerText        = profile.status || '—'
+    document.getElementById('profile-bio').innerText           = profile.bio    || 'No bio yet.'
+    document.getElementById('posts-header').innerText          = profile.username + "'s Posts"
+    document.getElementById('friends-box-header').innerText    = profile.username + "'s Friends (" + (data.friendCount || 0) + ")"
+    document.getElementById('profile-friend-count').innerText  = data.friendCount + (data.friendCount === 1 ? ' friend' : ' friends')
 
     if (profile.avatar_url) {
         document.getElementById('profile-avatar').src = profile.avatar_url
     }
 
-    // Show edit box if viewing your own profile
-    if (loggedInUser === profile.username) {
+    // Own profile — show edit box and pending requests
+    if (isOwnProfile) {
         document.getElementById('edit-box').style.display = 'block'
-        document.getElementById('edit-status').value = profile.status || ''
-        document.getElementById('edit-bio').value = profile.bio || ''
+        document.getElementById('edit-status').value      = profile.status || ''
+        document.getElementById('edit-bio').value         = profile.bio    || ''
+        loadPendingRequests()
+    } else if (loggedInUserId) {
+        // Someone else's profile — show friend action button
+        loadFriendStatus()
     }
+
+    // Load friends list
+    loadFriendsList(profile.id, profile.username)
 
     // Load posts
     const container = document.getElementById('posts-container')
@@ -289,16 +487,192 @@ async function loadProfile() {
     posts.forEach(post => {
         container.innerHTML += `
             <div class="blog-entry">
-                <div class="entry-title">${post.title}</div>
+                <div class="entry-title">${escHtml(post.title)}</div>
                 <div class="entry-date">${new Date(post.created_at).toLocaleDateString('en-GB')}</div>
-                <div class="entry-body">${post.body}</div>
+                <div class="entry-body">${escHtml(post.body)}</div>
             </div>
         `
     })
 }
 
+// ─────────────────────────────────────────────
+//  FRIEND STATUS (for viewing someone else's profile)
+// ─────────────────────────────────────────────
+async function loadFriendStatus() {
+    const res  = await fetch(`/api/friends/status?userId=${loggedInUserId}&targetId=${currentProfileId}`)
+    const data = await res.json()
+    currentRequestId = data.requestId || null
+    renderFriendButton(data.status)
+}
+
+function renderFriendButton(status) {
+    const area = document.getElementById('friend-action-area')
+
+    if (status === 'none') {
+        area.innerHTML = `<button class="friend-btn add" onclick="sendFriendRequest()">+ Add Friend</button>`
+
+    } else if (status === 'pending_sent') {
+        area.innerHTML = `
+            <button class="friend-btn pending" disabled>Request Sent</button>
+            <button class="friend-btn unfriend" onclick="cancelRequest()">Cancel Request</button>
+        `
+    } else if (status === 'pending_received') {
+        area.innerHTML = `
+            <button class="friend-btn accept" onclick="acceptRequest()">Accept Friend Request</button>
+            <button class="friend-btn decline" onclick="declineRequest()">Decline</button>
+        `
+    } else if (status === 'accepted') {
+        area.innerHTML = `
+            <button class="friend-btn pending" disabled>✓ Friends</button>
+            <button class="friend-btn unfriend" onclick="unfriend()">Remove Friend</button>
+        `
+    }
+}
+
+async function sendFriendRequest() {
+    const res  = await fetch('/api/friends/request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ senderId: loggedInUserId, receiverId: currentProfileId })
+    })
+    const data = await res.json()
+    if (data.error) return alert(data.error)
+    loadFriendStatus()
+}
+
+async function acceptRequest() {
+    const res  = await fetch('/api/friends/accept', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ requestId: currentRequestId, userId: loggedInUserId })
+    })
+    const data = await res.json()
+    if (data.error) return alert(data.error)
+    loadProfile()
+}
+
+async function declineRequest() {
+    await removeRequest(currentRequestId, loggedInUserId)
+    loadFriendStatus()
+}
+
+async function cancelRequest() {
+    await removeRequest(currentRequestId, loggedInUserId)
+    loadFriendStatus()
+}
+
+async function unfriend() {
+    if (!confirm('Remove this person from your friends?')) return
+    await removeRequest(currentRequestId, loggedInUserId)
+    loadProfile()
+}
+
+async function removeRequest(requestId, userId) {
+    await fetch('/api/friends/remove', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ requestId, userId })
+    })
+}
+
+// ─────────────────────────────────────────────
+//  FRIENDS LIST (shown on every profile)
+// ─────────────────────────────────────────────
+async function loadFriendsList(userId, username) {
+    const res  = await fetch('/api/friends/' + userId)
+    const data = await res.json()
+    const grid = document.getElementById('friends-grid-container')
+
+    if (!data.friends || data.friends.length === 0) {
+        grid.innerHTML = `<span class="no-friends-msg">No friends yet.</span>`
+        return
+    }
+
+    grid.innerHTML = ''
+    data.friends.forEach(friend => {
+        const initial = friend.username.charAt(0).toUpperCase()
+        const avatarHTML = friend.avatar_url
+            ? `<img src="${friend.avatar_url}" alt="${escHtml(friend.username)}" />`
+            : `<div class="friend-avatar-placeholder">${initial}</div>`
+
+        grid.innerHTML += `
+            <div class="friend-tile">
+                <a href="/profile/${encodeURIComponent(friend.username)}">${avatarHTML}</a>
+                <a href="/profile/${encodeURIComponent(friend.username)}">${escHtml(friend.username)}</a>
+            </div>
+        `
+    })
+}
+
+// ─────────────────────────────────────────────
+//  PENDING REQUESTS (own profile only)
+// ─────────────────────────────────────────────
+async function loadPendingRequests() {
+    const res  = await fetch('/api/friends/pending/' + loggedInUserId)
+    const data = await res.json()
+    const box  = document.getElementById('pending-box')
+    const cont = document.getElementById('pending-container')
+
+    if (!data.pending || data.pending.length === 0) {
+        box.style.display = 'none'
+        return
+    }
+
+    box.style.display = 'block'
+    cont.innerHTML    = ''
+
+    data.pending.forEach(req => {
+        const row = document.createElement('div')
+        row.className    = 'pending-request-row'
+        row.id           = 'req-row-' + req.requestId
+        row.innerHTML = `
+            <a class="req-name" href="/profile/${encodeURIComponent(req.username)}">${escHtml(req.username)}</a>
+            <div class="req-actions">
+                <button class="req-btn accept-small" onclick="acceptPendingRequest('${req.requestId}', '${req.id}')">Accept</button>
+                <button class="req-btn decline-small" onclick="declinePendingRequest('${req.requestId}')">Decline</button>
+            </div>
+        `
+        cont.appendChild(row)
+    })
+}
+
+async function acceptPendingRequest(requestId, senderId) {
+    const res  = await fetch('/api/friends/accept', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ requestId, userId: loggedInUserId })
+    })
+    const data = await res.json()
+    if (data.error) return alert(data.error)
+
+    // Remove row from UI and refresh friend count
+    const row = document.getElementById('req-row-' + requestId)
+    if (row) row.remove()
+
+    // Hide box if no more requests
+    if (document.getElementById('pending-container').children.length === 0) {
+        document.getElementById('pending-box').style.display = 'none'
+    }
+
+    // Refresh friends list and count
+    loadProfile()
+}
+
+async function declinePendingRequest(requestId) {
+    await removeRequest(requestId, loggedInUserId)
+    const row = document.getElementById('req-row-' + requestId)
+    if (row) row.remove()
+
+    if (document.getElementById('pending-container').children.length === 0) {
+        document.getElementById('pending-box').style.display = 'none'
+    }
+}
+
+// ─────────────────────────────────────────────
+//  EDIT PROFILE
+// ─────────────────────────────────────────────
 async function saveProfile() {
-    const bio = document.getElementById('edit-bio').value
+    const bio    = document.getElementById('edit-bio').value
     const status = document.getElementById('edit-status').value
 
     await fetch('/api/profile/update', {
@@ -310,12 +684,26 @@ async function saveProfile() {
     loadProfile()
 }
 
+// ─────────────────────────────────────────────
+//  AUTH
+// ─────────────────────────────────────────────
 async function logOut() {
     await fetch('/api/logout', { method: 'POST' })
     localStorage.removeItem('token')
     localStorage.removeItem('username')
     localStorage.removeItem('userId')
     window.location.href = '/login.html'
+}
+
+// ─────────────────────────────────────────────
+//  UTILS
+// ─────────────────────────────────────────────
+function escHtml(str) {
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
 }
 
 loadProfile()

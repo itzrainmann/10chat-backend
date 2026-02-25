@@ -79,6 +79,7 @@ app.delete('/api/posts/:id', async (req, res) => {
     if (error) return res.status(500).json({ error })
     res.json({ success: true })
 })
+
 app.post('/api/visit', async (req, res) => {
     const { data } = await supabase.from('visits').select('count').eq('id', 1).single()
     const { error } = await supabase.from('visits').update({ count: data.count + 1 }).eq('id', 1)
@@ -95,12 +96,10 @@ app.get('/api/visits', async (req, res) => {
 app.post('/api/signup', async (req, res) => {
     const { username, email, password } = req.body
 
-    // Check username is valid
     if (!username || username.length < 2 || username.length > 15) {
         return res.json({ error: 'Username must be between 2 and 15 characters.' })
     }
 
-    // Check username isn't already taken
     const { data: existing } = await supabase
         .from('profiles')
         .select('username')
@@ -111,7 +110,6 @@ app.post('/api/signup', async (req, res) => {
         return res.json({ error: 'That username is already taken.' })
     }
 
-    // Create the auth account in Supabase
     const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
         email,
         password,
@@ -122,7 +120,6 @@ app.post('/api/signup', async (req, res) => {
         return res.json({ error: authError.message })
     }
 
-    // Create their profile row
     const { error: profileError } = await supabase
         .from('profiles')
         .insert([{ id: authData.user.id, username }])
@@ -138,7 +135,6 @@ app.post('/api/signup', async (req, res) => {
 app.post('/api/login', async (req, res) => {
     const { username, password } = req.body
 
-    // Find their email from username
     const { data: profile } = await supabase
         .from('profiles')
         .select('id, username')
@@ -149,14 +145,12 @@ app.post('/api/login', async (req, res) => {
         return res.json({ error: 'Username not found.' })
     }
 
-    // Get their email from auth
     const { data: userData } = await supabaseAdmin.auth.admin.getUserById(profile.id)
 
     if (!userData) {
         return res.json({ error: 'Account not found.' })
     }
 
-    // Sign in with email and password
     const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
         email: userData.user.email,
         password
@@ -194,14 +188,20 @@ app.get('/api/profile/:username', async (req, res) => {
         return res.status(404).json({ error: 'User not found' })
     }
 
-    // Get their posts too
     const { data: posts } = await supabase
         .from('posts')
         .select('*')
         .eq('user_id', profile.id)
         .order('created_at', { ascending: false })
 
-    res.json({ profile, posts: posts || [] })
+    // Get friend count (accepted friendships involving this user)
+    const { count: friendCount } = await supabase
+        .from('friend_requests')
+        .select('*', { count: 'exact', head: true })
+        .eq('status', 'accepted')
+        .or(`sender_id.eq.${profile.id},receiver_id.eq.${profile.id}`)
+
+    res.json({ profile, posts: posts || [], friendCount: friendCount || 0 })
 })
 
 // UPDATE a user's profile
@@ -216,5 +216,173 @@ app.post('/api/profile/update', async (req, res) => {
     if (error) return res.status(500).json({ error: error.message })
     res.json({ success: true })
 })
+
+// ─────────────────────────────────────────────
+//  PHASE 3 — FRIEND SYSTEM
+// ─────────────────────────────────────────────
+
+// GET friendship status between two users
+// Returns: 'none' | 'pending_sent' | 'pending_received' | 'accepted'
+app.get('/api/friends/status', async (req, res) => {
+    const { userId, targetId } = req.query
+
+    if (!userId || !targetId || userId === targetId) {
+        return res.json({ status: 'none' })
+    }
+
+    const { data } = await supabase
+        .from('friend_requests')
+        .select('*')
+        .or(
+            `and(sender_id.eq.${userId},receiver_id.eq.${targetId}),and(sender_id.eq.${targetId},receiver_id.eq.${userId})`
+        )
+        .single()
+
+    if (!data) return res.json({ status: 'none' })
+
+    if (data.status === 'accepted') return res.json({ status: 'accepted', requestId: data.id })
+
+    if (data.sender_id === userId) {
+        return res.json({ status: 'pending_sent', requestId: data.id })
+    } else {
+        return res.json({ status: 'pending_received', requestId: data.id })
+    }
+})
+
+// SEND a friend request
+app.post('/api/friends/request', async (req, res) => {
+    const { senderId, receiverId } = req.body
+
+    if (!senderId || !receiverId || senderId === receiverId) {
+        return res.status(400).json({ error: 'Invalid request.' })
+    }
+
+    // Check no existing request/friendship
+    const { data: existing } = await supabase
+        .from('friend_requests')
+        .select('id')
+        .or(
+            `and(sender_id.eq.${senderId},receiver_id.eq.${receiverId}),and(sender_id.eq.${receiverId},receiver_id.eq.${senderId})`
+        )
+        .single()
+
+    if (existing) {
+        return res.json({ error: 'A friend request already exists between these users.' })
+    }
+
+    const { error } = await supabase
+        .from('friend_requests')
+        .insert([{ sender_id: senderId, receiver_id: receiverId, status: 'pending' }])
+
+    if (error) return res.status(500).json({ error: error.message })
+    res.json({ success: true })
+})
+
+// ACCEPT a friend request
+app.post('/api/friends/accept', async (req, res) => {
+    const { requestId, userId } = req.body
+
+    // Make sure this user is the receiver
+    const { data: request } = await supabase
+        .from('friend_requests')
+        .select('*')
+        .eq('id', requestId)
+        .single()
+
+    if (!request) return res.status(404).json({ error: 'Request not found.' })
+    if (request.receiver_id !== userId) return res.status(403).json({ error: 'Not authorised.' })
+
+    const { error } = await supabase
+        .from('friend_requests')
+        .update({ status: 'accepted' })
+        .eq('id', requestId)
+
+    if (error) return res.status(500).json({ error: error.message })
+    res.json({ success: true })
+})
+
+// DECLINE or CANCEL a friend request (also used to unfriend)
+app.post('/api/friends/remove', async (req, res) => {
+    const { requestId, userId } = req.body
+
+    // Make sure this user is sender or receiver
+    const { data: request } = await supabase
+        .from('friend_requests')
+        .select('*')
+        .eq('id', requestId)
+        .single()
+
+    if (!request) return res.status(404).json({ error: 'Request not found.' })
+
+    if (request.sender_id !== userId && request.receiver_id !== userId) {
+        return res.status(403).json({ error: 'Not authorised.' })
+    }
+
+    const { error } = await supabase
+        .from('friend_requests')
+        .delete()
+        .eq('id', requestId)
+
+    if (error) return res.status(500).json({ error: error.message })
+    res.json({ success: true })
+})
+
+// GET a user's friends list (accepted)
+app.get('/api/friends/:userId', async (req, res) => {
+    const { userId } = req.params
+
+    const { data: requests, error } = await supabase
+        .from('friend_requests')
+        .select('*')
+        .eq('status', 'accepted')
+        .or(`sender_id.eq.${userId},receiver_id.eq.${userId}`)
+
+    if (error) return res.status(500).json({ error: error.message })
+
+    // Get the friend's profile for each accepted request
+    const friendIds = requests.map(r =>
+        r.sender_id === userId ? r.receiver_id : r.sender_id
+    )
+
+    if (friendIds.length === 0) return res.json({ friends: [] })
+
+    const { data: profiles } = await supabase
+        .from('profiles')
+        .select('id, username, avatar_url, status')
+        .in('id', friendIds)
+
+    res.json({ friends: profiles || [] })
+})
+
+// GET pending friend requests received by a user
+app.get('/api/friends/pending/:userId', async (req, res) => {
+    const { userId } = req.params
+
+    const { data: requests, error } = await supabase
+        .from('friend_requests')
+        .select('*')
+        .eq('receiver_id', userId)
+        .eq('status', 'pending')
+
+    if (error) return res.status(500).json({ error: error.message })
+
+    if (!requests || requests.length === 0) return res.json({ pending: [] })
+
+    const senderIds = requests.map(r => r.sender_id)
+
+    const { data: profiles } = await supabase
+        .from('profiles')
+        .select('id, username, avatar_url')
+        .in('id', senderIds)
+
+    // Merge request ID into profile objects
+    const pending = profiles.map(profile => {
+        const req = requests.find(r => r.sender_id === profile.id)
+        return { ...profile, requestId: req.id }
+    })
+
+    res.json({ pending })
+})
+
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => console.log('Running on port ' + PORT))
