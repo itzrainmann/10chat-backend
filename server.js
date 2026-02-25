@@ -280,7 +280,7 @@ app.post('/api/friends/request', async (req, res) => {
 
 // ACCEPT a friend request
 app.post('/api/friends/accept', async (req, res) => {
-    const { requestId, userId } = req.body
+    const { requestId, userId } = req.body; console.log('ACCEPT HIT:', requestId, userId) 
 
     // Make sure this user is the receiver
     const { data: request } = await supabase
