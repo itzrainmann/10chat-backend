@@ -3,6 +3,12 @@ const path = require('path')
 const { createClient } = require('@supabase/supabase-js')
 const app = express()
 app.use(express.json())
+
+// Serve profile pages BEFORE static middleware
+app.get('/profile/:username', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'profile.html'))
+})
+
 app.use(express.static(path.join(__dirname, 'public')))
 
 // Regular client for normal queries
@@ -212,11 +218,6 @@ app.post('/api/profile/update', async (req, res) => {
 
     if (error) return res.status(500).json({ error: error.message })
     res.json({ success: true })
-})
-
-// Serve profile pages
-app.get('/profile/:username', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'profile.html'))
 })
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => console.log('Running on port ' + PORT))
