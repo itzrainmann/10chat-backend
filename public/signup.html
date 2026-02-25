@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>10Chat — Sign Up</title>
+<style>
+    body {
+        background-color: #d0d9e8;
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+        color: #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+    }
+
+    .box {
+        background: #ffffff;
+        border: 1px solid #336699;
+        width: 320px;
+    }
+
+    .box-header {
+        background: linear-gradient(180deg, #7599bc, #4a77a8);
+        color: #ffffff;
+        font-weight: bold;
+        padding: 6px 10px;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .box-body {
+        padding: 16px;
+    }
+
+    input {
+        width: 100%;
+        padding: 5px;
+        margin-bottom: 10px;
+        border: 1px solid #336699;
+        font-family: Arial;
+        font-size: 12px;
+        box-sizing: border-box;
+    }
+
+    button {
+        background: #4a77a8;
+        color: #fff;
+        border: none;
+        padding: 6px 16px;
+        cursor: pointer;
+        font-family: Arial;
+        font-size: 12px;
+        width: 100%;
+    }
+
+    button:hover {
+        background: #336699;
+    }
+
+    .error {
+        color: #cc0000;
+        margin-bottom: 10px;
+        display: none;
+    }
+
+    .success {
+        color: #006600;
+        margin-bottom: 10px;
+        display: none;
+    }
+
+    .link {
+        text-align: center;
+        margin-top: 10px;
+        color: #336699;
+    }
+
+    .link a {
+        color: #336699;
+    }
+</style>
+</head>
+<body>
+
+<div class="box">
+    <div class="box-header">Join 10Chat</div>
+    <div class="box-body">
+        <div class="error" id="error-msg"></div>
+        <div class="success" id="success-msg"></div>
+        <input type="text" id="username" placeholder="Username (max 15 characters)" maxlength="15" />
+        <input type="email" id="email" placeholder="Email address" />
+        <input type="password" id="password" placeholder="Password (6-15 characters)" minlength="6" maxlength="15" />
+        <button onclick="signUp()">Create Account</button>
+        <div class="link">Already have an account? <a href="/login.html">Log in</a></div>
+    </div>
+</div>
+
+<script>
+async function signUp() {
+    const username = document.getElementById('username').value.trim()
+    const email = document.getElementById('email').value.trim()
+    const password = document.getElementById('password').value
+
+    const errorEl = document.getElementById('error-msg')
+    const successEl = document.getElementById('success-msg')
+    errorEl.style.display = 'none'
+    successEl.style.display = 'none'
+
+    // Basic validation
+    if (username.length < 2) {
+        errorEl.innerText = 'Username must be at least 2 characters.'
+        errorEl.style.display = 'block'
+        return
+    }
+    if (password.length < 6) {
+        errorEl.innerText = 'Password must be at least 6 characters.'
+        errorEl.style.display = 'block'
+        return
+    }
+
+    // Send to our server
+    const res = await fetch('/api/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, email, password })
+    })
+
+    const data = await res.json()
+
+    if (data.error) {
+        errorEl.innerText = data.error
+        errorEl.style.display = 'block'
+    } else {
+        successEl.innerText = 'Account created! Redirecting...'
+        successEl.style.display = 'block'
+        setTimeout(() => window.location.href = '/', 1500)
+    }
+}
+</script>
+
+</body>
+</html>
