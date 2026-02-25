@@ -4,23 +4,11 @@ const { createClient } = require('@supabase/supabase-js')
 const app = express()
 app.use(express.json())
 
-app.get('/profile/:username', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'profile.html'))
-})
-
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'))
-})
-
-app.use(express.static(path.join(__dirname, 'public')))
-
-// Regular client for normal queries
 const supabase = createClient(
     process.env.SUPABASE_URL,
     process.env.SUPABASE_ANON_KEY
 )
 
-// Admin client for auth operations
 const supabaseAdmin = createClient(
     process.env.SUPABASE_URL,
     process.env.SUPABASE_SERVICE_KEY,
@@ -31,6 +19,16 @@ const supabaseAdmin = createClient(
         }
     }
 )
+
+app.get('/profile/:username', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'profile.html'))
+})
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'))
+})
+
+app.use(express.static(path.join(__dirname, 'public')))
 
 // GET all posts
 app.get('/api/posts', async (req, res) => {
