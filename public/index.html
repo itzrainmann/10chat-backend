@@ -586,12 +586,14 @@
     font-size: 13px;
     color: #222;
     margin-bottom: 4px;
+    text-align: left;
     }
 
     .feed-post-body {
     color: #333;
     line-height: 1.6;
     font-size: 12px;
+    text-align: left;
     }
 
     .feed-post-footer {
@@ -927,8 +929,10 @@ async function loadFeed() {
             <span class="feed-post-date">${new Date(post.created_at).toLocaleDateString('en-GB')}</span>
         </div>
     </div>
-    <div class="feed-post-title">${escHtml(post.title)}</div>
-    <div class="feed-post-body">${escHtml(post.body)}</div>
+    <div style="margin-top:6px; text-align:left;">
+        <div class="feed-post-title">${escHtml(post.title)}</div>
+        <div class="feed-post-body">${escHtml(post.body)}</div>
+    </div>
     <div class="feed-post-footer">
         <button class="like-btn ${liked ? 'liked' : ''}" onclick="toggleLike('${post.id}')">
             ${liked ? '👎' : '👍'} ${post.likes}
