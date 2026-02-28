@@ -449,5 +449,134 @@ app.delete('/api/comments/:id', async (req, res) => {
     res.json({ success: true })
 })
 
+const http = require('http')
+const { Server } = require('socket.io')
+
+const server = http.createServer(app)
+const io = new Server(server, {
+    cors: { origin: '*' }
+})
+
+// Track online users: userId -> socketId
+const onlineUsers = {}
+
+io.on('connection', (socket) => {
+    // User comes online
+    socket.on('register', (userId) => {
+        onlineUsers[userId] = socket.id
+    })
+
+    // User sends a message
+    socket.on('send_message', async ({ senderId, receiverId, body }) => {
+        // Save to database
+        const { data, error } = await supabase
+            .from('messages')
+            .insert([{ sender_id: senderId, receiver_id: receiverId, body }])
+            .select()
+            .single()
+
+        if (error) return
+
+        // Send to receiver if online
+        const receiverSocketId = onlineUsers[receiverId]
+        if (receiverSocketId) {
+            io.to(receiverSocketId).emit('new_message', data)
+        }
+
+        // Send back to sender to confirm
+        socket.emit('message_sent', data)
+    })
+
+    // Mark messages as read
+    socket.on('mark_read', async ({ userId, otherUserId }) => {
+        await supabase
+            .from('messages')
+            .update({ read: true })
+            .eq('receiver_id', userId)
+            .eq('sender_id', otherUserId)
+    })
+
+    socket.on('disconnect', () => {
+        for (const [userId, socketId] of Object.entries(onlineUsers)) {
+            if (socketId === socket.id) {
+                delete onlineUsers[userId]
+                break
+            }
+        }
+    })
+})
+
+// GET conversation between two users
+app.get('/api/messages/:userId/:otherUserId', async (req, res) => {
+    const { userId, otherUserId } = req.params
+
+    const { data, error } = await supabase
+        .from('messages')
+        .select('*')
+        .or(`and(sender_id.eq.${userId},receiver_id.eq.${otherUserId}),and(sender_id.eq.${otherUserId},receiver_id.eq.${userId})`)
+        .order('created_at', { ascending: true })
+
+    if (error) return res.status(500).json({ error: error.message })
+    res.json({ messages: data || [] })
+})
+
+// GET all conversations for a user (inbox)
+app.get('/api/messages/inbox/:userId', async (req, res) => {
+    const { userId } = req.params
+
+    const { data, error } = await supabase
+        .from('messages')
+        .select('*')
+        .or(`sender_id.eq.${userId},receiver_id.eq.${userId}`)
+        .order('created_at', { ascending: false })
+
+    if (error) return res.status(500).json({ error: error.message })
+
+    // Get unique conversations
+    const seen = new Set()
+    const conversations = []
+
+    for (const msg of data) {
+        const otherId = msg.sender_id === userId ? msg.receiver_id : msg.sender_id
+        if (!seen.has(otherId)) {
+            seen.add(otherId)
+            conversations.push({ otherId, lastMessage: msg })
+        }
+    }
+
+    // Get profiles for each conversation
+    const otherIds = conversations.map(c => c.otherId)
+    if (otherIds.length === 0) return res.json({ conversations: [] })
+
+    const { data: profiles } = await supabase
+        .from('profiles')
+        .select('id, username, avatar_url')
+        .in('id', otherIds)
+
+    const profileMap = {}
+    profiles.forEach(p => { profileMap[p.id] = p })
+
+    const enriched = conversations.map(c => ({
+        ...c,
+        username: profileMap[c.otherId]?.username || 'Unknown',
+        avatar_url: profileMap[c.otherId]?.avatar_url || null
+    }))
+
+    res.json({ conversations: enriched })
+})
+
+// GET unread message count
+app.get('/api/messages/unread/:userId', async (req, res) => {
+    const { userId } = req.params
+
+    const { count } = await supabase
+        .from('messages')
+        .select('*', { count: 'exact', head: true })
+        .eq('receiver_id', userId)
+        .eq('read', false)
+
+    res.json({ count: count || 0 })
+})
+
 const PORT = process.env.PORT || 3000
-app.listen(PORT, () => console.log('Running on port ' + PORT))
+server.listen(PORT, () => console.log('Running on port ' + PORT))
