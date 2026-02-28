@@ -531,8 +531,9 @@ app.get('/api/messages/inbox/:userId', async (req, res) => {
         .order('created_at', { ascending: false })
 
     if (error) return res.status(500).json({ error: error.message })
+    if (!data || data.length === 0) return res.json({ conversations: [] })
 
-    // Get unique conversations
+    // Get unique conversations — one entry per person
     const seen = new Set()
     const conversations = []
 
@@ -544,14 +545,15 @@ app.get('/api/messages/inbox/:userId', async (req, res) => {
         }
     }
 
-    // Get profiles for each conversation
+    // Get profiles
     const otherIds = conversations.map(c => c.otherId)
-    if (otherIds.length === 0) return res.json({ conversations: [] })
 
-    const { data: profiles } = await supabase
+    const { data: profiles, error: profileError } = await supabase
         .from('profiles')
         .select('id, username, avatar_url')
         .in('id', otherIds)
+
+    if (profileError || !profiles) return res.json({ conversations: [] })
 
     const profileMap = {}
     profiles.forEach(p => { profileMap[p.id] = p })
