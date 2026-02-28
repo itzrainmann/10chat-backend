@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>10Chat</title>
+<title>10Chat — Home</title>
 <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
         background-color: #d0d9e8;
         font-family: Arial, sans-serif;
@@ -10,426 +12,925 @@
         color: #000;
     }
 
-    .page-wrapper {
-        max-width: 900px;
-        margin: 15px auto;
+    /* ═══════════════════════════════════════
+       GLOBAL NAV BAR
+    ═══════════════════════════════════════ */
+    .global-nav {
+        background: linear-gradient(180deg, #2a548a, #1a3a6b);
+        border-bottom: 2px solid #0f2547;
+        display: flex;
+        align-items: stretch;
+        height: 36px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.4);
     }
 
-    .nav-bar {
-    background: linear-gradient(180deg, #4a77a8, #336699);
-    padding: 6px 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #ffffff;
-    font-size: 11px;
-    margin-bottom: 8px;
-}
-
-.nav-bar a {
-    color: #ffffff;
-    text-decoration: none;
-    margin-left: 12px;
-}
-
-.nav-bar a:hover {
-    text-decoration: underline;
-}
-
-.nav-left {
-    font-weight: bold;
-    font-size: 14px;
-    letter-spacing: 1px;
-}
-
-.nav-right {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-    /* profile name banner */
-    .profile-banner {
-        background: linear-gradient(180deg, #7599bc, #4a77a8);
-        padding: 8px 12px;
-        color: #ffffff;
-        font-size: 18px;
+    .global-nav .brand {
         font-weight: bold;
-        border: 1px solid #336699;
+        font-size: 15px;
+        letter-spacing: 2px;
+        color: #fff;
+        padding: 0 16px;
+        display: flex;
+        align-items: center;
+        border-right: 1px solid #3a6aaa;
+        text-decoration: none;
+        background: linear-gradient(180deg, #3a6aaa, #1a3a6b);
     }
 
-    /* main two column layout */
-    .main-layout {
+    .nav-tabs {
+        display: flex;
+        align-items: stretch;
+    }
+
+    .nav-tab {
+        display: flex;
+        align-items: center;
+        padding: 0 16px;
+        color: #cce0ff;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: bold;
+        border-right: 1px solid #3a5580;
+        position: relative;
+        cursor: pointer;
+        transition: background 0.1s;
+        letter-spacing: 0.5px;
+    }
+
+    .nav-tab:hover {
+        background: rgba(255,255,255,0.1);
+        color: #fff;
+    }
+
+    .nav-tab.active {
+        background: rgba(255,255,255,0.15);
+        color: #fff;
+        border-bottom: 2px solid #7eb3e8;
+    }
+
+    /* notification dot */
+    .notif-dot {
+        width: 7px;
+        height: 7px;
+        background: #ff3b3b;
+        border-radius: 50%;
+        position: absolute;
+        top: 7px;
+        right: 8px;
+        display: none;
+        box-shadow: 0 0 4px rgba(255,59,59,0.8);
+        animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.3); opacity: 0.7; }
+    }
+
+    .notif-dot.visible { display: block; }
+
+    /* search area */
+    .nav-search {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 0 10px;
+    }
+
+    .nav-search input {
+        padding: 4px 8px;
+        border: 1px solid #7599bc;
+        background: #eef4ff;
+        font-family: Arial;
+        font-size: 11px;
+        width: 180px;
+        color: #000;
+        outline: none;
+    }
+
+    .nav-search input:focus {
+        border-color: #336699;
+        background: #fff;
+    }
+
+    .nav-search button {
+        background: linear-gradient(180deg, #7599bc, #4a77a8);
+        color: #fff;
+        border: 1px solid #336699;
+        padding: 4px 10px;
+        cursor: pointer;
+        font-family: Arial;
+        font-size: 11px;
+        font-weight: bold;
+    }
+
+    .nav-search button:hover { background: linear-gradient(180deg, #5d86af, #2e5a88); }
+
+    .signout-btn {
+        display: flex;
+        align-items: center;
+        padding: 0 14px;
+        background: linear-gradient(180deg, #c45050, #8b2020);
+        color: #fff;
+        font-size: 11px;
+        font-weight: bold;
+        cursor: pointer;
+        border: none;
+        border-left: 1px solid #0f2547;
+        text-decoration: none;
+        letter-spacing: 0.5px;
+    }
+
+    .signout-btn:hover { background: linear-gradient(180deg, #a83333, #6e1515); }
+
+    /* ═══════════════════════════════════════
+       WELCOME BAR
+    ═══════════════════════════════════════ */
+    .welcome-bar {
+        background: linear-gradient(180deg, #7599bc, #4a77a8);
+        border-bottom: 1px solid #336699;
+        padding: 5px 12px;
+        color: #fff;
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+    .welcome-bar span { color: #d4e8ff; }
+
+    /* ═══════════════════════════════════════
+       PAGE WRAPPER
+    ═══════════════════════════════════════ */
+    .page-wrapper {
+        max-width: 960px;
+        margin: 10px auto;
+        padding: 0 8px;
         display: flex;
         gap: 8px;
-        margin-top: 8px;
     }
 
-    /* left column */
+    /* ═══════════════════════════════════════
+       LEFT COLUMN — MINI PROFILE
+    ═══════════════════════════════════════ */
     .left-col {
-        width: 220px;
+        width: 200px;
         flex-shrink: 0;
     }
 
-    /* right column */
-    .right-col {
-        flex: 1;
+    /* mini profile card */
+    .mini-profile-card {
+        background: #fff;
+        border: 1px solid #336699;
+        margin-bottom: 8px;
+        text-align: center;
     }
 
-    /* the classic box */
+    .mini-profile-card .card-header {
+        background: linear-gradient(180deg, #7599bc, #4a77a8);
+        color: #fff;
+        font-weight: bold;
+        font-size: 11px;
+        padding: 4px 8px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .mini-profile-card .card-body {
+        padding: 10px 8px;
+    }
+
+    .mini-avatar {
+        width: 90px;
+        height: 90px;
+        object-fit: cover;
+        border: 2px solid #336699;
+        display: block;
+        margin: 0 auto 6px;
+    }
+
+    .mini-avatar-placeholder {
+        width: 90px;
+        height: 90px;
+        background: linear-gradient(180deg, #7599bc, #4a77a8);
+        border: 2px solid #336699;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 36px;
+        font-weight: bold;
+        margin: 0 auto 6px;
+    }
+
+    .mini-username {
+        font-weight: bold;
+        font-size: 13px;
+        color: #336699;
+        margin-bottom: 2px;
+    }
+
+    .mini-status {
+        font-size: 10px;
+        color: #888;
+        margin-bottom: 8px;
+        font-style: italic;
+    }
+
+    /* update panel buttons */
+    .update-btn {
+        display: block;
+        width: 100%;
+        padding: 5px 8px;
+        margin-bottom: 4px;
+        background: linear-gradient(180deg, #eef2f8, #dde5f0);
+        border: 1px solid #7599bc;
+        color: #336699;
+        font-family: Arial;
+        font-size: 11px;
+        font-weight: bold;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        letter-spacing: 0.3px;
+    }
+
+    .update-btn:hover {
+        background: linear-gradient(180deg, #dde5f0, #ccd8eb);
+        color: #1a3a6b;
+    }
+
+    /* myspace-style box */
     .myspace-box {
-        background: #ffffff;
+        background: #fff;
         border: 1px solid #336699;
         margin-bottom: 8px;
     }
 
     .myspace-box .box-header {
         background: linear-gradient(180deg, #7599bc, #4a77a8);
-        color: #ffffff;
+        color: #fff;
         font-weight: bold;
-        padding: 4px 8px;
         font-size: 11px;
+        padding: 4px 8px;
         text-transform: uppercase;
         letter-spacing: 1px;
     }
 
     .myspace-box .box-body {
         padding: 8px;
-        line-height: 1.7;
+        line-height: 1.6;
     }
 
-    /* profile pic area */
-    .profile-pic {
-        width: 100%;
-        background: #ffffff;
-        border: 1px solid #336699;
-        margin-bottom: 8px;
-        text-align: center;
-        padding: 10px;
-    }
-
-    .profile-pic .avatar {
-        width: 120px;
-        height: 120px;
-        background: #4a77a8;
-        margin: 0 auto 8px;
+    /* nav buttons */
+    .nav-btn {
         display: flex;
         align-items: center;
-        justify-content: center;
-        font-size: 48px;
-        color: #fff;
-        border: 2px solid #336699;
-    }
-
-    .profile-pic .screen-name {
-        font-weight: bold;
-        font-size: 14px;
-        color: #336699;
-    }
-
-    .profile-pic .last-login {
-        font-size: 10px;
-        color: #999;
-        margin-top: 4px;
-    }
-
-    /* details table */
-    .details-table {
-        width: 100%;
-        font-size: 11px;
-    }
-
-    .details-table td {
-        padding: 2px 4px;
-        border-bottom: 1px dotted #ddd;
-        vertical-align: top;
-    }
-
-    .details-table td:first-child {
-        color: #336699;
-        font-weight: bold;
-        width: 70px;
-    }
-
-    /* blog entries */
-    .blog-entry {
-        border-bottom: 1px solid #ddd;
-        padding: 8px 0;
-    }
-
-    .blog-entry:last-child {
-        border-bottom: none;
-    }
-
-    .blog-entry .entry-title {
-        font-weight: bold;
-        color: #336699;
-        font-size: 13px;
-        margin-bottom: 4px;
-    }
-
-    .blog-entry .entry-date {
-        font-size: 10px;
-        color: #999;
-        margin-bottom: 6px;
-    }
-
-    .blog-entry .entry-body {
+        gap: 8px;
+        padding: 6px 8px;
+        border-bottom: 1px solid #dde5f0;
+        text-decoration: none;
         color: #333;
-        line-height: 1.7;
-    }
-
-    .blog-entry .entry-footer {
-        font-size: 10px;
-        color: #999;
-        margin-top: 6px;
-    }
-
-    .blog-entry .entry-footer span {
-        color: #336699;
+        font-size: 11px;
         cursor: pointer;
     }
 
-    /* blurbs about me */
-    .blurb-header {
-        color: #336699;
+    .nav-btn:last-child { border-bottom: none; }
+    .nav-btn:hover { background: #eef2f8; color: #336699; }
+
+    .nav-btn-icon {
+        width: 18px;
+        text-align: center;
+        font-size: 13px;
+    }
+
+    .nav-btn-label { font-weight: bold; color: #336699; }
+    .nav-btn:hover .nav-btn-label { color: #1a3a6b; }
+
+    .nav-btn-badge {
+        margin-left: auto;
+        background: #cc0000;
+        color: #fff;
+        font-size: 9px;
         font-weight: bold;
+        padding: 1px 5px;
+        border-radius: 8px;
+        display: none;
+    }
+
+    .nav-btn-badge.visible { display: inline-block; }
+
+    /* ═══════════════════════════════════════
+       RIGHT COLUMN — FEED
+    ═══════════════════════════════════════ */
+    .right-col { flex: 1; min-width: 0; }
+
+    /* post bar */
+    .post-bar {
+        background: #fff;
+        border: 1px solid #336699;
+        margin-bottom: 8px;
+    }
+
+    .post-bar .bar-header {
+        background: linear-gradient(180deg, #7599bc, #4a77a8);
+        color: #fff;
+        font-weight: bold;
+        font-size: 11px;
+        padding: 4px 8px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .post-bar .bar-body {
+        padding: 8px;
+    }
+
+    .post-input-row {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 6px;
+    }
+
+    .post-input-row input {
+        flex: 1;
+        padding: 5px 8px;
+        border: 1px solid #7599bc;
+        font-family: Arial;
         font-size: 12px;
+        color: #000;
+        outline: none;
+    }
+
+    .post-input-row input:focus { border-color: #336699; }
+
+    .post-body-row {
+        display: flex;
+        gap: 6px;
+    }
+
+    .post-body-row textarea {
+        flex: 1;
+        padding: 5px 8px;
+        border: 1px solid #7599bc;
+        font-family: Arial;
+        font-size: 12px;
+        resize: vertical;
+        height: 60px;
+        outline: none;
+    }
+
+    .post-body-row textarea:focus { border-color: #336699; }
+
+    .post-send-btn {
+        background: linear-gradient(180deg, #7599bc, #4a77a8);
+        color: #fff;
+        border: 1px solid #336699;
+        padding: 0 16px;
+        cursor: pointer;
+        font-family: Arial;
+        font-size: 12px;
+        font-weight: bold;
+        align-self: stretch;
+    }
+
+    .post-send-btn:hover { background: linear-gradient(180deg, #5d86af, #2e5a88); }
+
+    /* feed */
+    .feed-box {
+        background: #fff;
+        border: 1px solid #336699;
+    }
+
+    .feed-box .box-header {
+        background: linear-gradient(180deg, #7599bc, #4a77a8);
+        color: #fff;
+        font-weight: bold;
+        font-size: 11px;
+        padding: 4px 8px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .feed-empty {
+        padding: 20px;
+        text-align: center;
+        color: #999;
+        font-style: italic;
+    }
+
+    /* feed post card */
+    .feed-post {
+        border-bottom: 1px solid #dde5f0;
+        padding: 10px 12px;
+    }
+
+    .feed-post:last-child { border-bottom: none; }
+
+    .feed-post-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 6px;
+    }
+
+    .feed-avatar {
+        width: 36px;
+        height: 36px;
+        object-fit: cover;
+        border: 1px solid #336699;
+        flex-shrink: 0;
+    }
+
+    .feed-avatar-placeholder {
+        width: 36px;
+        height: 36px;
+        background: linear-gradient(180deg, #7599bc, #4a77a8);
+        border: 1px solid #336699;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-weight: bold;
+        font-size: 14px;
+        flex-shrink: 0;
+    }
+
+    .feed-post-meta { flex: 1; }
+
+    .feed-post-author {
+        font-weight: bold;
+        color: #336699;
+        font-size: 12px;
+        text-decoration: none;
+    }
+
+    .feed-post-author:hover { text-decoration: underline; }
+
+    .feed-post-date {
+        font-size: 10px;
+        color: #999;
+    }
+
+    .feed-post-title {
+        font-weight: bold;
+        font-size: 13px;
+        color: #222;
         margin-bottom: 4px;
     }
 
-    /* mood */
-    .mood-bar {
-        background: #eef2f8;
-        border: 1px solid #336699;
-        padding: 5px 8px;
-        font-size: 11px;
-        margin-bottom: 8px;
+    .feed-post-body {
         color: #333;
+        line-height: 1.6;
+        font-size: 12px;
     }
 
-    .mood-bar span {
+    .feed-post-footer {
+        margin-top: 6px;
+        font-size: 11px;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+    }
+
+    .like-btn {
+        color: #65676b;
+        cursor: pointer;
+        background: none;
+        border: none;
+        font-family: Arial;
+        font-size: 11px;
+        padding: 0;
+    }
+
+    .like-btn:hover { color: #336699; }
+    .like-btn.liked { color: #e0245e; }
+
+    .delete-btn {
+        color: #cc0000;
+        cursor: pointer;
+        background: none;
+        border: none;
+        font-family: Arial;
+        font-size: 11px;
+        padding: 0;
+    }
+
+    .delete-btn:hover { text-decoration: underline; }
+
+    /* search results dropdown */
+    .search-results {
+        position: absolute;
+        top: 36px;
+        right: 60px;
+        width: 200px;
+        background: #fff;
+        border: 1px solid #336699;
+        z-index: 200;
+        display: none;
+        box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .search-result-item {
+        padding: 6px 10px;
+        border-bottom: 1px solid #dde5f0;
+        cursor: pointer;
         color: #336699;
         font-weight: bold;
+        font-size: 12px;
     }
+
+    .search-result-item:last-child { border-bottom: none; }
+    .search-result-item:hover { background: #eef2f8; }
+
+    /* inline status edit */
+    .inline-edit {
+        display: none;
+        margin-top: 6px;
+    }
+
+    .inline-edit input {
+        width: 100%;
+        padding: 4px 6px;
+        border: 1px solid #7599bc;
+        font-family: Arial;
+        font-size: 11px;
+        margin-bottom: 4px;
+    }
+
+    .inline-edit button {
+        background: linear-gradient(180deg, #7599bc, #4a77a8);
+        color: #fff;
+        border: none;
+        padding: 3px 10px;
+        cursor: pointer;
+        font-family: Arial;
+        font-size: 11px;
+        width: 100%;
+    }
+
+    .not-logged-in {
+        padding: 20px;
+        text-align: center;
+        color: #555;
+    }
+
+    .not-logged-in a { color: #336699; font-weight: bold; }
 </style>
 </head>
 <body>
 
-<div class="nav-bar">
-    <div class="nav-left">10Chat</div>
-    <div class="nav-right" id="nav-right">
-        <span id="nav-username"></span>
-        <a href="/login.html" id="nav-login">Log In</a>
-        <a href="/signup.html" id="nav-signup">Sign Up</a>
-        <a href="#" onclick="logOut()" id="nav-logout" style="display:none;">Log Out</a>
+<!-- ═══════════════════════════════════════
+     GLOBAL NAV
+═══════════════════════════════════════ -->
+<div class="global-nav">
+    <a href="/" class="brand">10Chat</a>
+
+    <div class="nav-tabs">
+        <a class="nav-tab active" href="/">Home</a>
+        <a class="nav-tab" href="#" id="nav-messages">
+            Messages
+            <span class="notif-dot" id="dot-messages"></span>
+        </a>
+        <a class="nav-tab" href="#" id="nav-friends-tab">
+            Friends
+            <span class="notif-dot" id="dot-friends"></span>
+        </a>
+        <a class="nav-tab" href="#" id="nav-account">Account</a>
     </div>
+
+    <div class="nav-search" style="position:relative;">
+        <input type="text" id="search-input" placeholder="Search for users..." onkeydown="if(event.key==='Enter') doSearch()" />
+        <button onclick="doSearch()">Search</button>
+        <div class="search-results" id="search-results"></div>
+    </div>
+
+    <a class="signout-btn" href="#" onclick="logOut()">Sign Out</a>
 </div>
 
+<!-- ═══════════════════════════════════════
+     WELCOME BAR
+═══════════════════════════════════════ -->
+<div class="welcome-bar">
+    Hello, <span id="welcome-name">Guest</span>! Welcome back to 10Chat.
+</div>
+
+<!-- ═══════════════════════════════════════
+     PAGE WRAPPER
+═══════════════════════════════════════ -->
 <div class="page-wrapper">
 
-    <!-- NAME BANNER -->
-    <div class="profile-banner">Torin's Profile</div>
+    <!-- LEFT COLUMN -->
+    <div class="left-col">
 
-    <!-- MAIN LAYOUT -->
-    <div class="main-layout">
-
-        <!-- LEFT COLUMN -->
-        <div class="left-col">
-
-            <!-- profile pic -->
-            <div class="profile-pic">
-                <img src="vsco6252cf4328a15.jpg" style="width:120px; height:120px; object-fit:cover; border:2px solid #336699;" />
-                <div class="screen-name">Torin</div>
-                <div class="last-login" id="last-login">Last Login: First visit</div>
-            </div>
-
-            <!-- mood -->
-            <div class="mood-bar">
-                Torin is: <span>Away</span> 🟡
-            </div>
-
-            <!-- details -->
-            <div class="myspace-box">
-                <div class="box-header">About Me</div>
-                <div class="box-body">
-                    <table class="details-table">
-                        <tr><td>Status:</td><td>Making music</td></tr>
-                        <tr><td>Location:</td><td>UK</td></tr>
-                        <tr><td>likes:</td><td>Music</td></tr>
-                        <tr><td>Role:</td><td>Producer / Writer</td></tr>
-                        <tr><td>Member:</td><td>Since 2026</td></tr>
-                    </table>
+        <!-- Mini Profile -->
+        <div class="mini-profile-card">
+            <div class="card-header">My Profile</div>
+            <div class="card-body">
+                <div id="mini-avatar-wrap">
+                    <div class="mini-avatar-placeholder" id="mini-avatar-placeholder">?</div>
                 </div>
-            </div>
+                <div class="mini-username" id="mini-username">—</div>
+                <div class="mini-status" id="mini-status">No status set</div>
 
-            <!-- now playing -->
-            <div class="myspace-box">
-                <div class="box-header">Now Playing</div>
-                <div class="box-body" style="text-align:center; color:#336699; font-weight:bold;">
-                    probably 80s
+                <!-- Update panel -->
+                <div class="inline-edit" id="status-edit-panel">
+                    <input id="status-input" placeholder="Update your status..." />
+                    <button onclick="saveStatus()">Save Status</button>
                 </div>
-            </div>
 
-            <!-- links -->
-            <div class="myspace-box">
-                <div class="box-header">Links</div>
-                <div class="box-body">
-                    <a href="https://soundcloud.com/torinwastaken" target="_blank" style="color:#336699; display:block;">SoundCloud</a>
-                </div>
+                <button class="update-btn" onclick="toggleStatusEdit()">✏️ Update Status</button>
+                <a class="update-btn" id="btn-my-profile" href="#">👤 My Profile</a>
             </div>
-            <div class="myspace-box">
-    <div class="box-header">Visitors</div>
-    <div class="box-body" style="text-align:center; font-weight:bold; color:#336699;" id="visitor-count">
-        Loading...
+        </div>
+
+        <!-- User Navigation -->
+        <div class="myspace-box">
+            <div class="box-header">My Links</div>
+            <div class="box-body" style="padding:0;">
+                <a class="nav-btn" id="link-inbox" href="#">
+                    <span class="nav-btn-icon">✉️</span>
+                    <span class="nav-btn-label">Inbox</span>
+                    <span class="nav-btn-badge" id="badge-inbox"></span>
+                </a>
+                <a class="nav-btn" id="link-friend-requests" href="#">
+                    <span class="nav-btn-icon">👥</span>
+                    <span class="nav-btn-label">Friend Requests</span>
+                    <span class="nav-btn-badge" id="badge-requests"></span>
+                </a>
+                <a class="nav-btn" id="link-profile" href="#">
+                    <span class="nav-btn-icon">🪪</span>
+                    <span class="nav-btn-label">Profile</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Visitors box -->
+        <div class="myspace-box">
+            <div class="box-header">Site Visitors</div>
+            <div class="box-body" style="text-align:center; font-weight:bold; color:#336699;" id="visitor-count">
+                Loading...
+            </div>
+        </div>
+
     </div>
-</div>
 
-        </div>
+    <!-- RIGHT COLUMN -->
+    <div class="right-col">
 
-        <!-- RIGHT COLUMN -->
-        <div class="right-col">
-
-            <!-- about me -->
-            <div class="myspace-box">
-                <div class="box-header">About Me</div>
-                <div class="box-body">
-                    <div class="blurb-header">About me:</div>
-                    <p>hey im torin, 25. i make all my own music — producing, mixing, mastering, writing, everything. mostly synthpop.</p>
-                    <br>
-                    <div class="blurb-header">Who I'd like to meet:</div>
-                    <p>no one. go away.</p>
+        <!-- Post Bar -->
+        <div class="post-bar" id="post-bar-box">
+            <div class="bar-header">What's on your mind?</div>
+            <div class="bar-body">
+                <div class="post-input-row">
+                    <input id="post-title" placeholder="Post title..." />
+                </div>
+                <div class="post-body-row">
+                    <textarea id="post-body" placeholder="Write something..."></textarea>
+                    <button class="post-send-btn" onclick="submitPost()">Post</button>
                 </div>
             </div>
-<!-- secret post box — only shows after password -->
-<div id="post-form" style="display:none; margin-bottom:8px;">
-    <div class="myspace-box">
-        <div class="box-header">New Post</div>
-        <div class="box-body">
-            <input id="post-title" placeholder="Title" style="width:100%; margin-bottom:6px; padding:4px; border:1px solid #336699; font-family:Arial; font-size:12px;" /><br>
-            <textarea id="post-body" placeholder="Write your post..." rows="5" style="width:100%; padding:4px; border:1px solid #336699; font-family:Arial; font-size:12px;"></textarea><br><br>
-            <button onclick="submitPost()" style="background:#4a77a8; color:#fff; border:none; padding:5px 15px; cursor:pointer; font-family:Arial;">Post</button>
         </div>
-    </div>
-</div>
-            <!-- blog entries -->
-            <div class="myspace-box">
-                <div class="box-header" id="blog-header">Torin's Blog</div>
-                <div class="box-body" id="posts-container">
-                    Loading posts...
-                </div>
-            </div>
 
+        <!-- Feed -->
+        <div class="feed-box">
+            <div class="box-header">📰 Friend Feed</div>
+            <div id="feed-container" class="feed-empty">Loading feed...</div>
         </div>
+
     </div>
 </div>
 
 <script>
-let isAdmin = false
-let clickCount = 0
-let clickTimer
+const loggedInUser   = localStorage.getItem('username')
+const loggedInUserId = localStorage.getItem('userId')
 
-// Last login tracking
-const lastLogin = localStorage.getItem('lastLogin')
-if (lastLogin) {
-    document.getElementById('last-login').innerText = 'Last Login: ' + lastLogin
+// ─── Setup nav & welcome ───────────────────────────────
+if (loggedInUser) {
+    document.getElementById('welcome-name').innerText = loggedInUser
+    document.getElementById('mini-username').innerText = loggedInUser
+
+    const initial = loggedInUser.charAt(0).toUpperCase()
+    document.getElementById('mini-avatar-placeholder').innerText = initial
+
+    // Wire up account/profile links
+    document.getElementById('nav-account').href   = '/profile/' + loggedInUser
+    document.getElementById('btn-my-profile').href = '/profile/' + loggedInUser
+    document.getElementById('link-profile').href   = '/profile/' + loggedInUser
+    document.getElementById('link-friend-requests').href = '/profile/' + loggedInUser
+
+    loadMiniProfile()
+    loadFeed()
+    checkPendingRequests()
+} else {
+    document.getElementById('welcome-name').innerText = 'Guest'
+    document.getElementById('mini-username').innerText = 'Not logged in'
+    document.getElementById('post-bar-box').style.display = 'none'
+    document.getElementById('feed-container').innerHTML = `
+        <div class="not-logged-in">
+            <a href="/login.html">Log in</a> or <a href="/signup.html">sign up</a> to see your feed.
+        </div>
+    `
 }
-localStorage.setItem('lastLogin', new Date().toLocaleDateString('en-GB'))
 
-// Secret post form trigger
-document.getElementById('blog-header').addEventListener('click', () => {
-    clickCount++
-    clearTimeout(clickTimer)
-    clickTimer = setTimeout(() => clickCount = 0, 1000)
-    if (clickCount >= 3) {
-        const password = prompt('Password:')
-        if (password === 'Wookiee') {
-            isAdmin = true
-            document.getElementById('post-form').style.display = 'block'
-            loadPosts()
-        }
-        clickCount = 0
+trackVisit()
+
+// ─── Mini profile load ─────────────────────────────────
+async function loadMiniProfile() {
+    const res  = await fetch('/api/profile/' + loggedInUser)
+    if (!res.ok) return
+    const data = await res.json()
+    const p    = data.profile
+
+    document.getElementById('mini-status').innerText = p.status || 'No status set'
+    document.getElementById('status-input').value    = p.status || ''
+
+    if (p.avatar_url) {
+        const wrap = document.getElementById('mini-avatar-wrap')
+        wrap.innerHTML = `<img class="mini-avatar" src="${p.avatar_url}" />`
     }
-})
+}
 
-async function loadPosts() {
-    const response = await fetch('/api/posts')
-    const posts = await response.json()
-    const container = document.getElementById('posts-container')
+// ─── Status edit toggle ────────────────────────────────
+function toggleStatusEdit() {
+    const panel = document.getElementById('status-edit-panel')
+    panel.style.display = panel.style.display === 'block' ? 'none' : 'block'
+}
+
+async function saveStatus() {
+    const status = document.getElementById('status-input').value
+    await fetch('/api/profile/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: loggedInUserId, status, bio: '' })
+    })
+    document.getElementById('mini-status').innerText = status || 'No status set'
+    document.getElementById('status-edit-panel').style.display = 'none'
+}
+
+// ─── Feed ──────────────────────────────────────────────
+async function loadFeed() {
+    // Get friends list first
+    const friendsRes = await fetch('/api/friends/' + loggedInUserId)
+    const friendsData = await friendsRes.json()
+    const friends = friendsData.friends || []
+
+    // Get all posts
+    const postsRes  = await fetch('/api/posts')
+    const allPosts  = await postsRes.json()
+
+    // Filter: own posts + friends' posts
+    const friendIds = friends.map(f => f.id)
+    const feedPosts = allPosts.filter(p =>
+        p.user_id === loggedInUserId || friendIds.includes(p.user_id)
+    )
+
+    const container = document.getElementById('feed-container')
+
+    if (feedPosts.length === 0) {
+        container.innerHTML = `<div class="feed-empty">Nothing here yet — add some friends to see their posts, or write your first post above!</div>`
+        return
+    }
+
+    // Build a username lookup from friends
+    const userMap = {}
+    friends.forEach(f => { userMap[f.id] = f })
+
     container.innerHTML = ''
-    posts.forEach(post => {
-        const liked = localStorage.getItem('liked_' + post.id)
-        container.innerHTML += `
-            <div class="blog-entry">
-                <div class="entry-title">${post.title}</div>
-                <div class="entry-date">${new Date(post.created_at).toLocaleDateString('en-GB')}</div>
-                <div class="entry-body">${post.body}</div>
-                <div class="entry-footer">
-                    <span onclick="toggleLike(${post.id})" style="cursor:pointer; color:${liked ? '#e0245e' : '#65676b'}">
-                        ${liked ? '👍' : '🔥'} ${post.likes}
-                    </span>
-                    ${isAdmin ? `<span onclick="deletePost(${post.id})" style="cursor:pointer; color:#cc0000; margin-left:15px;">🗑 delete</span>` : ''}
+    feedPosts.forEach(post => {
+        const isOwn    = post.user_id === loggedInUserId
+        const author   = isOwn ? loggedInUser : (userMap[post.user_id]?.username || 'Unknown')
+        const avatar   = isOwn ? null : userMap[post.user_id]?.avatar_url
+        const initial  = author.charAt(0).toUpperCase()
+        const liked    = localStorage.getItem('liked_' + post.id)
+
+        const avatarHTML = avatar
+            ? `<img class="feed-avatar" src="${avatar}" />`
+            : `<div class="feed-avatar-placeholder">${initial}</div>`
+
+        const div = document.createElement('div')
+        div.className = 'feed-post'
+        div.innerHTML = `
+            <div class="feed-post-header">
+                ${avatarHTML}
+                <div class="feed-post-meta">
+                    <a class="feed-post-author" href="/profile/${encodeURIComponent(author)}">${escHtml(author)}</a>
+                    <div class="feed-post-date">${new Date(post.created_at).toLocaleDateString('en-GB')}</div>
                 </div>
             </div>
+            <div class="feed-post-title">${escHtml(post.title)}</div>
+            <div class="feed-post-body">${escHtml(post.body)}</div>
+            <div class="feed-post-footer">
+                <button class="like-btn ${liked ? 'liked' : ''}" onclick="toggleLike('${post.id}')">
+                    ${liked ? '👍' : '🔥'} ${post.likes}
+                </button>
+                ${isOwn ? `<button class="delete-btn" onclick="deletePost('${post.id}')">🗑 delete</button>` : ''}
+            </div>
         `
+        container.appendChild(div)
     })
 }
 
+async function submitPost() {
+    const title = document.getElementById('post-title').value.trim()
+    const body  = document.getElementById('post-body').value.trim()
+    if (!title && !body) return
+
+    await fetch('/api/posts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, body, user_id: loggedInUserId })
+    })
+
+    document.getElementById('post-title').value = ''
+    document.getElementById('post-body').value  = ''
+    loadFeed()
+}
+
 async function toggleLike(id) {
-    const liked = localStorage.getItem('liked_' + id)
+    const liked  = localStorage.getItem('liked_' + id)
     const action = liked ? 'unlike' : 'like'
     await fetch('/api/posts/' + id + '/' + action, { method: 'POST' })
-    if (liked) {
-        localStorage.removeItem('liked_' + id)
-    } else {
-        localStorage.setItem('liked_' + id, 'true')
-    }
-    loadPosts()
+    liked ? localStorage.removeItem('liked_' + id) : localStorage.setItem('liked_' + id, 'true')
+    loadFeed()
 }
 
 async function deletePost(id) {
     if (!confirm('Delete this post?')) return
     await fetch('/api/posts/' + id, { method: 'DELETE' })
-    loadPosts()
+    loadFeed()
 }
 
-async function submitPost() {
-    const title = document.getElementById('post-title').value
-    const body = document.getElementById('post-body').value
-    await fetch('/api/posts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, body })
-    })
-    document.getElementById('post-form').style.display = 'none'
-    document.getElementById('post-title').value = ''
-    document.getElementById('post-body').value = ''
-    loadPosts()
-}
-async function trackVisit() {
-    const res = await fetch('/api/visit', { method: 'POST' })
+// ─── Pending friend requests badge ────────────────────
+async function checkPendingRequests() {
+    if (!loggedInUserId) return
+    const res  = await fetch('/api/friends/pending/' + loggedInUserId)
     const data = await res.json()
-    const el = document.getElementById('visitor-count')
+    if (data.pending && data.pending.length > 0) {
+        document.getElementById('dot-friends').classList.add('visible')
+        const badge = document.getElementById('badge-requests')
+        badge.innerText = data.pending.length
+        badge.classList.add('visible')
+    }
+}
+
+// ─── Search ────────────────────────────────────────────
+async function doSearch() {
+    const query = document.getElementById('search-input').value.trim()
+    if (!query) return
+
+    // Simple approach: fetch the profile directly
+    const res = await fetch('/api/profile/' + encodeURIComponent(query))
+    const resultsBox = document.getElementById('search-results')
+
+    if (res.ok) {
+        const data = await res.json()
+        resultsBox.style.display = 'block'
+        resultsBox.innerHTML = `
+            <div class="search-result-item" onclick="window.location='/profile/${encodeURIComponent(data.profile.username)}'">
+                👤 ${escHtml(data.profile.username)}
+            </div>
+        `
+    } else {
+        resultsBox.style.display = 'block'
+        resultsBox.innerHTML = `<div class="search-result-item" style="color:#999; font-weight:normal;">No user found.</div>`
+    }
+
+    // Click outside to close
+    document.addEventListener('click', function closeSearch(e) {
+        if (!resultsBox.contains(e.target) && e.target.id !== 'search-input') {
+            resultsBox.style.display = 'none'
+            document.removeEventListener('click', closeSearch)
+        }
+    })
+}
+
+// ─── Visitors ──────────────────────────────────────────
+async function trackVisit() {
+    const res  = await fetch('/api/visit', { method: 'POST' })
+    const data = await res.json()
+    const el   = document.getElementById('visitor-count')
     if (el) el.innerText = 'Visitors: ' + data.count
 }
-trackVisit()
-loadPosts()
 
-// Check if logged in and update nav
-const loggedInUser = localStorage.getItem('username')
-if (loggedInUser) {
-    document.getElementById('nav-username').innerText = loggedInUser
-    document.getElementById('nav-login').style.display = 'none'
-    document.getElementById('nav-signup').style.display = 'none'
-    document.getElementById('nav-logout').style.display = 'block'
-}
-
+// ─── Auth ──────────────────────────────────────────────
 async function logOut() {
     await fetch('/api/logout', { method: 'POST' })
     localStorage.removeItem('token')
     localStorage.removeItem('username')
     localStorage.removeItem('userId')
     window.location.href = '/login.html'
+}
+
+// ─── Utils ─────────────────────────────────────────────
+function escHtml(str) {
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
 }
 </script>
 
