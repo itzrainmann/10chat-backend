@@ -1,59 +1,196 @@
 <!DOCTYPE html>
-<!-- v4 — Phase 3: Friend System -->
+<!-- v5 — Full nav bar -->
 <html>
 <head>
 <title>10Chat — Profile</title>
 <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
         background-color: #d0d9e8;
         font-family: Arial, sans-serif;
         font-size: 12px;
         color: #000;
-        margin: 0;
     }
 
-    .nav-bar {
-        background: linear-gradient(180deg, #4a77a8, #336699);
-        padding: 6px 12px;
+    /* ═══════════════════════════════════════
+       GLOBAL NAV BAR
+    ═══════════════════════════════════════ */
+    .global-nav {
+        background: linear-gradient(180deg, #2a548a, #1a3a6b);
+        border-bottom: 2px solid #0f2547;
         display: flex;
-        justify-content: space-between;
+        align-items: stretch;
+        height: 36px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    }
+
+    .global-nav .brand {
+        font-weight: bold;
+        font-size: 15px;
+        letter-spacing: 2px;
+        color: #fff;
+        padding: 0 16px;
+        display: flex;
         align-items: center;
-        color: #ffffff;
-        font-size: 11px;
-    }
-
-    .nav-bar a {
-        color: #ffffff;
+        border-right: 1px solid #3a6aaa;
         text-decoration: none;
-        margin-left: 12px;
+        background: linear-gradient(180deg, #3a6aaa, #1a3a6b);
     }
 
-    .nav-bar a:hover { text-decoration: underline; }
-    .nav-left { font-weight: bold; font-size: 14px; letter-spacing: 1px; }
-    .nav-right { display: flex; align-items: center; gap: 10px; }
+    .nav-tabs {
+        display: flex;
+        align-items: stretch;
+    }
 
+    .nav-tab {
+        display: flex;
+        align-items: center;
+        padding: 0 16px;
+        color: #cce0ff;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: bold;
+        border-right: 1px solid #3a5580;
+        position: relative;
+        cursor: pointer;
+        transition: background 0.1s;
+        letter-spacing: 0.5px;
+    }
+
+    .nav-tab:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+    .nav-tab.active {
+        background: rgba(255,255,255,0.15);
+        color: #fff;
+        border-bottom: 2px solid #7eb3e8;
+    }
+
+    .notif-dot {
+        width: 7px;
+        height: 7px;
+        background: #ff3b3b;
+        border-radius: 50%;
+        position: absolute;
+        top: 7px;
+        right: 8px;
+        display: none;
+        box-shadow: 0 0 4px rgba(255,59,59,0.8);
+        animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.3); opacity: 0.7; }
+    }
+
+    .notif-dot.visible { display: block; }
+
+    .nav-search {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 0 10px;
+        position: relative;
+    }
+
+    .nav-search input {
+        padding: 4px 8px;
+        border: 1px solid #7599bc;
+        background: #eef4ff;
+        font-family: Arial;
+        font-size: 11px;
+        width: 180px;
+        color: #000;
+        outline: none;
+    }
+
+    .nav-search input:focus { border-color: #336699; background: #fff; }
+
+    .nav-search button {
+        background: linear-gradient(180deg, #7599bc, #4a77a8);
+        color: #fff;
+        border: 1px solid #336699;
+        padding: 4px 10px;
+        cursor: pointer;
+        font-family: Arial;
+        font-size: 11px;
+        font-weight: bold;
+    }
+
+    .nav-search button:hover { background: linear-gradient(180deg, #5d86af, #2e5a88); }
+
+    .signout-btn {
+        display: flex;
+        align-items: center;
+        padding: 0 14px;
+        background: linear-gradient(180deg, #c45050, #8b2020);
+        color: #fff;
+        font-size: 11px;
+        font-weight: bold;
+        cursor: pointer;
+        border: none;
+        border-left: 1px solid #0f2547;
+        text-decoration: none;
+        letter-spacing: 0.5px;
+    }
+
+    .signout-btn:hover { background: linear-gradient(180deg, #a83333, #6e1515); }
+
+    .search-results {
+        position: absolute;
+        top: 36px;
+        right: 60px;
+        width: 200px;
+        background: #fff;
+        border: 1px solid #336699;
+        z-index: 200;
+        display: none;
+        box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .search-result-item {
+        padding: 6px 10px;
+        border-bottom: 1px solid #dde5f0;
+        cursor: pointer;
+        color: #336699;
+        font-weight: bold;
+        font-size: 12px;
+    }
+
+    .search-result-item:last-child { border-bottom: none; }
+    .search-result-item:hover { background: #eef2f8; }
+
+    /* ═══════════════════════════════════════
+       PAGE LAYOUT
+    ═══════════════════════════════════════ */
     .page-wrapper {
-        max-width: 900px;
-        margin: 15px auto;
+        max-width: 960px;
+        margin: 10px auto;
+        padding: 0 8px;
     }
 
     .profile-banner {
         background: linear-gradient(180deg, #7599bc, #4a77a8);
         padding: 8px 12px;
-        color: #fffafa;
+        color: #ffffff;
         font-size: 18px;
         font-weight: bold;
         border: 1px solid #336699;
+        margin-bottom: 8px;
     }
 
     .main-layout {
         display: flex;
         gap: 8px;
-        margin-top: 8px;
     }
 
     .left-col { width: 220px; flex-shrink: 0; }
-    .right-col { flex: 1; }
+    .right-col { flex: 1; min-width: 0; }
 
     .myspace-box {
         background: #ffffff;
@@ -76,6 +213,7 @@
         line-height: 1.7;
     }
 
+    /* ── Profile pic box ── */
     .profile-pic-box {
         background: #ffffff;
         border: 1px solid #336699;
@@ -84,11 +222,27 @@
         padding: 10px;
     }
 
-    .profile-pic-box img {
+    .profile-avatar-img {
         width: 120px;
         height: 120px;
         object-fit: cover;
         border: 2px solid #336699;
+        display: block;
+        margin: 0 auto 6px;
+    }
+
+    .profile-avatar-placeholder {
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(180deg, #7599bc, #4a77a8);
+        border: 2px solid #336699;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 48px;
+        font-weight: bold;
+        margin: 0 auto 6px;
     }
 
     .screen-name {
@@ -120,66 +274,32 @@
         color: #333;
     }
 
-    .status-bar span {
-        color: #336699;
-        font-weight: bold;
-    }
+    .status-bar span { color: #336699; font-weight: bold; }
 
-    /* ── Friend action button ── */
+    /* ── Friend buttons ── */
     .friend-btn {
-        display: inline-block;
+        display: block;
         margin-top: 8px;
-        padding: 4px 14px;
+        padding: 5px 14px;
         font-size: 11px;
-        font-family: Arial, sans-serif;
+        font-family: Arial;
         font-weight: bold;
         border: 1px solid #336699;
         cursor: pointer;
         text-align: center;
-        width: calc(100% - 30px);
+        width: 100%;
     }
 
-    .friend-btn.add {
-        background: linear-gradient(180deg, #7599bc, #4a77a8);
-        color: #fff;
-    }
-
+    .friend-btn.add { background: linear-gradient(180deg, #7599bc, #4a77a8); color: #fff; }
     .friend-btn.add:hover { background: linear-gradient(180deg, #5d86af, #2e5a88); }
-
-    .friend-btn.pending {
-        background: #eef2f8;
-        color: #888;
-        border-color: #aaa;
-        cursor: default;
-    }
-
-    .friend-btn.accept {
-        background: linear-gradient(180deg, #77bc87, #3a9950);
-        color: #fff;
-        border-color: #2e7d3e;
-    }
-
+    .friend-btn.pending { background: #eef2f8; color: #888; border-color: #aaa; cursor: default; }
+    .friend-btn.accept { background: linear-gradient(180deg, #77bc87, #3a9950); color: #fff; border-color: #2e7d3e; }
     .friend-btn.accept:hover { background: linear-gradient(180deg, #5aa56e, #2e7d3e); }
-
-    .friend-btn.decline {
-        background: linear-gradient(180deg, #c97070, #a83333);
-        color: #fff;
-        border-color: #7d2e2e;
-        margin-top: 4px;
-    }
-
-    .friend-btn.decline:hover { background: linear-gradient(180deg, #b05a5a, #8a2424); }
-
-    .friend-btn.unfriend {
-        background: #eef2f8;
-        color: #a83333;
-        border-color: #a83333;
-        margin-top: 4px;
-    }
-
+    .friend-btn.decline { background: linear-gradient(180deg, #c97070, #a83333); color: #fff; border-color: #7d2e2e; margin-top: 4px; }
+    .friend-btn.unfriend { background: #eef2f8; color: #a83333; border-color: #a83333; margin-top: 4px; }
     .friend-btn.unfriend:hover { background: #fdeaea; }
 
-    /* ── Friends list grid ── */
+    /* ── Friends grid ── */
     .friends-grid {
         display: flex;
         flex-wrap: wrap;
@@ -187,10 +307,7 @@
         padding: 8px;
     }
 
-    .friend-tile {
-        text-align: center;
-        width: 70px;
-    }
+    .friend-tile { text-align: center; width: 70px; }
 
     .friend-tile img {
         width: 60px;
@@ -201,7 +318,7 @@
         margin: 0 auto;
     }
 
-    .friend-tile .friend-avatar-placeholder {
+    .friend-avatar-placeholder {
         width: 60px;
         height: 60px;
         background: linear-gradient(180deg, #7599bc, #4a77a8);
@@ -226,7 +343,7 @@
 
     .friend-tile a:hover { text-decoration: underline; }
 
-    /* ── Pending requests box ── */
+    /* ── Pending requests ── */
     .pending-request-row {
         display: flex;
         align-items: center;
@@ -236,16 +353,8 @@
     }
 
     .pending-request-row:last-child { border-bottom: none; }
-
-    .pending-request-row .req-name {
-        color: #336699;
-        font-weight: bold;
-        font-size: 12px;
-        text-decoration: none;
-    }
-
-    .pending-request-row .req-name:hover { text-decoration: underline; }
-
+    .req-name { color: #336699; font-weight: bold; font-size: 12px; text-decoration: none; }
+    .req-name:hover { text-decoration: underline; }
     .req-actions { display: flex; gap: 6px; }
 
     .req-btn {
@@ -257,17 +366,8 @@
         cursor: pointer;
     }
 
-    .req-btn.accept-small {
-        background: linear-gradient(180deg, #77bc87, #3a9950);
-        color: #fff;
-        border-color: #2e7d3e;
-    }
-
-    .req-btn.decline-small {
-        background: #eef2f8;
-        color: #a83333;
-        border-color: #a83333;
-    }
+    .req-btn.accept-small { background: linear-gradient(180deg, #77bc87, #3a9950); color: #fff; border-color: #2e7d3e; }
+    .req-btn.decline-small { background: #eef2f8; color: #a83333; border-color: #a83333; }
 
     /* ── Blog posts ── */
     .blog-entry {
@@ -276,87 +376,90 @@
     }
 
     .blog-entry:last-child { border-bottom: none; }
-
-    .blog-entry .entry-title {
-        font-weight: bold;
-        color: #336699;
-        font-size: 13px;
-        margin-bottom: 4px;
-    }
-
-    .blog-entry .entry-date {
-        font-size: 10px;
-        color: #999;
-        margin-bottom: 6px;
-    }
-
-    .blog-entry .entry-body {
-        color: #333;
-        line-height: 1.7;
-    }
+    .entry-title { font-weight: bold; color: #336699; font-size: 13px; margin-bottom: 4px; }
+    .entry-date { font-size: 10px; color: #999; margin-bottom: 6px; }
+    .entry-body { color: #333; line-height: 1.7; }
 
     /* ── Edit box ── */
-    .edit-box {
+    .edit-section {
         background: #fff;
         border: 1px solid #336699;
-        padding: 10px;
         margin-bottom: 8px;
         display: none;
     }
 
-    .edit-box input, .edit-box textarea {
+    .edit-section input, .edit-section textarea {
         width: 100%;
-        padding: 4px;
+        padding: 5px 8px;
         margin-bottom: 8px;
-        border: 1px solid #336699;
+        border: 1px solid #7599bc;
         font-family: Arial;
         font-size: 12px;
         box-sizing: border-box;
+        outline: none;
     }
 
-    .edit-box button {
-        background: #4a77a8;
+    .edit-section input:focus, .edit-section textarea:focus { border-color: #336699; }
+
+    .edit-section button {
+        background: linear-gradient(180deg, #7599bc, #4a77a8);
         color: #fff;
-        border: none;
-        padding: 5px 14px;
+        border: 1px solid #336699;
+        padding: 5px 16px;
         cursor: pointer;
         font-family: Arial;
         font-size: 12px;
+        font-weight: bold;
     }
 
-    .no-friends-msg {
-        color: #999;
-        font-style: italic;
-        font-size: 11px;
-    }
+    .edit-section button:hover { background: linear-gradient(180deg, #5d86af, #2e5a88); }
+
+    .no-friends-msg { color: #999; font-style: italic; font-size: 11px; padding: 8px; display: block; }
 </style>
 </head>
 <body>
 
-<div class="nav-bar">
-    <div class="nav-left"><a href="/" style="color:white; text-decoration:none;">10Chat</a></div>
-    <div class="nav-right">
-        <span id="nav-username"></span>
-        <a href="/login.html" id="nav-login">Log In</a>
-        <a href="/signup.html" id="nav-signup">Sign Up</a>
-        <a href="#" onclick="logOut()" id="nav-logout" style="display:none;">Log Out</a>
+<!-- GLOBAL NAV -->
+<div class="global-nav">
+    <a href="/" class="brand">10Chat</a>
+
+    <div class="nav-tabs">
+        <a class="nav-tab" href="/">Home</a>
+        <a class="nav-tab" href="#" id="nav-messages">
+            Messages
+            <span class="notif-dot" id="dot-messages"></span>
+        </a>
+        <a class="nav-tab" href="#" id="nav-friends-tab">
+            Friends
+            <span class="notif-dot" id="dot-friends"></span>
+        </a>
+        <a class="nav-tab active" id="nav-account" href="#">Account</a>
     </div>
+
+    <div class="nav-search">
+        <input type="text" id="search-input" placeholder="Search for users..." onkeydown="if(event.key==='Enter') doSearch()" />
+        <button onclick="doSearch()">Search</button>
+        <div class="search-results" id="search-results"></div>
+    </div>
+
+    <a class="signout-btn" href="#" onclick="logOut()">Sign Out</a>
 </div>
 
 <div class="page-wrapper">
     <div class="profile-banner" id="profile-banner">Loading...</div>
 
     <div class="main-layout">
+
         <!-- LEFT COLUMN -->
         <div class="left-col">
 
             <div class="profile-pic-box">
-                <img id="profile-avatar" src="/placeholder-avatar.png" onerror="this.style.display='none'" />
+                <div id="avatar-wrap">
+                    <div class="profile-avatar-placeholder" id="avatar-placeholder">?</div>
+                </div>
                 <div class="screen-name" id="profile-username"></div>
                 <div class="join-date" id="profile-joindate"></div>
                 <div class="friend-count" id="profile-friend-count"></div>
-
-                <!-- Friend action area — hidden on own profile -->
                 <div id="friend-action-area"></div>
             </div>
 
@@ -369,8 +472,7 @@
                 <div class="box-body" id="profile-bio">—</div>
             </div>
 
-            <!-- Friends list box -->
-            <div class="myspace-box" id="friends-box">
+            <div class="myspace-box">
                 <div class="box-header" id="friends-box-header">Friends</div>
                 <div id="friends-grid-container" class="friends-grid">
                     <span class="no-friends-msg">Loading...</span>
@@ -382,21 +484,19 @@
         <!-- RIGHT COLUMN -->
         <div class="right-col">
 
-            <!-- Pending friend requests — only shown on own profile -->
+            <!-- Pending requests — own profile only -->
             <div class="myspace-box" id="pending-box" style="display:none;">
                 <div class="box-header">Friend Requests</div>
                 <div class="box-body" id="pending-container">No pending requests.</div>
             </div>
 
-            <!-- Edit profile box — only shown on own profile -->
-            <div class="edit-box" id="edit-box">
-                <div class="myspace-box">
-                    <div class="box-header">Edit Profile</div>
-                    <div class="box-body">
-                        <input id="edit-status" placeholder="Status — what are you up to?" />
-                        <textarea id="edit-bio" placeholder="Bio — tell people about yourself" rows="4"></textarea>
-                        <button onclick="saveProfile()">Save</button>
-                    </div>
+            <!-- Edit profile — own profile only -->
+            <div class="edit-section" id="edit-box">
+                <div class="box-header" style="background:linear-gradient(180deg,#7599bc,#4a77a8);color:#fff;font-weight:bold;padding:4px 8px;font-size:11px;text-transform:uppercase;letter-spacing:1px;">Edit Profile</div>
+                <div style="padding:8px;">
+                    <input id="edit-status" placeholder="Status — what are you up to?" />
+                    <textarea id="edit-bio" placeholder="Bio — tell people about yourself" rows="4"></textarea>
+                    <button onclick="saveProfile()">Save Changes</button>
                 </div>
             </div>
 
@@ -413,12 +513,9 @@
 const loggedInUser   = localStorage.getItem('username')
 const loggedInUserId = localStorage.getItem('userId')
 
-// Update nav
+// Wire up nav account link
 if (loggedInUser) {
-    document.getElementById('nav-username').innerText = loggedInUser
-    document.getElementById('nav-login').style.display  = 'none'
-    document.getElementById('nav-signup').style.display = 'none'
-    document.getElementById('nav-logout').style.display = 'block'
+    document.getElementById('nav-account').href = '/profile/' + loggedInUser
 }
 
 // Get username from URL
@@ -426,18 +523,16 @@ const pathParts       = window.location.pathname.split('/')
 const profileUsername = pathParts[pathParts.length - 1]
 const isOwnProfile    = loggedInUser === profileUsername
 
-let currentProfileId  = null   // set after profile loads
-let currentRequestId  = null   // set after friend status loads
+let currentProfileId = null
+let currentRequestId = null
 
-// ─────────────────────────────────────────────
-//  LOAD PROFILE
-// ─────────────────────────────────────────────
+// ── Load Profile ──────────────────────────────
 async function loadProfile() {
     const res = await fetch('/api/profile/' + profileUsername)
 
     if (res.status === 404) {
-        document.getElementById('profile-banner').innerText   = 'User not found'
-        document.getElementById('posts-container').innerText  = ''
+        document.getElementById('profile-banner').innerText  = 'User not found'
+        document.getElementById('posts-container').innerText = ''
         document.getElementById('friends-grid-container').innerHTML = ''
         return
     }
@@ -448,37 +543,39 @@ async function loadProfile() {
 
     currentProfileId = profile.id
 
-    // Fill in profile info
-    document.getElementById('profile-banner').innerText        = profile.username + "'s Profile"
-    document.getElementById('profile-username').innerText      = profile.username
-    document.getElementById('profile-joindate').innerText      = 'Member since ' + new Date(profile.created_at).toLocaleDateString('en-GB')
-    document.getElementById('profile-status').innerText        = profile.status || '—'
-    document.getElementById('profile-bio').innerText           = profile.bio    || 'No bio yet.'
-    document.getElementById('posts-header').innerText          = profile.username + "'s Posts"
-    document.getElementById('friends-box-header').innerText    = profile.username + "'s Friends (" + (data.friendCount || 0) + ")"
-    document.getElementById('profile-friend-count').innerText  = data.friendCount + (data.friendCount === 1 ? ' friend' : ' friends')
+    document.getElementById('profile-banner').innerText       = profile.username + "'s Profile"
+    document.getElementById('profile-username').innerText     = profile.username
+    document.getElementById('profile-joindate').innerText     = 'Member since ' + new Date(profile.created_at).toLocaleDateString('en-GB')
+    document.getElementById('profile-status').innerText       = profile.status || '—'
+    document.getElementById('profile-bio').innerText          = profile.bio    || 'No bio yet.'
+    document.getElementById('posts-header').innerText         = profile.username + "'s Posts"
+    document.getElementById('friends-box-header').innerText   = profile.username + "'s Friends (" + (data.friendCount || 0) + ")"
+    document.getElementById('profile-friend-count').innerText = (data.friendCount || 0) + (data.friendCount === 1 ? ' friend' : ' friends')
 
+    // Avatar — show initial placeholder or real image
+    const initial = profile.username.charAt(0).toUpperCase()
+    const avatarWrap = document.getElementById('avatar-wrap')
     if (profile.avatar_url) {
-        document.getElementById('profile-avatar').src = profile.avatar_url
+        avatarWrap.innerHTML = `<img class="profile-avatar-img" src="${profile.avatar_url}" />`
+    } else {
+        document.getElementById('avatar-placeholder').innerText = initial
     }
 
-    // Own profile — show edit box and pending requests
     if (isOwnProfile) {
         document.getElementById('edit-box').style.display = 'block'
         document.getElementById('edit-status').value      = profile.status || ''
         document.getElementById('edit-bio').value         = profile.bio    || ''
         loadPendingRequests()
     } else if (loggedInUserId) {
-        // Someone else's profile — show friend action button
         loadFriendStatus()
     }
 
-    // Load friends list
-    loadFriendsList(profile.id, profile.username)
+    loadFriendsList(profile.id)
+    checkPendingRequests()
 
-    // Load posts
+    // Posts
     const container = document.getElementById('posts-container')
-    if (posts.length === 0) {
+    if (!posts || posts.length === 0) {
         container.innerText = 'No posts yet.'
         return
     }
@@ -495,9 +592,7 @@ async function loadProfile() {
     })
 }
 
-// ─────────────────────────────────────────────
-//  FRIEND STATUS (for viewing someone else's profile)
-// ─────────────────────────────────────────────
+// ── Friend Status ─────────────────────────────
 async function loadFriendStatus() {
     const res  = await fetch(`/api/friends/status?userId=${loggedInUserId}&targetId=${currentProfileId}`)
     const data = await res.json()
@@ -507,25 +602,20 @@ async function loadFriendStatus() {
 
 function renderFriendButton(status) {
     const area = document.getElementById('friend-action-area')
-
     if (status === 'none') {
         area.innerHTML = `<button class="friend-btn add" onclick="sendFriendRequest()">+ Add Friend</button>`
-
     } else if (status === 'pending_sent') {
         area.innerHTML = `
             <button class="friend-btn pending" disabled>Request Sent</button>
-            <button class="friend-btn unfriend" onclick="cancelRequest()">Cancel Request</button>
-        `
+            <button class="friend-btn unfriend" onclick="cancelRequest()">Cancel Request</button>`
     } else if (status === 'pending_received') {
         area.innerHTML = `
             <button class="friend-btn accept" onclick="acceptRequest()">Accept Friend Request</button>
-            <button class="friend-btn decline" onclick="declineRequest()">Decline</button>
-        `
+            <button class="friend-btn decline" onclick="declineRequest()">Decline</button>`
     } else if (status === 'accepted') {
         area.innerHTML = `
             <button class="friend-btn pending" disabled>✓ Friends</button>
-            <button class="friend-btn unfriend" onclick="unfriend()">Remove Friend</button>
-        `
+            <button class="friend-btn unfriend" onclick="unfriend()">Remove Friend</button>`
     }
 }
 
@@ -551,21 +641,9 @@ async function acceptRequest() {
     loadProfile()
 }
 
-async function declineRequest() {
-    await removeRequest(currentRequestId, loggedInUserId)
-    loadFriendStatus()
-}
-
-async function cancelRequest() {
-    await removeRequest(currentRequestId, loggedInUserId)
-    loadFriendStatus()
-}
-
-async function unfriend() {
-    if (!confirm('Remove this person from your friends?')) return
-    await removeRequest(currentRequestId, loggedInUserId)
-    loadProfile()
-}
+async function declineRequest()  { await removeRequest(currentRequestId, loggedInUserId); loadFriendStatus() }
+async function cancelRequest()   { await removeRequest(currentRequestId, loggedInUserId); loadFriendStatus() }
+async function unfriend()        { if (!confirm('Remove this friend?')) return; await removeRequest(currentRequestId, loggedInUserId); loadProfile() }
 
 async function removeRequest(requestId, userId) {
     await fetch('/api/friends/remove', {
@@ -575,10 +653,8 @@ async function removeRequest(requestId, userId) {
     })
 }
 
-// ─────────────────────────────────────────────
-//  FRIENDS LIST (shown on every profile)
-// ─────────────────────────────────────────────
-async function loadFriendsList(userId, username) {
+// ── Friends List ──────────────────────────────
+async function loadFriendsList(userId) {
     const res  = await fetch('/api/friends/' + userId)
     const data = await res.json()
     const grid = document.getElementById('friends-grid-container')
@@ -590,8 +666,8 @@ async function loadFriendsList(userId, username) {
 
     grid.innerHTML = ''
     data.friends.forEach(friend => {
-        const initial = friend.username.charAt(0).toUpperCase()
-        const avatarHTML = friend.avatar_url
+        const initial     = friend.username.charAt(0).toUpperCase()
+        const avatarHTML  = friend.avatar_url
             ? `<img src="${friend.avatar_url}" alt="${escHtml(friend.username)}" />`
             : `<div class="friend-avatar-placeholder">${initial}</div>`
 
@@ -599,44 +675,37 @@ async function loadFriendsList(userId, username) {
             <div class="friend-tile">
                 <a href="/profile/${encodeURIComponent(friend.username)}">${avatarHTML}</a>
                 <a href="/profile/${encodeURIComponent(friend.username)}">${escHtml(friend.username)}</a>
-            </div>
-        `
+            </div>`
     })
 }
 
-// ─────────────────────────────────────────────
-//  PENDING REQUESTS (own profile only)
-// ─────────────────────────────────────────────
+// ── Pending Requests (own profile) ───────────
 async function loadPendingRequests() {
     const res  = await fetch('/api/friends/pending/' + loggedInUserId)
     const data = await res.json()
     const box  = document.getElementById('pending-box')
     const cont = document.getElementById('pending-container')
 
-    if (!data.pending || data.pending.length === 0) {
-        box.style.display = 'none'
-        return
-    }
+    if (!data.pending || data.pending.length === 0) { box.style.display = 'none'; return }
 
     box.style.display = 'block'
     cont.innerHTML    = ''
 
     data.pending.forEach(req => {
         const row = document.createElement('div')
-        row.className    = 'pending-request-row'
-        row.id           = 'req-row-' + req.requestId
+        row.className = 'pending-request-row'
+        row.id        = 'req-row-' + req.requestId
         row.innerHTML = `
             <a class="req-name" href="/profile/${encodeURIComponent(req.username)}">${escHtml(req.username)}</a>
             <div class="req-actions">
-                <button class="req-btn accept-small" onclick="acceptPendingRequest('${req.requestId}', '${req.id}')">Accept</button>
+                <button class="req-btn accept-small" onclick="acceptPendingRequest('${req.requestId}')">Accept</button>
                 <button class="req-btn decline-small" onclick="declinePendingRequest('${req.requestId}')">Decline</button>
-            </div>
-        `
+            </div>`
         cont.appendChild(row)
     })
 }
 
-async function acceptPendingRequest(requestId, senderId) {
+async function acceptPendingRequest(requestId) {
     const res  = await fetch('/api/friends/accept', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -644,17 +713,11 @@ async function acceptPendingRequest(requestId, senderId) {
     })
     const data = await res.json()
     if (data.error) return alert(data.error)
-
-    // Remove row from UI and refresh friend count
     const row = document.getElementById('req-row-' + requestId)
     if (row) row.remove()
-
-    // Hide box if no more requests
     if (document.getElementById('pending-container').children.length === 0) {
         document.getElementById('pending-box').style.display = 'none'
     }
-
-    // Refresh friends list and count
     loadProfile()
 }
 
@@ -662,31 +725,50 @@ async function declinePendingRequest(requestId) {
     await removeRequest(requestId, loggedInUserId)
     const row = document.getElementById('req-row-' + requestId)
     if (row) row.remove()
-
     if (document.getElementById('pending-container').children.length === 0) {
         document.getElementById('pending-box').style.display = 'none'
     }
 }
 
-// ─────────────────────────────────────────────
-//  EDIT PROFILE
-// ─────────────────────────────────────────────
-async function saveProfile() {
-    const bio    = document.getElementById('edit-bio').value
-    const status = document.getElementById('edit-status').value
-
-    await fetch('/api/profile/update', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: loggedInUserId, bio, status })
-    })
-
-    loadProfile()
+// ── Notification dots ─────────────────────────
+async function checkPendingRequests() {
+    if (!loggedInUserId) return
+    const res  = await fetch('/api/friends/pending/' + loggedInUserId)
+    const data = await res.json()
+    if (data.pending && data.pending.length > 0) {
+        document.getElementById('dot-friends').classList.add('visible')
+    }
 }
 
-// ─────────────────────────────────────────────
-//  AUTH
-// ─────────────────────────────────────────────
+// ── Search ────────────────────────────────────
+async function doSearch() {
+    const query      = document.getElementById('search-input').value.trim()
+    const resultsBox = document.getElementById('search-results')
+    if (!query) return
+
+    const res = await fetch('/api/profile/' + encodeURIComponent(query))
+
+    if (res.ok) {
+        const data = await res.json()
+        resultsBox.style.display = 'block'
+        resultsBox.innerHTML = `
+            <div class="search-result-item" onclick="window.location='/profile/${encodeURIComponent(data.profile.username)}'">
+                👤 ${escHtml(data.profile.username)}
+            </div>`
+    } else {
+        resultsBox.style.display = 'block'
+        resultsBox.innerHTML = `<div class="search-result-item" style="color:#999;font-weight:normal;">No user found.</div>`
+    }
+
+    document.addEventListener('click', function closeSearch(e) {
+        if (!resultsBox.contains(e.target) && e.target.id !== 'search-input') {
+            resultsBox.style.display = 'none'
+            document.removeEventListener('click', closeSearch)
+        }
+    })
+}
+
+// ── Auth ──────────────────────────────────────
 async function logOut() {
     await fetch('/api/logout', { method: 'POST' })
     localStorage.removeItem('token')
@@ -695,9 +777,7 @@ async function logOut() {
     window.location.href = '/login.html'
 }
 
-// ─────────────────────────────────────────────
-//  UTILS
-// ─────────────────────────────────────────────
+// ── Utils ─────────────────────────────────────
 function escHtml(str) {
     return String(str)
         .replace(/&/g, '&amp;')
