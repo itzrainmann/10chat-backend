@@ -578,5 +578,9 @@ app.get('/api/messages/unread/:userId', async (req, res) => {
     res.json({ count: count || 0 })
 })
 
+app.get('/messages', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'messages.html'))
+})
+
 const PORT = process.env.PORT || 3000
 server.listen(PORT, () => console.log('Running on port ' + PORT))
