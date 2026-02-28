@@ -42,10 +42,10 @@ app.get('/api/posts', async (req, res) => {
 
 // POST new post
 app.post('/api/posts', async (req, res) => {
-    const { title, body } = req.body
+    const { title, body, user_id } = req.body
     const { data, error } = await supabase
         .from('posts')
-        .insert([{ title, body, likes: 0 }])
+        .insert([{ title, body, likes: 0, user_id }])
     if (error) return res.status(500).json({ error })
     res.json({ success: true, data })
 })
@@ -381,6 +381,72 @@ const pending = profiles.map(profile => {
 })
 
     res.json({ pending })
+})
+// GET comments for a post
+app.get('/api/posts/:id/comments', async (req, res) => {
+    const { id } = req.params
+
+    const { data: comments, error } = await supabase
+        .from('comments')
+        .select('*')
+        .eq('post_id', id)
+        .order('created_at', { ascending: true })
+
+    if (error) return res.status(500).json({ error: error.message })
+
+    if (!comments || comments.length === 0) return res.json({ comments: [] })
+
+    // Get usernames for each comment
+    const userIds = [...new Set(comments.map(c => c.user_id))]
+    const { data: profiles } = await supabase
+        .from('profiles')
+        .select('id, username, avatar_url')
+        .in('id', userIds)
+
+    const profileMap = {}
+    profiles.forEach(p => { profileMap[p.id] = p })
+
+    const enriched = comments.map(c => ({
+        ...c,
+        username: profileMap[c.user_id]?.username || 'Unknown',
+        avatar_url: profileMap[c.user_id]?.avatar_url || null
+    }))
+
+    res.json({ comments: enriched })
+})
+
+// POST a comment
+app.post('/api/posts/:id/comments', async (req, res) => {
+    const { id } = req.params
+    const { userId, body } = req.body
+
+    if (!userId || !body) return res.status(400).json({ error: 'Missing fields.' })
+
+    const { error } = await supabase
+        .from('comments')
+        .insert([{ post_id: id, user_id: userId, body }])
+
+    if (error) return res.status(500).json({ error: error.message })
+    res.json({ success: true })
+})
+
+// DELETE a comment
+app.delete('/api/comments/:id', async (req, res) => {
+    const { id } = req.params
+    const { userId } = req.body
+
+    const { data: comment } = await supabase
+        .from('comments')
+        .select('user_id')
+        .eq('id', id)
+        .single()
+
+    if (!comment) return res.status(404).json({ error: 'Comment not found.' })
+    if (comment.user_id !== userId) return res.status(403).json({ error: 'Not authorised.' })
+
+    const { error } = await supabase.from('comments').delete().eq('id', id)
+    if (error) return res.status(500).json({ error: error.message })
+    res.json({ success: true })
 })
 
 const PORT = process.env.PORT || 3000
