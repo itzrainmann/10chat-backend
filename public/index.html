@@ -535,10 +535,10 @@
     .feed-post:last-child { border-bottom: none; }
 
     .feed-post-header {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-bottom: 6px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 6px;
     }
 
     .feed-avatar {
@@ -563,7 +563,10 @@
         flex-shrink: 0;
     }
 
-    .feed-post-meta { flex: 1; }
+    .feed-post-meta {
+    flex: 1;
+    text-align: left;
+    }
 
     .feed-post-author {
     font-weight: bold;
@@ -946,7 +949,7 @@ async function loadFeed() {
         <div class="comments-list" id="comments-list-${post.id}"></div>
         <div class="comment-input-row">
             <input type="text" id="comment-input-${post.id}" placeholder="Write a comment..." onkeydown="if(event.key==='Enter') submitComment('${post.id}')" />
-            <button onclick="submitComment('${post.id}')">Post</button>
+            <button onclick="5submitComment('${post.id}')">Post</button>
         </div>
     </div>
 `
