@@ -27,6 +27,111 @@
         box-shadow: 0 2px 6px rgba(0,0,0,0.4);
     }
 
+    .comment-toggle-btn {
+    color: #65676b;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: Arial;
+    font-size: 11px;
+    padding: 0;
+}
+
+.comment-toggle-btn:hover { color: #336699; }
+
+.comments-section {
+    margin-top: 8px;
+    border-top: 1px solid #eee;
+    padding-top: 8px;
+}
+
+.comments-list {
+    margin-bottom: 8px;
+}
+
+.comment-item {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 6px;
+    align-items: flex-start;
+}
+
+.comment-avatar {
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(180deg, #7599bc, #4a77a8);
+    border: 1px solid #336699;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 11px;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.comment-body-wrap {
+    flex: 1;
+}
+
+.comment-author {
+    font-weight: bold;
+    color: #336699;
+    font-size: 11px;
+    text-decoration: none;
+}
+
+.comment-author:hover { text-decoration: underline; }
+
+.comment-text {
+    color: #333;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.comment-date {
+    font-size: 10px;
+    color: #999;
+    margin-top: 2px;
+}
+
+.comment-delete {
+    color: #cc0000;
+    font-size: 10px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: Arial;
+    padding: 0;
+    margin-left: 6px;
+}
+
+.comment-input-row {
+    display: flex;
+    gap: 6px;
+}
+
+.comment-input-row input {
+    flex: 1;
+    padding: 4px 8px;
+    border: 1px solid #7599bc;
+    font-family: Arial;
+    font-size: 11px;
+    outline: none;
+}
+
+.comment-input-row input:focus { border-color: #336699; }
+
+.comment-input-row button {
+    background: linear-gradient(180deg, #7599bc, #4a77a8);
+    color: #fff;
+    border: 1px solid #336699;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-family: Arial;
+    font-size: 11px;
+    font-weight: bold;
+}
     .global-nav .brand {
         font-weight: bold;
         font-size: 15px;
@@ -813,22 +918,32 @@ async function loadFeed() {
         const div = document.createElement('div')
         div.className = 'feed-post'
         div.innerHTML = `
-            <div class="feed-post-header">
-                ${avatarHTML}
-                <div class="feed-post-meta">
-                    <a class="feed-post-author" href="/profile/${encodeURIComponent(author)}">${escHtml(author)}</a>
-                    <div class="feed-post-date">${new Date(post.created_at).toLocaleDateString('en-GB')}</div>
-                </div>
-            </div>
-            <div class="feed-post-title">${escHtml(post.title)}</div>
-            <div class="feed-post-body">${escHtml(post.body)}</div>
-            <div class="feed-post-footer">
-                <button class="like-btn ${liked ? 'liked' : ''}" onclick="toggleLike('${post.id}')">
-                    ${liked ? '👍' : '🔥'} ${post.likes}
-                </button>
-                ${isOwn ? `<button class="delete-btn" onclick="deletePost('${post.id}')">🗑 delete</button>` : ''}
-            </div>
-        `
+    <div class="feed-post-header">
+        ${avatarHTML}
+        <div class="feed-post-meta">
+            <a class="feed-post-author" href="/profile/${encodeURIComponent(author)}">${escHtml(author)}</a>
+            <div class="feed-post-date">${new Date(post.created_at).toLocaleDateString('en-GB')}</div>
+        </div>
+    </div>
+    <div class="feed-post-title">${escHtml(post.title)}</div>
+    <div class="feed-post-body">${escHtml(post.body)}</div>
+    <div class="feed-post-footer">
+        <button class="like-btn ${liked ? 'liked' : ''}" onclick="toggleLike('${post.id}')">
+            ${liked ? '👍' : '👎'} ${post.likes}
+        </button>
+        <button class="comment-toggle-btn" onclick="toggleComments('${post.id}')">
+            💬 Comments
+        </button>
+        ${isOwn ? `<button class="delete-btn" onclick="deletePost('${post.id}')">🗑 delete</button>` : ''}
+    </div>
+    <div class="comments-section" id="comments-${post.id}" style="display:none;">
+        <div class="comments-list" id="comments-list-${post.id}"></div>
+        <div class="comment-input-row">
+            <input type="text" id="comment-input-${post.id}" placeholder="Write a comment..." onkeydown="if(event.key==='Enter') submitComment('${post.id}')" />
+            <button onclick="submitComment('${post.id}')">Post</button>
+        </div>
+    </div>
+`
         container.appendChild(div)
     })
 }
@@ -861,6 +976,70 @@ async function deletePost(id) {
     if (!confirm('Delete this post?')) return
     await fetch('/api/posts/' + id, { method: 'DELETE' })
     loadFeed()
+}
+
+async function toggleComments(postId) {
+    const section = document.getElementById('comments-' + postId)
+    if (section.style.display === 'none') {
+        section.style.display = 'block'
+        loadComments(postId)
+    } else {
+        section.style.display = 'none'
+    }
+}
+
+async function loadComments(postId) {
+    const res  = await fetch('/api/posts/' + postId + '/comments')
+    const data = await res.json()
+    const list = document.getElementById('comments-list-' + postId)
+
+    if (!data.comments || data.comments.length === 0) {
+        list.innerHTML = '<div style="color:#999;font-size:11px;font-style:italic;">No comments yet.</div>'
+        return
+    }
+
+    list.innerHTML = ''
+    data.comments.forEach(comment => {
+        const initial  = comment.username.charAt(0).toUpperCase()
+        const isOwn    = comment.user_id === loggedInUserId
+        const deleteBtn = isOwn ? `<button class="comment-delete" onclick="deleteComment('${comment.id}', '${postId}')">✕</button>` : ''
+
+        list.innerHTML += `
+            <div class="comment-item">
+                <div class="comment-avatar">${initial}</div>
+                <div class="comment-body-wrap">
+                    <a class="comment-author" href="/profile/${encodeURIComponent(comment.username)}">${escHtml(comment.username)}</a>
+                    ${deleteBtn}
+                    <div class="comment-text">${escHtml(comment.body)}</div>
+                    <div class="comment-date">${new Date(comment.created_at).toLocaleDateString('en-GB')}</div>
+                </div>
+            </div>
+        `
+    })
+}
+
+async function submitComment(postId) {
+    const input = document.getElementById('comment-input-' + postId)
+    const body  = input.value.trim()
+    if (!body || !loggedInUserId) return
+
+    await fetch('/api/posts/' + postId + '/comments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: loggedInUserId, body })
+    })
+
+    input.value = ''
+    loadComments(postId)
+}
+
+async function deleteComment(commentId, postId) {
+    await fetch('/api/comments/' + commentId, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: loggedInUserId })
+    })
+    loadComments(postId)
 }
 
 // ─── Pending friend requests badge ────────────────────
