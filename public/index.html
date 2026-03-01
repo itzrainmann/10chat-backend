@@ -6,187 +6,66 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-        background-color: #d0d9e8;
+        background-color: #c8d5e8;
         font-family: Arial, sans-serif;
-        font-size: 12px;
+        font-size: 13px;
         color: #000;
     }
 
-    /* ═══════════════════════════════════════
-       GLOBAL NAV BAR
-    ═══════════════════════════════════════ */
+    /* ═══ NAV ═══ */
     .global-nav {
-        background: linear-gradient(180deg, #2a548a, #1a3a6b);
+        background: linear-gradient(180deg, #3a6aaa, #1a3a6b);
         border-bottom: 2px solid #0f2547;
         display: flex;
         align-items: stretch;
-        height: 36px;
+        height: 44px;
         position: sticky;
         top: 0;
         z-index: 100;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.4);
     }
 
-    .comment-toggle-btn {
-    color: #65676b;
-    cursor: pointer;
-    background: none;
-    border: none;
-    font-family: Arial;
-    font-size: 11px;
-    padding: 0;
-}
-
-.comment-toggle-btn:hover { color: #336699; }
-
-.comments-section {
-    margin-top: 8px;
-    border-top: 1px solid #eee;
-    padding-top: 8px;
-}
-
-.comments-list {
-    margin-bottom: 8px;
-}
-
-.comment-item {
-    display: flex;
-    gap: 6px;
-    margin-bottom: 6px;
-    align-items: flex-start;
-}
-
-.comment-avatar {
-    width: 24px;
-    height: 24px;
-    background: linear-gradient(180deg, #7599bc, #4a77a8);
-    border: 1px solid #336699;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-size: 11px;
-    font-weight: bold;
-    flex-shrink: 0;
-}
-
-.comment-body-wrap {
-    flex: 1;
-}
-
-.comment-author {
-    font-weight: bold;
-    color: #336699;
-    font-size: 11px;
-    text-decoration: none;
-}
-
-.comment-author:hover { text-decoration: underline; }
-
-.comment-text {
-    color: #333;
-    font-size: 11px;
-    line-height: 1.5;
-}
-
-.comment-date {
-    font-size: 10px;
-    color: #999;
-    margin-top: 2px;
-}
-
-.comment-delete {
-    color: #cc0000;
-    font-size: 10px;
-    cursor: pointer;
-    background: none;
-    border: none;
-    font-family: Arial;
-    padding: 0;
-    margin-left: 6px;
-}
-
-.comment-input-row {
-    display: flex;
-    gap: 6px;
-}
-
-.comment-input-row input {
-    flex: 1;
-    padding: 4px 8px;
-    border: 1px solid #7599bc;
-    font-family: Arial;
-    font-size: 11px;
-    outline: none;
-}
-
-.comment-input-row input:focus { border-color: #336699; }
-
-.comment-input-row button {
-    background: linear-gradient(180deg, #7599bc, #4a77a8);
-    color: #fff;
-    border: 1px solid #336699;
-    padding: 4px 10px;
-    cursor: pointer;
-    font-family: Arial;
-    font-size: 11px;
-    font-weight: bold;
-}
     .global-nav .brand {
         font-weight: bold;
-        font-size: 15px;
+        font-size: 18px;
         letter-spacing: 2px;
         color: #fff;
-        padding: 0 16px;
+        padding: 0 20px;
         display: flex;
         align-items: center;
-        border-right: 1px solid #3a6aaa;
+        border-right: 1px solid #4a7aaa;
         text-decoration: none;
-        background: linear-gradient(180deg, #3a6aaa, #1a3a6b);
+        background: linear-gradient(180deg, #4a7aaa, #1a3a6b);
     }
 
-    .nav-tabs {
-        display: flex;
-        align-items: stretch;
-    }
+    .nav-tabs { display: flex; align-items: stretch; }
 
     .nav-tab {
         display: flex;
         align-items: center;
-        padding: 0 16px;
+        padding: 0 20px;
         color: #cce0ff;
         text-decoration: none;
-        font-size: 12px;
+        font-size: 13px;
         font-weight: bold;
         border-right: 1px solid #3a5580;
         position: relative;
         cursor: pointer;
-        transition: background 0.1s;
         letter-spacing: 0.5px;
+        transition: background 0.1s;
     }
 
-    .nav-tab:hover {
-        background: rgba(255,255,255,0.1);
-        color: #fff;
-    }
+    .nav-tab:hover { background: rgba(255,255,255,0.12); color: #fff; }
+    .nav-tab.active { background: rgba(255,255,255,0.18); color: #fff; border-bottom: 3px solid #7eb3e8; }
 
-    .nav-tab.active {
-        background: rgba(255,255,255,0.15);
-        color: #fff;
-        border-bottom: 2px solid #7eb3e8;
-    }
-
-    /* notification dot */
     .notif-dot {
-        width: 7px;
-        height: 7px;
+        width: 8px; height: 8px;
         background: #ff3b3b;
         border-radius: 50%;
         position: absolute;
-        top: 7px;
-        right: 8px;
+        top: 8px; right: 9px;
         display: none;
-        box-shadow: 0 0 4px rgba(255,59,59,0.8);
+        box-shadow: 0 0 5px rgba(255,59,59,0.9);
         animation: pulse 1.5s infinite;
     }
 
@@ -197,40 +76,39 @@
 
     .notif-dot.visible { display: block; }
 
-    /* search area */
     .nav-search {
         margin-left: auto;
         display: flex;
         align-items: center;
         gap: 6px;
-        padding: 0 10px;
+        padding: 0 12px;
+        position: relative;
     }
 
     .nav-search input {
-        padding: 4px 8px;
+        padding: 5px 10px;
         border: 1px solid #7599bc;
-        background: #eef4ff;
+        background: #f0f5ff;
         font-family: Arial;
-        font-size: 11px;
-        width: 180px;
+        font-size: 12px;
+        width: 200px;
         color: #000;
         outline: none;
+        border-radius: 2px;
     }
 
-    .nav-search input:focus {
-        border-color: #336699;
-        background: #fff;
-    }
+    .nav-search input:focus { border-color: #336699; background: #fff; }
 
     .nav-search button {
         background: linear-gradient(180deg, #7599bc, #4a77a8);
         color: #fff;
         border: 1px solid #336699;
-        padding: 4px 10px;
+        padding: 5px 12px;
         cursor: pointer;
         font-family: Arial;
-        font-size: 11px;
+        font-size: 12px;
         font-weight: bold;
+        border-radius: 2px;
     }
 
     .nav-search button:hover { background: linear-gradient(180deg, #5d86af, #2e5a88); }
@@ -238,415 +116,32 @@
     .signout-btn {
         display: flex;
         align-items: center;
-        padding: 0 14px;
+        padding: 0 16px;
         background: linear-gradient(180deg, #c45050, #8b2020);
         color: #fff;
-        font-size: 11px;
+        font-size: 12px;
         font-weight: bold;
         cursor: pointer;
         border: none;
         border-left: 1px solid #0f2547;
         text-decoration: none;
-        letter-spacing: 0.5px;
     }
 
     .signout-btn:hover { background: linear-gradient(180deg, #a83333, #6e1515); }
 
-    /* ═══════════════════════════════════════
-       WELCOME BAR
-    ═══════════════════════════════════════ */
-    .welcome-bar {
-        background: linear-gradient(180deg, #7599bc, #4a77a8);
-        border-bottom: 1px solid #336699;
-        padding: 5px 12px;
-        color: #fff;
-        font-size: 13px;
-        font-weight: bold;
-    }
-
-    .welcome-bar span { color: #d4e8ff; }
-
-    /* ═══════════════════════════════════════
-       PAGE WRAPPER
-    ═══════════════════════════════════════ */
-    .page-wrapper {
-        max-width: 960px;
-        margin: 10px auto;
-        padding: 0 8px;
-        display: flex;
-        gap: 8px;
-    }
-
-    /* ═══════════════════════════════════════
-       LEFT COLUMN — MINI PROFILE
-    ═══════════════════════════════════════ */
-    .left-col {
-        width: 200px;
-        flex-shrink: 0;
-    }
-
-    /* mini profile card */
-    .mini-profile-card {
-        background: #fff;
-        border: 1px solid #336699;
-        margin-bottom: 8px;
-        text-align: center;
-    }
-
-    .mini-profile-card .card-header {
-        background: linear-gradient(180deg, #7599bc, #4a77a8);
-        color: #fff;
-        font-weight: bold;
-        font-size: 11px;
-        padding: 4px 8px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .mini-profile-card .card-body {
-        padding: 10px 8px;
-    }
-
-    .mini-avatar {
-        width: 90px;
-        height: 90px;
-        object-fit: cover;
-        border: 2px solid #336699;
-        display: block;
-        margin: 0 auto 6px;
-    }
-
-    .mini-avatar-placeholder {
-        width: 90px;
-        height: 90px;
-        background: linear-gradient(180deg, #7599bc, #4a77a8);
-        border: 2px solid #336699;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #fff;
-        font-size: 36px;
-        font-weight: bold;
-        margin: 0 auto 6px;
-    }
-
-    .mini-username {
-        font-weight: bold;
-        font-size: 13px;
-        color: #336699;
-        margin-bottom: 2px;
-    }
-
-    .mini-status {
-        font-size: 10px;
-        color: #888;
-        margin-bottom: 8px;
-        font-style: italic;
-    }
-
-    /* update panel buttons */
-    .update-btn {
-        display: block;
-        width: 100%;
-        padding: 5px 8px;
-        margin-bottom: 4px;
-        background: linear-gradient(180deg, #eef2f8, #dde5f0);
-        border: 1px solid #7599bc;
-        color: #336699;
-        font-family: Arial;
-        font-size: 11px;
-        font-weight: bold;
-        cursor: pointer;
-        text-align: center;
-        text-decoration: none;
-        letter-spacing: 0.3px;
-    }
-
-    .update-btn:hover {
-        background: linear-gradient(180deg, #dde5f0, #ccd8eb);
-        color: #1a3a6b;
-    }
-
-    /* myspace-style box */
-    .myspace-box {
-        background: #fff;
-        border: 1px solid #336699;
-        margin-bottom: 8px;
-    }
-
-    .myspace-box .box-header {
-        background: linear-gradient(180deg, #7599bc, #4a77a8);
-        color: #fff;
-        font-weight: bold;
-        font-size: 11px;
-        padding: 4px 8px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .myspace-box .box-body {
-        padding: 8px;
-        line-height: 1.6;
-    }
-
-    /* nav buttons */
-    .nav-btn {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 6px 8px;
-        border-bottom: 1px solid #dde5f0;
-        text-decoration: none;
-        color: #333;
-        font-size: 11px;
-        cursor: pointer;
-    }
-
-    .nav-btn:last-child { border-bottom: none; }
-    .nav-btn:hover { background: #eef2f8; color: #336699; }
-
-    .nav-btn-icon {
-        width: 18px;
-        text-align: center;
-        font-size: 13px;
-    }
-
-    .nav-btn-label { font-weight: bold; color: #336699; }
-    .nav-btn:hover .nav-btn-label { color: #1a3a6b; }
-
-    .nav-btn-badge {
-        margin-left: auto;
-        background: #cc0000;
-        color: #fff;
-        font-size: 9px;
-        font-weight: bold;
-        padding: 1px 5px;
-        border-radius: 8px;
-        display: none;
-    }
-
-    .nav-btn-badge.visible { display: inline-block; }
-
-    /* ═══════════════════════════════════════
-       RIGHT COLUMN — FEED
-    ═══════════════════════════════════════ */
-    .right-col { flex: 1; min-width: 0; }
-
-    /* post bar */
-    .post-bar {
-        background: #fff;
-        border: 1px solid #336699;
-        margin-bottom: 8px;
-    }
-
-    .post-bar .bar-header {
-        background: linear-gradient(180deg, #7599bc, #4a77a8);
-        color: #fff;
-        font-weight: bold;
-        font-size: 11px;
-        padding: 4px 8px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .post-bar .bar-body {
-        padding: 8px;
-    }
-
-    .post-input-row {
-        display: flex;
-        gap: 6px;
-        margin-bottom: 6px;
-    }
-
-    .post-input-row input {
-        flex: 1;
-        padding: 5px 8px;
-        border: 1px solid #7599bc;
-        font-family: Arial;
-        font-size: 12px;
-        color: #000;
-        outline: none;
-    }
-
-    .post-input-row input:focus { border-color: #336699; }
-
-    .post-body-row {
-        display: flex;
-        gap: 6px;
-    }
-
-    .post-body-row textarea {
-        flex: 1;
-        padding: 5px 8px;
-        border: 1px solid #7599bc;
-        font-family: Arial;
-        font-size: 12px;
-        resize: vertical;
-        height: 60px;
-        outline: none;
-    }
-
-    .post-body-row textarea:focus { border-color: #336699; }
-
-    .post-send-btn {
-        background: linear-gradient(180deg, #7599bc, #4a77a8);
-        color: #fff;
-        border: 1px solid #336699;
-        padding: 0 16px;
-        cursor: pointer;
-        font-family: Arial;
-        font-size: 12px;
-        font-weight: bold;
-        align-self: stretch;
-    }
-
-    .post-send-btn:hover { background: linear-gradient(180deg, #5d86af, #2e5a88); }
-
-    /* feed */
-    .feed-box {
-        background: #fff;
-        border: 1px solid #336699;
-    }
-
-    .feed-box .box-header {
-        background: linear-gradient(180deg, #7599bc, #4a77a8);
-        color: #fff;
-        font-weight: bold;
-        font-size: 11px;
-        padding: 4px 8px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .feed-empty {
-        padding: 20px;
-        text-align: center;
-        color: #999;
-        font-style: italic;
-    }
-
-    /* feed post card */
-    .feed-post {
-        border-bottom: 1px solid #dde5f0;
-        padding: 10px 12px;
-    }
-
-    .feed-post:last-child { border-bottom: none; }
-
-    .feed-post-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    margin-bottom: 6px;
-    }
-
-    .feed-avatar {
-        width: 36px;
-        height: 36px;
-        object-fit: cover;
-        border: 1px solid #336699;
-        flex-shrink: 0;
-    }
-
-    .feed-avatar-placeholder {
-        width: 36px;
-        height: 36px;
-        background: linear-gradient(180deg, #7599bc, #4a77a8);
-        border: 1px solid #336699;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #fff;
-        font-weight: bold;
-        font-size: 14px;
-        flex-shrink: 0;
-    }
-
-    .feed-post-meta {
-    flex: 1;
-    text-align: left;
-    }
-
-    .feed-post-author {
-    font-weight: bold;
-    color: #336699;
-    font-size: 12px;
-    text-decoration: none;
-    }
-
-    .feed-post-author:hover { text-decoration: underline; }
-
-    .feed-post-date {
-    font-size: 10px;
-    color: #999;
-    display: inline;
-    margin-left: 6px;
-    }
-
-    .feed-post-title {
-    font-weight: bold;
-    font-size: 13px;
-    color: #222;
-    margin-bottom: 4px;
-    text-align: left;
-    }
-
-    .feed-post-body {
-    color: #333;
-    line-height: 1.6;
-    font-size: 12px;
-    text-align: left;
-    }
-
-    .feed-post-footer {
-        margin-top: 6px;
-        font-size: 11px;
-        display: flex;
-        gap: 12px;
-        align-items: center;
-    }
-
-    .like-btn {
-        color: #65676b;
-        cursor: pointer;
-        background: none;
-        border: none;
-        font-family: Arial;
-        font-size: 11px;
-        padding: 0;
-    }
-
-    .like-btn:hover { color: #336699; }
-    .like-btn.liked { color: #e0245e; }
-
-    .delete-btn {
-        color: #cc0000;
-        cursor: pointer;
-        background: none;
-        border: none;
-        font-family: Arial;
-        font-size: 11px;
-        padding: 0;
-    }
-
-    .delete-btn:hover { text-decoration: underline; }
-
-    /* search results dropdown */
     .search-results {
         position: absolute;
-        top: 36px;
-        right: 60px;
-        width: 200px;
+        top: 44px; right: 60px;
+        width: 220px;
         background: #fff;
         border: 1px solid #336699;
         z-index: 200;
         display: none;
-        box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+        box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
     }
 
     .search-result-item {
-        padding: 6px 10px;
+        padding: 7px 12px;
         border-bottom: 1px solid #dde5f0;
         cursor: pointer;
         color: #336699;
@@ -657,49 +152,354 @@
     .search-result-item:last-child { border-bottom: none; }
     .search-result-item:hover { background: #eef2f8; }
 
-    /* inline status edit */
-    .inline-edit {
-        display: none;
-        margin-top: 6px;
+    /* ═══ WELCOME BAR ═══ */
+    .welcome-bar {
+        background: linear-gradient(180deg, #5580aa, #3a6699);
+        border-bottom: 1px solid #2a5080;
+        padding: 7px 16px;
+        color: #fff;
+        font-size: 15px;
+        font-weight: bold;
+        letter-spacing: 0.3px;
     }
 
-    .inline-edit input {
+    .welcome-bar span { color: #d4e8ff; }
+
+    /* ═══ LAYOUT ═══ */
+    .page-wrapper {
+        max-width: 1000px;
+        margin: 12px auto;
+        padding: 0 10px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .left-col { width: 210px; flex-shrink: 0; }
+    .right-col { flex: 1; min-width: 0; }
+
+    /* ═══ BOXES ═══ */
+    .myspace-box {
+        background: #fff;
+        border: 1px solid #336699;
+        margin-bottom: 10px;
+    }
+
+    .myspace-box .box-header {
+        background: linear-gradient(180deg, #5d8ab0, #3a6699);
+        color: #fff;
+        font-weight: bold;
+        font-size: 12px;
+        padding: 5px 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .myspace-box .box-body { padding: 10px; line-height: 1.6; }
+
+    /* ═══ MINI PROFILE ═══ */
+    .mini-profile-card {
+        background: #fff;
+        border: 1px solid #336699;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+    .mini-profile-card .card-header {
+        background: linear-gradient(180deg, #5d8ab0, #3a6699);
+        color: #fff;
+        font-weight: bold;
+        font-size: 12px;
+        padding: 5px 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .mini-profile-card .card-body { padding: 12px 10px; }
+
+    .mini-avatar-placeholder {
+        width: 96px; height: 96px;
+        background: linear-gradient(180deg, #7599bc, #4a77a8);
+        border: 2px solid #336699;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 38px;
+        font-weight: bold;
+        margin: 0 auto 8px;
+    }
+
+    .mini-avatar {
+        width: 96px; height: 96px;
+        object-fit: cover;
+        border: 2px solid #336699;
+        display: block;
+        margin: 0 auto 8px;
+    }
+
+    .mini-username { font-weight: bold; font-size: 14px; color: #336699; margin-bottom: 3px; }
+    .mini-status { font-size: 11px; color: #888; margin-bottom: 10px; font-style: italic; }
+
+    .update-btn {
+        display: block;
         width: 100%;
-        padding: 4px 6px;
+        padding: 6px 8px;
+        margin-bottom: 5px;
+        background: linear-gradient(180deg, #eef2f8, #dde5f0);
         border: 1px solid #7599bc;
+        color: #336699;
         font-family: Arial;
-        font-size: 11px;
-        margin-bottom: 4px;
+        font-size: 12px;
+        font-weight: bold;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+    }
+
+    .update-btn:hover { background: linear-gradient(180deg, #dde5f0, #ccd8eb); color: #1a3a6b; }
+
+    .inline-edit { display: none; margin-top: 8px; }
+
+    .inline-edit input {
+        width: 100%; padding: 5px 7px;
+        border: 1px solid #7599bc;
+        font-family: Arial; font-size: 12px;
+        margin-bottom: 5px; outline: none;
     }
 
     .inline-edit button {
         background: linear-gradient(180deg, #7599bc, #4a77a8);
-        color: #fff;
-        border: none;
-        padding: 3px 10px;
+        color: #fff; border: none;
+        padding: 4px 12px; cursor: pointer;
+        font-family: Arial; font-size: 12px; width: 100%;
+    }
+
+    /* nav buttons */
+    .nav-btn {
+        display: flex; align-items: center; gap: 8px;
+        padding: 7px 10px;
+        border-bottom: 1px solid #dde5f0;
+        text-decoration: none; color: #333;
+        font-size: 12px; cursor: pointer;
+    }
+
+    .nav-btn:last-child { border-bottom: none; }
+    .nav-btn:hover { background: #eef2f8; color: #336699; }
+    .nav-btn-icon { width: 20px; text-align: center; font-size: 14px; }
+    .nav-btn-label { font-weight: bold; color: #336699; }
+    .nav-btn:hover .nav-btn-label { color: #1a3a6b; }
+
+    .nav-btn-badge {
+        margin-left: auto;
+        background: #cc0000; color: #fff;
+        font-size: 10px; font-weight: bold;
+        padding: 1px 6px; border-radius: 8px; display: none;
+    }
+
+    .nav-btn-badge.visible { display: inline-block; }
+
+    /* ═══ POST BAR ═══ */
+    .post-bar {
+        background: #fff;
+        border: 1px solid #336699;
+        margin-bottom: 10px;
+    }
+
+    .post-bar .bar-header {
+        background: linear-gradient(180deg, #5d8ab0, #3a6699);
+        color: #fff; font-weight: bold;
+        font-size: 12px; padding: 5px 10px;
+        text-transform: uppercase; letter-spacing: 1px;
+    }
+
+    .post-bar .bar-body { padding: 10px; }
+
+    .post-input-row { display: flex; gap: 8px; margin-bottom: 8px; }
+
+    .post-input-row input {
+        flex: 1; padding: 6px 10px;
+        border: 1px solid #7599bc;
+        font-family: Arial; font-size: 13px;
+        color: #000; outline: none;
+    }
+
+    .post-input-row input:focus { border-color: #336699; }
+
+    .post-body-wrap { position: relative; }
+
+    .post-body-row { display: flex; gap: 8px; }
+
+    .post-body-row textarea {
+        flex: 1; padding: 6px 10px;
+        border: 1px solid #7599bc;
+        font-family: Arial; font-size: 13px;
+        resize: vertical; height: 70px; outline: none;
+    }
+
+    .post-body-row textarea:focus { border-color: #336699; }
+
+    .post-send-btn {
+        background: linear-gradient(180deg, #7599bc, #4a77a8);
+        color: #fff; border: 1px solid #336699;
+        padding: 0 20px; cursor: pointer;
+        font-family: Arial; font-size: 13px;
+        font-weight: bold; align-self: stretch;
+    }
+
+    .post-send-btn:hover { background: linear-gradient(180deg, #5d86af, #2e5a88); }
+
+    /* tag dropdown */
+    .tag-dropdown {
+        position: absolute;
+        background: #fff;
+        border: 1px solid #336699;
+        z-index: 50;
+        width: 200px;
+        box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+        display: none;
+    }
+
+    .tag-dropdown-item {
+        padding: 6px 10px;
         cursor: pointer;
-        font-family: Arial;
-        font-size: 11px;
-        width: 100%;
+        color: #336699;
+        font-weight: bold;
+        font-size: 12px;
+        border-bottom: 1px solid #eee;
     }
 
-    .not-logged-in {
-        padding: 20px;
-        text-align: center;
-        color: #555;
+    .tag-dropdown-item:last-child { border-bottom: none; }
+    .tag-dropdown-item:hover { background: #eef2f8; }
+
+    /* ═══ FEED ═══ */
+    .feed-box { background: #fff; border: 1px solid #336699; }
+
+    .feed-box .box-header {
+        background: linear-gradient(180deg, #5d8ab0, #3a6699);
+        color: #fff; font-weight: bold;
+        font-size: 12px; padding: 5px 10px;
+        text-transform: uppercase; letter-spacing: 1px;
     }
 
+    .feed-empty { padding: 24px; text-align: center; color: #999; font-style: italic; }
+
+    .feed-post { border-bottom: 1px solid #dde5f0; padding: 12px 14px; }
+    .feed-post:last-child { border-bottom: none; }
+
+    .feed-post-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+
+    .feed-avatar {
+        width: 40px; height: 40px;
+        object-fit: cover; border: 1px solid #336699; flex-shrink: 0;
+    }
+
+    .feed-avatar-placeholder {
+        width: 40px; height: 40px;
+        background: linear-gradient(180deg, #7599bc, #4a77a8);
+        border: 1px solid #336699;
+        display: flex; align-items: center; justify-content: center;
+        color: #fff; font-weight: bold; font-size: 16px; flex-shrink: 0;
+    }
+
+    .feed-post-meta { flex: 1; text-align: left; }
+
+    .feed-post-author {
+        font-weight: bold; color: #336699;
+        font-size: 13px; text-decoration: none;
+    }
+
+    .feed-post-author:hover { text-decoration: underline; }
+
+    .feed-post-date { font-size: 11px; color: #999; display: inline; margin-left: 7px; }
+
+    .feed-post-title { font-weight: bold; font-size: 14px; color: #222; margin-bottom: 4px; text-align: left; }
+    .feed-post-body { color: #333; line-height: 1.6; font-size: 13px; text-align: left; }
+
+    .post-tag { color: #336699; font-weight: bold; text-decoration: none; }
+    .post-tag:hover { text-decoration: underline; }
+
+    .feed-post-footer {
+        margin-top: 8px; font-size: 12px;
+        display: flex; gap: 14px; align-items: center;
+    }
+
+    .like-btn {
+        color: #65676b; cursor: pointer;
+        background: none; border: none;
+        font-family: Arial; font-size: 12px; padding: 0;
+    }
+
+    .like-btn:hover { color: #336699; }
+    .like-btn.liked { color: #e0245e; }
+
+    .comment-toggle-btn {
+        color: #65676b; cursor: pointer;
+        background: none; border: none;
+        font-family: Arial; font-size: 12px; padding: 0;
+    }
+
+    .comment-toggle-btn:hover { color: #336699; }
+
+    .delete-btn {
+        color: #cc0000; cursor: pointer;
+        background: none; border: none;
+        font-family: Arial; font-size: 12px; padding: 0;
+    }
+
+    .delete-btn:hover { text-decoration: underline; }
+
+    /* ═══ COMMENTS ═══ */
+    .comments-section { margin-top: 10px; border-top: 1px solid #eee; padding-top: 10px; }
+    .comments-list { margin-bottom: 10px; }
+
+    .comment-item { display: flex; gap: 8px; margin-bottom: 8px; align-items: flex-start; }
+
+    .comment-avatar {
+        width: 26px; height: 26px;
+        background: linear-gradient(180deg, #7599bc, #4a77a8);
+        border: 1px solid #336699;
+        display: flex; align-items: center; justify-content: center;
+        color: #fff; font-size: 12px; font-weight: bold; flex-shrink: 0;
+    }
+
+    .comment-body-wrap { flex: 1; }
+
+    .comment-author { font-weight: bold; color: #336699; font-size: 12px; text-decoration: none; }
+    .comment-author:hover { text-decoration: underline; }
+    .comment-text { color: #333; font-size: 12px; line-height: 1.5; }
+    .comment-date { font-size: 10px; color: #999; margin-top: 2px; }
+
+    .comment-delete {
+        color: #cc0000; font-size: 10px; cursor: pointer;
+        background: none; border: none; font-family: Arial;
+        padding: 0; margin-left: 7px;
+    }
+
+    .comment-input-row { display: flex; gap: 6px; }
+
+    .comment-input-row input {
+        flex: 1; padding: 5px 10px;
+        border: 1px solid #7599bc;
+        font-family: Arial; font-size: 12px; outline: none;
+    }
+
+    .comment-input-row input:focus { border-color: #336699; }
+
+    .comment-input-row button {
+        background: linear-gradient(180deg, #7599bc, #4a77a8);
+        color: #fff; border: 1px solid #336699;
+        padding: 5px 12px; cursor: pointer;
+        font-family: Arial; font-size: 12px; font-weight: bold;
+    }
+
+    .not-logged-in { padding: 24px; text-align: center; color: #555; }
     .not-logged-in a { color: #336699; font-weight: bold; }
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════
-     GLOBAL NAV
-═══════════════════════════════════════ -->
 <div class="global-nav">
     <a href="/" class="brand">10Chat</a>
-
     <div class="nav-tabs">
         <a class="nav-tab active" href="/">Home</a>
         <a class="nav-tab" href="/messages.html" id="nav-messages">
@@ -712,32 +512,22 @@
         </a>
         <a class="nav-tab" href="#" id="nav-account">Account</a>
     </div>
-
-    <div class="nav-search" style="position:relative;">
+    <div class="nav-search">
         <input type="text" id="search-input" placeholder="Search for users..." onkeydown="if(event.key==='Enter') doSearch()" />
         <button onclick="doSearch()">Search</button>
         <div class="search-results" id="search-results"></div>
     </div>
-
     <a class="signout-btn" href="#" onclick="logOut()">Sign Out</a>
 </div>
 
-<!-- ═══════════════════════════════════════
-     WELCOME BAR
-═══════════════════════════════════════ -->
 <div class="welcome-bar">
     Hello, <span id="welcome-name">Guest</span>! Welcome back to 10Chat.
 </div>
 
-<!-- ═══════════════════════════════════════
-     PAGE WRAPPER
-═══════════════════════════════════════ -->
 <div class="page-wrapper">
 
-    <!-- LEFT COLUMN -->
     <div class="left-col">
 
-        <!-- Mini Profile -->
         <div class="mini-profile-card">
             <div class="card-header">My Profile</div>
             <div class="card-body">
@@ -746,23 +536,19 @@
                 </div>
                 <div class="mini-username" id="mini-username">—</div>
                 <div class="mini-status" id="mini-status">No status set</div>
-
-                <!-- Update panel -->
                 <div class="inline-edit" id="status-edit-panel">
                     <input id="status-input" placeholder="Update your status..." />
                     <button onclick="saveStatus()">Save Status</button>
                 </div>
-
                 <button class="update-btn" onclick="toggleStatusEdit()">✏️ Update Status</button>
                 <a class="update-btn" id="btn-my-profile" href="#">👤 My Profile</a>
             </div>
         </div>
 
-        <!-- User Navigation -->
         <div class="myspace-box">
             <div class="box-header">My Links</div>
             <div class="box-body" style="padding:0;">
-                <a class="nav-btn" id="link-inbox" href="#">
+                <a class="nav-btn" href="/messages.html">
                     <span class="nav-btn-icon">✉️</span>
                     <span class="nav-btn-label">Inbox</span>
                     <span class="nav-btn-badge" id="badge-inbox"></span>
@@ -779,34 +565,33 @@
             </div>
         </div>
 
-        <!-- Visitors box -->
         <div class="myspace-box">
             <div class="box-header">Site Visitors</div>
-            <div class="box-body" style="text-align:center; font-weight:bold; color:#336699;" id="visitor-count">
+            <div class="box-body" style="text-align:center; font-weight:bold; color:#336699; font-size:14px;" id="visitor-count">
                 Loading...
             </div>
         </div>
 
     </div>
 
-    <!-- RIGHT COLUMN -->
     <div class="right-col">
 
-        <!-- Post Bar -->
         <div class="post-bar" id="post-bar-box">
             <div class="bar-header">What's on your mind?</div>
             <div class="bar-body">
                 <div class="post-input-row">
                     <input id="post-title" placeholder="Post title..." />
                 </div>
-                <div class="post-body-row">
-                    <textarea id="post-body" placeholder="Write something..."></textarea>
-                    <button class="post-send-btn" onclick="submitPost()">Post</button>
+                <div class="post-body-wrap">
+                    <div class="post-body-row">
+                        <textarea id="post-body" placeholder="Write something... use @username to tag someone" oninput="handlePostInput(this)"></textarea>
+                        <button class="post-send-btn" onclick="submitPost()">Post</button>
+                    </div>
+                    <div class="tag-dropdown" id="tag-dropdown"></div>
                 </div>
             </div>
         </div>
 
-        <!-- Feed -->
         <div class="feed-box">
             <div class="box-header">📰 Your Feed</div>
             <div id="feed-container" class="feed-empty">Loading feed...</div>
@@ -819,20 +604,15 @@
 const loggedInUser   = localStorage.getItem('username')
 const loggedInUserId = localStorage.getItem('userId')
 
-// ─── Setup nav & welcome ───────────────────────────────
 if (loggedInUser) {
     document.getElementById('welcome-name').innerText = loggedInUser
     document.getElementById('mini-username').innerText = loggedInUser
-
-    const initial = loggedInUser.charAt(0).toUpperCase()
-    document.getElementById('mini-avatar-placeholder').innerText = initial
-
-    // Wire up account/profile links
-    document.getElementById('nav-account').href   = '/profile/' + loggedInUser
-    document.getElementById('btn-my-profile').href = '/profile/' + loggedInUser
-    document.getElementById('link-profile').href   = '/profile/' + loggedInUser
+    document.getElementById('mini-avatar-placeholder').innerText = loggedInUser.charAt(0).toUpperCase()
+    document.getElementById('nav-account').href          = '/profile/' + loggedInUser
+    document.getElementById('btn-my-profile').href       = '/profile/' + loggedInUser
+    document.getElementById('link-profile').href         = '/profile/' + loggedInUser
     document.getElementById('link-friend-requests').href = '/profile/' + loggedInUser
-
+    document.getElementById('nav-friends-tab').href      = '/profile/' + loggedInUser
     loadMiniProfile()
     loadFeed()
     checkPendingRequests()
@@ -840,32 +620,24 @@ if (loggedInUser) {
     document.getElementById('welcome-name').innerText = 'Guest'
     document.getElementById('mini-username').innerText = 'Not logged in'
     document.getElementById('post-bar-box').style.display = 'none'
-    document.getElementById('feed-container').innerHTML = `
-        <div class="not-logged-in">
-            <a href="/login.html">Log in</a> or <a href="/signup.html">sign up</a> to see your feed.
-        </div>
-    `
+    document.getElementById('feed-container').innerHTML = `<div class="not-logged-in"><a href="/login.html">Log in</a> or <a href="/signup.html">sign up</a> to see your feed.</div>`
 }
 
 trackVisit()
 
-// ─── Mini profile load ─────────────────────────────────
+// ── Mini profile ──────────────────────────────
 async function loadMiniProfile() {
-    const res  = await fetch('/api/profile/' + loggedInUser)
+    const res = await fetch('/api/profile/' + loggedInUser)
     if (!res.ok) return
     const data = await res.json()
-    const p    = data.profile
-
+    const p = data.profile
     document.getElementById('mini-status').innerText = p.status || 'No status set'
-    document.getElementById('status-input').value    = p.status || ''
-
+    document.getElementById('status-input').value = p.status || ''
     if (p.avatar_url) {
-        const wrap = document.getElementById('mini-avatar-wrap')
-        wrap.innerHTML = `<img class="mini-avatar" src="${p.avatar_url}" />`
+        document.getElementById('mini-avatar-wrap').innerHTML = `<img class="mini-avatar" src="${p.avatar_url}" />`
     }
 }
 
-// ─── Status edit toggle ────────────────────────────────
 function toggleStatusEdit() {
     const panel = document.getElementById('status-edit-panel')
     panel.style.display = panel.style.display === 'block' ? 'none' : 'block'
@@ -876,28 +648,74 @@ async function saveStatus() {
     await fetch('/api/profile/update', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: loggedInUserId, status, bio: '' })
+        body: JSON.stringify({ userId: loggedInUserId, status })
     })
     document.getElementById('mini-status').innerText = status || 'No status set'
     document.getElementById('status-edit-panel').style.display = 'none'
 }
 
-// ─── Feed ──────────────────────────────────────────────
+// ── @ Tagging ─────────────────────────────────
+let tagSearchTimeout = null
+
+async function handlePostInput(textarea) {
+    const val    = textarea.value
+    const cursor = textarea.selectionStart
+    const before = val.substring(0, cursor)
+    const match  = before.match(/@(\w*)$/)
+    const dropdown = document.getElementById('tag-dropdown')
+
+    if (!match) { dropdown.style.display = 'none'; return }
+
+    const query = match[1]
+    clearTimeout(tagSearchTimeout)
+    tagSearchTimeout = setTimeout(async () => {
+        if (query.length === 0) { dropdown.style.display = 'none'; return }
+        const res  = await fetch('/api/users/search?q=' + encodeURIComponent(query))
+        const data = await res.json()
+        if (!data.users || data.users.length === 0) { dropdown.style.display = 'none'; return }
+
+        dropdown.innerHTML = ''
+        data.users.forEach(user => {
+            const item = document.createElement('div')
+            item.className = 'tag-dropdown-item'
+            item.innerText = '@' + user.username
+            item.onclick   = () => insertTag(textarea, user.username, match[0])
+            dropdown.appendChild(item)
+        })
+        dropdown.style.display = 'block'
+    }, 200)
+}
+
+function insertTag(textarea, username, matchedText) {
+    const val    = textarea.value
+    const cursor = textarea.selectionStart
+    const before = val.substring(0, cursor)
+    const after  = val.substring(cursor)
+    const newBefore = before.substring(0, before.length - matchedText.length) + '@' + username + ' '
+    textarea.value = newBefore + after
+    textarea.focus()
+    const newCursor = newBefore.length
+    textarea.setSelectionRange(newCursor, newCursor)
+    document.getElementById('tag-dropdown').style.display = 'none'
+}
+
+function renderTextWithTags(text) {
+    return escHtml(text).replace(/@(\w+)/g, (match, username) => {
+        return `<a class="post-tag" href="/profile/${encodeURIComponent(username)}">@${username}</a>`
+    })
+}
+
+// ── Feed ──────────────────────────────────────
 async function loadFeed() {
-    // Get friends list first
-    const friendsRes = await fetch('/api/friends/' + loggedInUserId)
+    const friendsRes  = await fetch('/api/friends/' + loggedInUserId)
     const friendsData = await friendsRes.json()
-    const friends = friendsData.friends || []
+    const friends     = friendsData.friends || []
 
-    // Get all posts
-    const postsRes  = await fetch('/api/posts')
-    const allPosts  = await postsRes.json()
+    const postsRes = await fetch('/api/posts')
+    const allPosts = await postsRes.json()
 
-    // Filter: own posts + friends' posts
     const friendIds = friends.map(f => f.id)
-    const feedPosts = allPosts.filter(p =>
-        p.user_id === loggedInUserId || friendIds.includes(p.user_id)
-    )
+    const feedPosts = allPosts.filter(p => p.user_id === loggedInUserId || friendIds.includes(p.user_id))
 
     const container = document.getElementById('feed-container')
 
@@ -906,18 +724,16 @@ async function loadFeed() {
         return
     }
 
-    // Build a username lookup from friends
     const userMap = {}
     friends.forEach(f => { userMap[f.id] = f })
 
     container.innerHTML = ''
     feedPosts.forEach(post => {
-        const isOwn    = post.user_id === loggedInUserId
-        const author   = isOwn ? loggedInUser : (userMap[post.user_id]?.username || 'Unknown')
-        const avatar   = isOwn ? null : userMap[post.user_id]?.avatar_url
-        const initial  = author.charAt(0).toUpperCase()
-        const liked    = localStorage.getItem('liked_' + post.id)
-
+        const isOwn      = post.user_id === loggedInUserId
+        const author     = isOwn ? loggedInUser : (userMap[post.user_id]?.username || 'Unknown')
+        const avatar     = isOwn ? null : userMap[post.user_id]?.avatar_url
+        const initial    = author.charAt(0).toUpperCase()
+        const liked      = localStorage.getItem('liked_' + post.id)
         const avatarHTML = avatar
             ? `<img class="feed-avatar" src="${avatar}" />`
             : `<div class="feed-avatar-placeholder">${initial}</div>`
@@ -925,34 +741,32 @@ async function loadFeed() {
         const div = document.createElement('div')
         div.className = 'feed-post'
         div.innerHTML = `
-    <div class="feed-post-header">
-        ${avatarHTML}
-        <div class="feed-post-meta">
-            <a class="feed-post-author" href="/profile/${encodeURIComponent(author)}">${escHtml(author)}</a>
-            <span class="feed-post-date">${new Date(post.created_at).toLocaleDateString('en-GB')}</span>
-        </div>
-    </div>
-    <div style="margin-top:6px; text-align:left;">
-        <div class="feed-post-title">${escHtml(post.title)}</div>
-        <div class="feed-post-body">${escHtml(post.body)}</div>
-    </div>
-    <div class="feed-post-footer">
-        <button class="like-btn ${liked ? 'liked' : ''}" onclick="toggleLike('${post.id}')">
-            ${liked ? '👎' : '👍'} ${post.likes}
-        </button>
-        <button class="comment-toggle-btn" onclick="toggleComments('${post.id}')">
-            💬 Comments
-        </button>
-        ${isOwn ? `<button class="delete-btn" onclick="deletePost('${post.id}')">🗑 delete</button>` : ''}
-    </div>
-    <div class="comments-section" id="comments-${post.id}" style="display:none;">
-        <div class="comments-list" id="comments-list-${post.id}"></div>
-        <div class="comment-input-row">
-            <input type="text" id="comment-input-${post.id}" placeholder="Write a comment..." onkeydown="if(event.key==='Enter') submitComment('${post.id}')" />
-            <button onclick="5submitComment('${post.id}')">Post</button>
-        </div>
-    </div>
-`
+            <div class="feed-post-header">
+                ${avatarHTML}
+                <div class="feed-post-meta">
+                    <a class="feed-post-author" href="/profile/${encodeURIComponent(author)}">${escHtml(author)}</a>
+                    <span class="feed-post-date">${new Date(post.created_at).toLocaleDateString('en-GB')}</span>
+                </div>
+            </div>
+            <div style="margin-top:6px; text-align:left;">
+                <div class="feed-post-title">${escHtml(post.title)}</div>
+                <div class="feed-post-body">${renderTextWithTags(post.body)}</div>
+            </div>
+            <div class="feed-post-footer">
+                <button class="like-btn ${liked ? 'liked' : ''}" onclick="toggleLike('${post.id}')">
+                    ${liked ? '❤️' : '🤍'} ${post.likes}
+                </button>
+                <button class="comment-toggle-btn" onclick="toggleComments('${post.id}')">💬 Comments</button>
+                ${isOwn ? `<button class="delete-btn" onclick="deletePost('${post.id}')">🗑 delete</button>` : ''}
+            </div>
+            <div class="comments-section" id="comments-${post.id}" style="display:none;">
+                <div class="comments-list" id="comments-list-${post.id}"></div>
+                <div class="comment-input-row">
+                    <input type="text" id="comment-input-${post.id}" placeholder="Write a comment... use @username to tag" onkeydown="if(event.key==='Enter') submitComment('${post.id}')" />
+                    <button onclick="submitComment('${post.id}')">Post</button>
+                </div>
+            </div>
+        `
         container.appendChild(div)
     })
 }
@@ -970,6 +784,7 @@ async function submitPost() {
 
     document.getElementById('post-title').value = ''
     document.getElementById('post-body').value  = ''
+    document.getElementById('tag-dropdown').style.display = 'none'
     loadFeed()
 }
 
@@ -987,6 +802,7 @@ async function deletePost(id) {
     loadFeed()
 }
 
+// ── Comments ──────────────────────────────────
 async function toggleComments(postId) {
     const section = document.getElementById('comments-' + postId)
     if (section.style.display === 'none') {
@@ -1003,14 +819,14 @@ async function loadComments(postId) {
     const list = document.getElementById('comments-list-' + postId)
 
     if (!data.comments || data.comments.length === 0) {
-        list.innerHTML = '<div style="color:#999;font-size:11px;font-style:italic;">No comments yet.</div>'
+        list.innerHTML = '<div style="color:#999;font-size:12px;font-style:italic;">No comments yet.</div>'
         return
     }
 
     list.innerHTML = ''
     data.comments.forEach(comment => {
-        const initial  = comment.username.charAt(0).toUpperCase()
-        const isOwn    = comment.user_id === loggedInUserId
+        const initial   = comment.username.charAt(0).toUpperCase()
+        const isOwn     = comment.user_id === loggedInUserId
         const deleteBtn = isOwn ? `<button class="comment-delete" onclick="deleteComment('${comment.id}', '${postId}')">✕</button>` : ''
 
         list.innerHTML += `
@@ -1019,11 +835,10 @@ async function loadComments(postId) {
                 <div class="comment-body-wrap">
                     <a class="comment-author" href="/profile/${encodeURIComponent(comment.username)}">${escHtml(comment.username)}</a>
                     ${deleteBtn}
-                    <div class="comment-text">${escHtml(comment.body)}</div>
+                    <div class="comment-text">${renderTextWithTags(comment.body)}</div>
                     <div class="comment-date">${new Date(comment.created_at).toLocaleDateString('en-GB')}</div>
                 </div>
-            </div>
-        `
+            </div>`
     })
 }
 
@@ -1051,7 +866,7 @@ async function deleteComment(commentId, postId) {
     loadComments(postId)
 }
 
-// ─── Pending friend requests badge ────────────────────
+// ── Friend requests badge ─────────────────────
 async function checkPendingRequests() {
     if (!loggedInUserId) return
     const res  = await fetch('/api/friends/pending/' + loggedInUserId)
@@ -1064,29 +879,22 @@ async function checkPendingRequests() {
     }
 }
 
-// ─── Search ────────────────────────────────────────────
+// ── Search ────────────────────────────────────
 async function doSearch() {
-    const query = document.getElementById('search-input').value.trim()
+    const query      = document.getElementById('search-input').value.trim()
+    const resultsBox = document.getElementById('search-results')
     if (!query) return
 
-    // Simple approach: fetch the profile directly
     const res = await fetch('/api/profile/' + encodeURIComponent(query))
-    const resultsBox = document.getElementById('search-results')
-
     if (res.ok) {
         const data = await res.json()
         resultsBox.style.display = 'block'
-        resultsBox.innerHTML = `
-            <div class="search-result-item" onclick="window.location='/profile/${encodeURIComponent(data.profile.username)}'">
-                👤 ${escHtml(data.profile.username)}
-            </div>
-        `
+        resultsBox.innerHTML = `<div class="search-result-item" onclick="window.location='/profile/${encodeURIComponent(data.profile.username)}'">👤 ${escHtml(data.profile.username)}</div>`
     } else {
         resultsBox.style.display = 'block'
-        resultsBox.innerHTML = `<div class="search-result-item" style="color:#999; font-weight:normal;">No user found.</div>`
+        resultsBox.innerHTML = `<div class="search-result-item" style="color:#999;font-weight:normal;">No user found.</div>`
     }
 
-    // Click outside to close
     document.addEventListener('click', function closeSearch(e) {
         if (!resultsBox.contains(e.target) && e.target.id !== 'search-input') {
             resultsBox.style.display = 'none'
@@ -1095,7 +903,7 @@ async function doSearch() {
     })
 }
 
-// ─── Visitors ──────────────────────────────────────────
+// ── Visitors ──────────────────────────────────
 async function trackVisit() {
     const res  = await fetch('/api/visit', { method: 'POST' })
     const data = await res.json()
@@ -1103,7 +911,7 @@ async function trackVisit() {
     if (el) el.innerText = 'Visitors: ' + data.count
 }
 
-// ─── Auth ──────────────────────────────────────────────
+// ── Auth ──────────────────────────────────────
 async function logOut() {
     await fetch('/api/logout', { method: 'POST' })
     localStorage.removeItem('token')
@@ -1112,7 +920,7 @@ async function logOut() {
     window.location.href = '/login.html'
 }
 
-// ─── Utils ─────────────────────────────────────────────
+// ── Utils ─────────────────────────────────────
 function escHtml(str) {
     return String(str)
         .replace(/&/g, '&amp;')
@@ -1120,6 +928,13 @@ function escHtml(str) {
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
 }
+
+// Close tag dropdown when clicking outside
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.post-body-wrap')) {
+        document.getElementById('tag-dropdown').style.display = 'none'
+    }
+})
 </script>
 
 </body>

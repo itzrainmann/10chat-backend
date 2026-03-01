@@ -1,502 +1,151 @@
 <!DOCTYPE html>
-<!-- v5 — Full nav bar -->
 <html>
 <head>
 <title>10Chat — Profile</title>
 <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background-color: #c8d5e8; font-family: Arial, sans-serif; font-size: 13px; color: #000; }
 
-    body {
-        background-color: #d0d9e8;
-        font-family: Arial, sans-serif;
-        font-size: 12px;
-        color: #000;
-    }
-
-    /* ═══════════════════════════════════════
-       GLOBAL NAV BAR
-    ═══════════════════════════════════════ */
-    .global-nav {
-        background: linear-gradient(180deg, #2a548a, #1a3a6b);
-        border-bottom: 2px solid #0f2547;
-        display: flex;
-        align-items: stretch;
-        height: 36px;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-    }
-
-    .global-nav .brand {
-        font-weight: bold;
-        font-size: 15px;
-        letter-spacing: 2px;
-        color: #fff;
-        padding: 0 16px;
-        display: flex;
-        align-items: center;
-        border-right: 1px solid #3a6aaa;
-        text-decoration: none;
-        background: linear-gradient(180deg, #3a6aaa, #1a3a6b);
-    }
-
-    .nav-tabs {
-        display: flex;
-        align-items: stretch;
-    }
-
-    .nav-tab {
-        display: flex;
-        align-items: center;
-        padding: 0 16px;
-        color: #cce0ff;
-        text-decoration: none;
-        font-size: 12px;
-        font-weight: bold;
-        border-right: 1px solid #3a5580;
-        position: relative;
-        cursor: pointer;
-        transition: background 0.1s;
-        letter-spacing: 0.5px;
-    }
-
-    .nav-tab:hover { background: rgba(255,255,255,0.1); color: #fff; }
-
-    .nav-tab.active {
-        background: rgba(255,255,255,0.15);
-        color: #fff;
-        border-bottom: 2px solid #7eb3e8;
-    }
-
-    .notif-dot {
-        width: 7px;
-        height: 7px;
-        background: #ff3b3b;
-        border-radius: 50%;
-        position: absolute;
-        top: 7px;
-        right: 8px;
-        display: none;
-        box-shadow: 0 0 4px rgba(255,59,59,0.8);
-        animation: pulse 1.5s infinite;
-    }
-
-    @keyframes pulse {
-        0%, 100% { transform: scale(1); opacity: 1; }
-        50% { transform: scale(1.3); opacity: 0.7; }
-    }
-
+    .global-nav { background: linear-gradient(180deg, #3a6aaa, #1a3a6b); border-bottom: 2px solid #0f2547; display: flex; align-items: stretch; height: 44px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
+    .global-nav .brand { font-weight: bold; font-size: 18px; letter-spacing: 2px; color: #fff; padding: 0 20px; display: flex; align-items: center; border-right: 1px solid #4a7aaa; text-decoration: none; background: linear-gradient(180deg, #4a7aaa, #1a3a6b); }
+    .nav-tabs { display: flex; align-items: stretch; }
+    .nav-tab { display: flex; align-items: center; padding: 0 20px; color: #cce0ff; text-decoration: none; font-size: 13px; font-weight: bold; border-right: 1px solid #3a5580; position: relative; cursor: pointer; letter-spacing: 0.5px; transition: background 0.1s; }
+    .nav-tab:hover { background: rgba(255,255,255,0.12); color: #fff; }
+    .nav-tab.active { background: rgba(255,255,255,0.18); color: #fff; border-bottom: 3px solid #7eb3e8; }
+    .notif-dot { width: 8px; height: 8px; background: #ff3b3b; border-radius: 50%; position: absolute; top: 8px; right: 9px; display: none; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.3); opacity: 0.7; } }
     .notif-dot.visible { display: block; }
-
-    .nav-search {
-        margin-left: auto;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        padding: 0 10px;
-        position: relative;
-    }
-
-    .nav-search input {
-        padding: 4px 8px;
-        border: 1px solid #7599bc;
-        background: #eef4ff;
-        font-family: Arial;
-        font-size: 11px;
-        width: 180px;
-        color: #000;
-        outline: none;
-    }
-
+    .nav-search { margin-left: auto; display: flex; align-items: center; gap: 6px; padding: 0 12px; position: relative; }
+    .nav-search input { padding: 5px 10px; border: 1px solid #7599bc; background: #f0f5ff; font-family: Arial; font-size: 12px; width: 200px; color: #000; outline: none; border-radius: 2px; }
     .nav-search input:focus { border-color: #336699; background: #fff; }
-
-    .nav-search button {
-        background: linear-gradient(180deg, #7599bc, #4a77a8);
-        color: #fff;
-        border: 1px solid #336699;
-        padding: 4px 10px;
-        cursor: pointer;
-        font-family: Arial;
-        font-size: 11px;
-        font-weight: bold;
-    }
-
-    .nav-search button:hover { background: linear-gradient(180deg, #5d86af, #2e5a88); }
-
-    .signout-btn {
-        display: flex;
-        align-items: center;
-        padding: 0 14px;
-        background: linear-gradient(180deg, #c45050, #8b2020);
-        color: #fff;
-        font-size: 11px;
-        font-weight: bold;
-        cursor: pointer;
-        border: none;
-        border-left: 1px solid #0f2547;
-        text-decoration: none;
-        letter-spacing: 0.5px;
-    }
-
+    .nav-search button { background: linear-gradient(180deg, #7599bc, #4a77a8); color: #fff; border: 1px solid #336699; padding: 5px 12px; cursor: pointer; font-family: Arial; font-size: 12px; font-weight: bold; border-radius: 2px; }
+    .signout-btn { display: flex; align-items: center; padding: 0 16px; background: linear-gradient(180deg, #c45050, #8b2020); color: #fff; font-size: 12px; font-weight: bold; cursor: pointer; border: none; border-left: 1px solid #0f2547; text-decoration: none; }
     .signout-btn:hover { background: linear-gradient(180deg, #a83333, #6e1515); }
-
-    .search-results {
-        position: absolute;
-        top: 36px;
-        right: 60px;
-        width: 200px;
-        background: #fff;
-        border: 1px solid #336699;
-        z-index: 200;
-        display: none;
-        box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
-    }
-
-    .search-result-item {
-        padding: 6px 10px;
-        border-bottom: 1px solid #dde5f0;
-        cursor: pointer;
-        color: #336699;
-        font-weight: bold;
-        font-size: 12px;
-    }
-
-    .search-result-item:last-child { border-bottom: none; }
+    .search-results { position: absolute; top: 44px; right: 60px; width: 220px; background: #fff; border: 1px solid #336699; z-index: 200; display: none; box-shadow: 2px 2px 8px rgba(0,0,0,0.2); }
+    .search-result-item { padding: 7px 12px; border-bottom: 1px solid #dde5f0; cursor: pointer; color: #336699; font-weight: bold; font-size: 12px; }
     .search-result-item:hover { background: #eef2f8; }
 
-    /* ═══════════════════════════════════════
-       PAGE LAYOUT
-    ═══════════════════════════════════════ */
-    .page-wrapper {
-        max-width: 960px;
-        margin: 10px auto;
-        padding: 0 8px;
-    }
-
-    .profile-banner {
-        background: linear-gradient(180deg, #7599bc, #4a77a8);
-        padding: 8px 12px;
-        color: #ffffff;
-        font-size: 18px;
-        font-weight: bold;
-        border: 1px solid #336699;
-        margin-bottom: 8px;
-    }
-
-    .main-layout {
-        display: flex;
-        gap: 8px;
-    }
-
-    .left-col { width: 220px; flex-shrink: 0; }
+    .page-wrapper { max-width: 1000px; margin: 12px auto; padding: 0 10px; }
+    .profile-banner { background: linear-gradient(180deg, #5d8ab0, #3a6699); padding: 10px 14px; color: #fff; font-size: 20px; font-weight: bold; border: 1px solid #336699; margin-bottom: 10px; }
+    .main-layout { display: flex; gap: 10px; }
+    .left-col { width: 230px; flex-shrink: 0; }
     .right-col { flex: 1; min-width: 0; }
 
-    .myspace-box {
-        background: #ffffff;
-        border: 1px solid #336699;
-        margin-bottom: 8px;
-    }
+    .myspace-box { background: #fff; border: 1px solid #336699; margin-bottom: 10px; }
+    .myspace-box .box-header { background: linear-gradient(180deg, #5d8ab0, #3a6699); color: #fff; font-weight: bold; padding: 5px 10px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+    .myspace-box .box-body { padding: 10px; line-height: 1.7; }
 
-    .myspace-box .box-header {
-        background: linear-gradient(180deg, #7599bc, #4a77a8);
-        color: #ffffff;
-        font-weight: bold;
-        padding: 4px 8px;
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
+    .profile-pic-box { background: #fff; border: 1px solid #336699; margin-bottom: 10px; text-align: center; padding: 12px; }
+    .profile-avatar-placeholder { width: 130px; height: 130px; background: linear-gradient(180deg, #7599bc, #4a77a8); border: 2px solid #336699; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 52px; font-weight: bold; margin: 0 auto 8px; }
+    .profile-avatar-img { width: 130px; height: 130px; object-fit: cover; border: 2px solid #336699; display: block; margin: 0 auto 8px; }
+    .screen-name { font-weight: bold; font-size: 15px; color: #336699; margin-top: 6px; }
+    .join-date { font-size: 11px; color: #999; margin-top: 4px; }
+    .friend-count { font-size: 12px; color: #336699; margin-top: 4px; font-weight: bold; }
 
-    .myspace-box .box-body {
-        padding: 8px;
-        line-height: 1.7;
-    }
-
-    /* ── Profile pic box ── */
-    .profile-pic-box {
-        background: #ffffff;
-        border: 1px solid #336699;
-        margin-bottom: 8px;
-        text-align: center;
-        padding: 10px;
-    }
-
-    .profile-avatar-img {
-        width: 120px;
-        height: 120px;
-        object-fit: cover;
-        border: 2px solid #336699;
-        display: block;
-        margin: 0 auto 6px;
-    }
-
-    .profile-avatar-placeholder {
-        width: 120px;
-        height: 120px;
-        background: linear-gradient(180deg, #7599bc, #4a77a8);
-        border: 2px solid #336699;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #fff;
-        font-size: 48px;
-        font-weight: bold;
-        margin: 0 auto 6px;
-    }
-
-    .screen-name {
-        font-weight: bold;
-        font-size: 14px;
-        color: #336699;
-        margin-top: 6px;
-    }
-
-    .join-date {
-        font-size: 10px;
-        color: #999;
-        margin-top: 4px;
-    }
-
-    .friend-count {
-        font-size: 11px;
-        color: #336699;
-        margin-top: 4px;
-        font-weight: bold;
-    }
-
-    .status-bar {
-        background: #eef2f8;
-        border: 1px solid #336699;
-        padding: 5px 8px;
-        font-size: 11px;
-        margin-bottom: 8px;
-        color: #333;
-    }
-
+    .status-bar { background: #eef2f8; border: 1px solid #336699; padding: 6px 10px; font-size: 12px; margin-bottom: 10px; color: #333; }
     .status-bar span { color: #336699; font-weight: bold; }
 
-    /* ── Friend buttons ── */
-    .friend-btn {
-        display: block;
-        margin-top: 8px;
-        padding: 5px 14px;
-        font-size: 11px;
-        font-family: Arial;
-        font-weight: bold;
-        border: 1px solid #336699;
-        cursor: pointer;
-        text-align: center;
-        width: 100%;
-    }
-
+    .friend-btn { display: block; margin-top: 8px; padding: 6px 14px; font-size: 12px; font-family: Arial; font-weight: bold; border: 1px solid #336699; cursor: pointer; text-align: center; width: 100%; }
     .friend-btn.add { background: linear-gradient(180deg, #7599bc, #4a77a8); color: #fff; }
     .friend-btn.add:hover { background: linear-gradient(180deg, #5d86af, #2e5a88); }
     .friend-btn.pending { background: #eef2f8; color: #888; border-color: #aaa; cursor: default; }
     .friend-btn.accept { background: linear-gradient(180deg, #77bc87, #3a9950); color: #fff; border-color: #2e7d3e; }
-    .friend-btn.accept:hover { background: linear-gradient(180deg, #5aa56e, #2e7d3e); }
-    .friend-btn.decline { background: linear-gradient(180deg, #c97070, #a83333); color: #fff; border-color: #7d2e2e; margin-top: 4px; }
-    .friend-btn.unfriend { background: #eef2f8; color: #a83333; border-color: #a83333; margin-top: 4px; }
+    .friend-btn.decline { background: linear-gradient(180deg, #c97070, #a83333); color: #fff; border-color: #7d2e2e; margin-top: 5px; }
+    .friend-btn.unfriend { background: #eef2f8; color: #a83333; border-color: #a83333; margin-top: 5px; }
     .friend-btn.unfriend:hover { background: #fdeaea; }
 
-    /* ── Friends grid ── */
-    .friends-grid {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        padding: 8px;
-    }
-
-    .friend-tile { text-align: center; width: 70px; }
-
-    .friend-tile img {
-        width: 60px;
-        height: 60px;
-        object-fit: cover;
-        border: 2px solid #336699;
-        display: block;
-        margin: 0 auto;
-    }
-
-    .friend-avatar-placeholder {
-        width: 60px;
-        height: 60px;
-        background: linear-gradient(180deg, #7599bc, #4a77a8);
-        border: 2px solid #336699;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #fff;
-        font-size: 22px;
-        font-weight: bold;
-        margin: 0 auto;
-    }
-
-    .friend-tile a {
-        display: block;
-        font-size: 11px;
-        color: #336699;
-        text-decoration: none;
-        margin-top: 3px;
-        word-break: break-word;
-    }
-
+    .friends-grid { display: flex; flex-wrap: wrap; gap: 10px; padding: 10px; }
+    .friend-tile { text-align: center; width: 72px; }
+    .friend-tile img { width: 62px; height: 62px; object-fit: cover; border: 2px solid #336699; display: block; margin: 0 auto; }
+    .friend-avatar-placeholder { width: 62px; height: 62px; background: linear-gradient(180deg, #7599bc, #4a77a8); border: 2px solid #336699; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 24px; font-weight: bold; margin: 0 auto; }
+    .friend-tile a { display: block; font-size: 11px; color: #336699; text-decoration: none; margin-top: 3px; word-break: break-word; }
     .friend-tile a:hover { text-decoration: underline; }
 
-    /* ── Pending requests ── */
-    .pending-request-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 5px 0;
-        border-bottom: 1px solid #dde5f0;
-    }
-
+    .pending-request-row { display: flex; align-items: center; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #dde5f0; }
     .pending-request-row:last-child { border-bottom: none; }
-    .req-name { color: #336699; font-weight: bold; font-size: 12px; text-decoration: none; }
+    .req-name { color: #336699; font-weight: bold; font-size: 13px; text-decoration: none; }
     .req-name:hover { text-decoration: underline; }
     .req-actions { display: flex; gap: 6px; }
-
-    .req-btn {
-        padding: 3px 10px;
-        font-size: 11px;
-        font-family: Arial;
-        font-weight: bold;
-        border: 1px solid;
-        cursor: pointer;
-    }
-
+    .req-btn { padding: 4px 12px; font-size: 12px; font-family: Arial; font-weight: bold; border: 1px solid; cursor: pointer; }
     .req-btn.accept-small { background: linear-gradient(180deg, #77bc87, #3a9950); color: #fff; border-color: #2e7d3e; }
     .req-btn.decline-small { background: #eef2f8; color: #a83333; border-color: #a83333; }
 
-    /* ── Blog posts ── */
-    .blog-entry {
-        border-bottom: 1px solid #ddd;
-        padding: 8px 0;
-    }
-
-    .blog-entry:last-child { border-bottom: none; }
-    .entry-title { font-weight: bold; color: #336699; font-size: 13px; margin-bottom: 4px; }
-    .entry-date { font-size: 10px; color: #999; margin-bottom: 6px; }
-    .entry-body { color: #333; line-height: 1.7; }
-
-    /* ── Edit box ── */
-    .edit-section {
-        background: #fff;
-        border: 1px solid #336699;
-        margin-bottom: 8px;
-        display: none;
-    }
-
-    .edit-section input, .edit-section textarea {
-        width: 100%;
-        padding: 5px 8px;
-        margin-bottom: 8px;
-        border: 1px solid #7599bc;
-        font-family: Arial;
-        font-size: 12px;
-        box-sizing: border-box;
-        outline: none;
-    }
-
+    .edit-section { background: #fff; border: 1px solid #336699; margin-bottom: 10px; display: none; }
+    .edit-section .box-header { background: linear-gradient(180deg, #5d8ab0, #3a6699); color: #fff; font-weight: bold; padding: 5px 10px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+    .edit-section .edit-body { padding: 10px; }
+    .edit-section label { display: block; font-weight: bold; font-size: 12px; color: #336699; margin-bottom: 3px; margin-top: 10px; }
+    .edit-section label:first-child { margin-top: 0; }
+    .edit-section input, .edit-section textarea { width: 100%; padding: 6px 10px; border: 1px solid #7599bc; font-family: Arial; font-size: 13px; outline: none; }
     .edit-section input:focus, .edit-section textarea:focus { border-color: #336699; }
-
-    .edit-section button {
-        background: linear-gradient(180deg, #7599bc, #4a77a8);
-        color: #fff;
-        border: 1px solid #336699;
-        padding: 5px 16px;
-        cursor: pointer;
-        font-family: Arial;
-        font-size: 12px;
-        font-weight: bold;
-    }
-
+    .edit-section button { background: linear-gradient(180deg, #7599bc, #4a77a8); color: #fff; border: 1px solid #336699; padding: 6px 18px; cursor: pointer; font-family: Arial; font-size: 13px; font-weight: bold; margin-top: 10px; }
     .edit-section button:hover { background: linear-gradient(180deg, #5d86af, #2e5a88); }
+    .save-msg { font-size: 11px; color: #336699; margin-left: 8px; }
 
-    .no-friends-msg { color: #999; font-style: italic; font-size: 11px; padding: 8px; display: block; }
+    .blog-entry { border-bottom: 1px solid #ddd; padding: 10px 0; }
+    .blog-entry:last-child { border-bottom: none; }
+    .entry-title { font-weight: bold; color: #336699; font-size: 14px; margin-bottom: 4px; }
+    .entry-date { font-size: 11px; color: #999; margin-bottom: 6px; }
+    .entry-body { color: #333; line-height: 1.7; font-size: 13px; }
+    .post-tag { color: #336699; font-weight: bold; text-decoration: none; }
+    .post-tag:hover { text-decoration: underline; }
+    .no-friends-msg { color: #999; font-style: italic; font-size: 12px; padding: 10px; display: block; }
 </style>
 </head>
 <body>
 
-<!-- GLOBAL NAV -->
 <div class="global-nav">
     <a href="/" class="brand">10Chat</a>
-
     <div class="nav-tabs">
         <a class="nav-tab" href="/">Home</a>
-        <a class="nav-tab" href="#" id="nav-messages">
-            Messages
-            <span class="notif-dot" id="dot-messages"></span>
-        </a>
-        <a class="nav-tab" href="#" id="nav-friends-tab">
-            Friends
-            <span class="notif-dot" id="dot-friends"></span>
-        </a>
+        <a class="nav-tab" href="/messages.html" id="nav-messages">Messages<span class="notif-dot" id="dot-messages"></span></a>
+        <a class="nav-tab" href="#" id="nav-friends-tab">Friends<span class="notif-dot" id="dot-friends"></span></a>
         <a class="nav-tab active" id="nav-account" href="#">Account</a>
     </div>
-
     <div class="nav-search">
         <input type="text" id="search-input" placeholder="Search for users..." onkeydown="if(event.key==='Enter') doSearch()" />
         <button onclick="doSearch()">Search</button>
         <div class="search-results" id="search-results"></div>
     </div>
-
     <a class="signout-btn" href="#" onclick="logOut()">Sign Out</a>
 </div>
 
 <div class="page-wrapper">
     <div class="profile-banner" id="profile-banner">Loading...</div>
-
     <div class="main-layout">
-
-        <!-- LEFT COLUMN -->
         <div class="left-col">
-
             <div class="profile-pic-box">
-                <div id="avatar-wrap">
-                    <div class="profile-avatar-placeholder" id="avatar-placeholder">?</div>
-                </div>
+                <div id="avatar-wrap"><div class="profile-avatar-placeholder" id="avatar-placeholder">?</div></div>
                 <div class="screen-name" id="profile-username"></div>
                 <div class="join-date" id="profile-joindate"></div>
                 <div class="friend-count" id="profile-friend-count"></div>
                 <div id="friend-action-area"></div>
             </div>
-
-            <div class="status-bar">
-                Status: <span id="profile-status">—</span>
-            </div>
-
-            <div class="myspace-box">
-                <div class="box-header">About</div>
-                <div class="box-body" id="profile-bio">—</div>
-            </div>
-
+            <div class="status-bar">Status: <span id="profile-status">—</span></div>
+            <div class="myspace-box"><div class="box-header">About Me</div><div class="box-body" id="profile-bio">—</div></div>
+            <div class="myspace-box" id="interests-box" style="display:none;"><div class="box-header">Interests</div><div class="box-body" id="profile-interests">—</div></div>
             <div class="myspace-box">
                 <div class="box-header" id="friends-box-header">Friends</div>
-                <div id="friends-grid-container" class="friends-grid">
-                    <span class="no-friends-msg">Loading...</span>
-                </div>
+                <div id="friends-grid-container" class="friends-grid"><span class="no-friends-msg">Loading...</span></div>
             </div>
-
         </div>
 
-        <!-- RIGHT COLUMN -->
         <div class="right-col">
-
-            <!-- Pending requests — own profile only -->
             <div class="myspace-box" id="pending-box" style="display:none;">
                 <div class="box-header">Friend Requests</div>
-                <div class="box-body" id="pending-container">No pending requests.</div>
+                <div class="box-body" id="pending-container"></div>
             </div>
 
-            <!-- Edit profile — own profile only -->
             <div class="edit-section" id="edit-box">
-                <div class="box-header" style="background:linear-gradient(180deg,#7599bc,#4a77a8);color:#fff;font-weight:bold;padding:4px 8px;font-size:11px;text-transform:uppercase;letter-spacing:1px;">Edit Profile</div>
-                <div style="padding:8px;">
-                    <input id="edit-status" placeholder="Status — what are you up to?" />
-                    <textarea id="edit-bio" placeholder="Bio — tell people about yourself" rows="4"></textarea>
+                <div class="box-header">Edit Profile</div>
+                <div class="edit-body">
+                    <label>Status</label>
+                    <input id="edit-status" placeholder="What are you up to?" />
+                    <label>About Me</label>
+                    <textarea id="edit-bio" placeholder="Tell people about yourself..." rows="3"></textarea>
+                    <label>Interests</label>
+                    <textarea id="edit-interests" placeholder="Music, gaming, movies..." rows="2"></textarea>
                     <button onclick="saveProfile()">Save Changes</button>
+                    <span class="save-msg" id="save-msg"></span>
                 </div>
             </div>
 
@@ -504,7 +153,6 @@
                 <div class="box-header" id="posts-header">Posts</div>
                 <div class="box-body" id="posts-container">Loading...</div>
             </div>
-
         </div>
     </div>
 </div>
@@ -513,12 +161,11 @@
 const loggedInUser   = localStorage.getItem('username')
 const loggedInUserId = localStorage.getItem('userId')
 
-// Wire up nav account link
 if (loggedInUser) {
-    document.getElementById('nav-account').href = '/profile/' + loggedInUser
+    document.getElementById('nav-account').href     = '/profile/' + loggedInUser
+    document.getElementById('nav-friends-tab').href = '/profile/' + loggedInUser
 }
 
-// Get username from URL
 const pathParts       = window.location.pathname.split('/')
 const profileUsername = pathParts[pathParts.length - 1]
 const isOwnProfile    = loggedInUser === profileUsername
@@ -526,10 +173,8 @@ const isOwnProfile    = loggedInUser === profileUsername
 let currentProfileId = null
 let currentRequestId = null
 
-// ── Load Profile ──────────────────────────────
 async function loadProfile() {
     const res = await fetch('/api/profile/' + profileUsername)
-
     if (res.status === 404) {
         document.getElementById('profile-banner').innerText  = 'User not found'
         document.getElementById('posts-container').innerText = ''
@@ -537,10 +182,9 @@ async function loadProfile() {
         return
     }
 
-    const data    = await res.json()
+    const data = await res.json()
     const profile = data.profile
     const posts   = data.posts
-
     currentProfileId = profile.id
 
     document.getElementById('profile-banner').innerText       = profile.username + "'s Profile"
@@ -552,19 +196,23 @@ async function loadProfile() {
     document.getElementById('friends-box-header').innerText   = profile.username + "'s Friends (" + (data.friendCount || 0) + ")"
     document.getElementById('profile-friend-count').innerText = (data.friendCount || 0) + (data.friendCount === 1 ? ' friend' : ' friends')
 
-    // Avatar — show initial placeholder or real image
-    const initial = profile.username.charAt(0).toUpperCase()
+    if (profile.interests) {
+        document.getElementById('profile-interests').innerText = profile.interests
+        document.getElementById('interests-box').style.display = 'block'
+    }
+
     const avatarWrap = document.getElementById('avatar-wrap')
     if (profile.avatar_url) {
         avatarWrap.innerHTML = `<img class="profile-avatar-img" src="${profile.avatar_url}" />`
     } else {
-        document.getElementById('avatar-placeholder').innerText = initial
+        document.getElementById('avatar-placeholder').innerText = profile.username.charAt(0).toUpperCase()
     }
 
     if (isOwnProfile) {
-        document.getElementById('edit-box').style.display = 'block'
-        document.getElementById('edit-status').value      = profile.status || ''
-        document.getElementById('edit-bio').value         = profile.bio    || ''
+        document.getElementById('edit-box').style.display   = 'block'
+        document.getElementById('edit-status').value        = profile.status    || ''
+        document.getElementById('edit-bio').value           = profile.bio       || ''
+        document.getElementById('edit-interests').value     = profile.interests || ''
         loadPendingRequests()
     } else if (loggedInUserId) {
         loadFriendStatus()
@@ -573,26 +221,37 @@ async function loadProfile() {
     loadFriendsList(profile.id)
     checkPendingRequests()
 
-    // Posts
     const container = document.getElementById('posts-container')
-    if (!posts || posts.length === 0) {
-        container.innerText = 'No posts yet.'
-        return
-    }
-
+    if (!posts || posts.length === 0) { container.innerText = 'No posts yet.'; return }
     container.innerHTML = ''
     posts.forEach(post => {
         container.innerHTML += `
             <div class="blog-entry">
                 <div class="entry-title">${escHtml(post.title)}</div>
                 <div class="entry-date">${new Date(post.created_at).toLocaleDateString('en-GB')}</div>
-                <div class="entry-body">${escHtml(post.body)}</div>
-            </div>
-        `
+                <div class="entry-body">${renderTextWithTags(post.body)}</div>
+            </div>`
     })
 }
 
-// ── Friend Status ─────────────────────────────
+function renderTextWithTags(text) {
+    return escHtml(text).replace(/@(\w+)/g, (match, username) => `<a class="post-tag" href="/profile/${encodeURIComponent(username)}">@${username}</a>`)
+}
+
+async function saveProfile() {
+    const bio       = document.getElementById('edit-bio').value
+    const status    = document.getElementById('edit-status').value
+    const interests = document.getElementById('edit-interests').value
+    await fetch('/api/profile/update', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: loggedInUserId, bio, status, interests })
+    })
+    const msg = document.getElementById('save-msg')
+    msg.innerText = 'Saved!'
+    setTimeout(() => msg.innerText = '', 2000)
+    loadProfile()
+}
+
 async function loadFriendStatus() {
     const res  = await fetch(`/api/friends/status?userId=${loggedInUserId}&targetId=${currentProfileId}`)
     const data = await res.json()
@@ -602,122 +261,71 @@ async function loadFriendStatus() {
 
 function renderFriendButton(status) {
     const area = document.getElementById('friend-action-area')
-    if (status === 'none') {
-        area.innerHTML = `<button class="friend-btn add" onclick="sendFriendRequest()">+ Add Friend</button>`
-    } else if (status === 'pending_sent') {
-        area.innerHTML = `
-            <button class="friend-btn pending" disabled>Request Sent</button>
-            <button class="friend-btn unfriend" onclick="cancelRequest()">Cancel Request</button>`
-    } else if (status === 'pending_received') {
-        area.innerHTML = `
-            <button class="friend-btn accept" onclick="acceptRequest()">Accept Friend Request</button>
-            <button class="friend-btn decline" onclick="declineRequest()">Decline</button>`
-    } else if (status === 'accepted') {
-        area.innerHTML = `
-            <button class="friend-btn pending" disabled>✓ Friends</button>
-            <button class="friend-btn unfriend" onclick="unfriend()">Remove Friend</button>`
-    }
+    if (status === 'none') area.innerHTML = `<button class="friend-btn add" onclick="sendFriendRequest()">+ Add Friend</button>`
+    else if (status === 'pending_sent') area.innerHTML = `<button class="friend-btn pending" disabled>Request Sent</button><button class="friend-btn unfriend" onclick="cancelRequest()">Cancel Request</button>`
+    else if (status === 'pending_received') area.innerHTML = `<button class="friend-btn accept" onclick="acceptRequest()">Accept Friend Request</button><button class="friend-btn decline" onclick="declineRequest()">Decline</button>`
+    else if (status === 'accepted') area.innerHTML = `<button class="friend-btn pending" disabled>✓ Friends</button><button class="friend-btn unfriend" onclick="unfriend()">Remove Friend</button>`
 }
 
 async function sendFriendRequest() {
-    const res  = await fetch('/api/friends/request', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ senderId: loggedInUserId, receiverId: currentProfileId })
-    })
+    const res  = await fetch('/api/friends/request', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ senderId: loggedInUserId, receiverId: currentProfileId }) })
     const data = await res.json()
     if (data.error) return alert(data.error)
     loadFriendStatus()
 }
 
 async function acceptRequest() {
-    const res  = await fetch('/api/friends/accept', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ requestId: currentRequestId, userId: loggedInUserId })
-    })
+    const res  = await fetch('/api/friends/accept', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ requestId: currentRequestId, userId: loggedInUserId }) })
     const data = await res.json()
     if (data.error) return alert(data.error)
     loadProfile()
 }
 
-async function declineRequest()  { await removeRequest(currentRequestId, loggedInUserId); loadFriendStatus() }
-async function cancelRequest()   { await removeRequest(currentRequestId, loggedInUserId); loadFriendStatus() }
-async function unfriend()        { if (!confirm('Remove this friend?')) return; await removeRequest(currentRequestId, loggedInUserId); loadProfile() }
+async function declineRequest() { await removeRequest(currentRequestId, loggedInUserId); loadFriendStatus() }
+async function cancelRequest()  { await removeRequest(currentRequestId, loggedInUserId); loadFriendStatus() }
+async function unfriend()       { if (!confirm('Remove this friend?')) return; await removeRequest(currentRequestId, loggedInUserId); loadProfile() }
 
 async function removeRequest(requestId, userId) {
-    await fetch('/api/friends/remove', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ requestId, userId })
-    })
+    await fetch('/api/friends/remove', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ requestId, userId }) })
 }
 
-// ── Friends List ──────────────────────────────
 async function loadFriendsList(userId) {
     const res  = await fetch('/api/friends/' + userId)
     const data = await res.json()
     const grid = document.getElementById('friends-grid-container')
-
-    if (!data.friends || data.friends.length === 0) {
-        grid.innerHTML = `<span class="no-friends-msg">No friends yet.</span>`
-        return
-    }
-
+    if (!data.friends || data.friends.length === 0) { grid.innerHTML = `<span class="no-friends-msg">No friends yet.</span>`; return }
     grid.innerHTML = ''
     data.friends.forEach(friend => {
-        const initial     = friend.username.charAt(0).toUpperCase()
-        const avatarHTML  = friend.avatar_url
-            ? `<img src="${friend.avatar_url}" alt="${escHtml(friend.username)}" />`
-            : `<div class="friend-avatar-placeholder">${initial}</div>`
-
-        grid.innerHTML += `
-            <div class="friend-tile">
-                <a href="/profile/${encodeURIComponent(friend.username)}">${avatarHTML}</a>
-                <a href="/profile/${encodeURIComponent(friend.username)}">${escHtml(friend.username)}</a>
-            </div>`
+        const initial    = friend.username.charAt(0).toUpperCase()
+        const avatarHTML = friend.avatar_url ? `<img src="${friend.avatar_url}" />` : `<div class="friend-avatar-placeholder">${initial}</div>`
+        grid.innerHTML += `<div class="friend-tile"><a href="/profile/${encodeURIComponent(friend.username)}">${avatarHTML}</a><a href="/profile/${encodeURIComponent(friend.username)}">${escHtml(friend.username)}</a></div>`
     })
 }
 
-// ── Pending Requests (own profile) ───────────
 async function loadPendingRequests() {
     const res  = await fetch('/api/friends/pending/' + loggedInUserId)
     const data = await res.json()
     const box  = document.getElementById('pending-box')
     const cont = document.getElementById('pending-container')
-
     if (!data.pending || data.pending.length === 0) { box.style.display = 'none'; return }
-
     box.style.display = 'block'
-    cont.innerHTML    = ''
-
+    cont.innerHTML = ''
     data.pending.forEach(req => {
         const row = document.createElement('div')
         row.className = 'pending-request-row'
-        row.id        = 'req-row-' + req.requestId
-        row.innerHTML = `
-            <a class="req-name" href="/profile/${encodeURIComponent(req.username)}">${escHtml(req.username)}</a>
-            <div class="req-actions">
-                <button class="req-btn accept-small" onclick="acceptPendingRequest('${req.requestId}')">Accept</button>
-                <button class="req-btn decline-small" onclick="declinePendingRequest('${req.requestId}')">Decline</button>
-            </div>`
+        row.id = 'req-row-' + req.requestId
+        row.innerHTML = `<a class="req-name" href="/profile/${encodeURIComponent(req.username)}">${escHtml(req.username)}</a><div class="req-actions"><button class="req-btn accept-small" onclick="acceptPendingRequest('${req.requestId}')">Accept</button><button class="req-btn decline-small" onclick="declinePendingRequest('${req.requestId}')">Decline</button></div>`
         cont.appendChild(row)
     })
 }
 
 async function acceptPendingRequest(requestId) {
-    const res  = await fetch('/api/friends/accept', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ requestId, userId: loggedInUserId })
-    })
+    const res  = await fetch('/api/friends/accept', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ requestId, userId: loggedInUserId }) })
     const data = await res.json()
     if (data.error) return alert(data.error)
     const row = document.getElementById('req-row-' + requestId)
     if (row) row.remove()
-    if (document.getElementById('pending-container').children.length === 0) {
-        document.getElementById('pending-box').style.display = 'none'
-    }
+    if (document.getElementById('pending-container').children.length === 0) document.getElementById('pending-box').style.display = 'none'
     loadProfile()
 }
 
@@ -725,50 +333,31 @@ async function declinePendingRequest(requestId) {
     await removeRequest(requestId, loggedInUserId)
     const row = document.getElementById('req-row-' + requestId)
     if (row) row.remove()
-    if (document.getElementById('pending-container').children.length === 0) {
-        document.getElementById('pending-box').style.display = 'none'
-    }
+    if (document.getElementById('pending-container').children.length === 0) document.getElementById('pending-box').style.display = 'none'
 }
 
-// ── Notification dots ─────────────────────────
 async function checkPendingRequests() {
     if (!loggedInUserId) return
     const res  = await fetch('/api/friends/pending/' + loggedInUserId)
     const data = await res.json()
-    if (data.pending && data.pending.length > 0) {
-        document.getElementById('dot-friends').classList.add('visible')
-    }
+    if (data.pending && data.pending.length > 0) document.getElementById('dot-friends').classList.add('visible')
 }
 
-// ── Search ────────────────────────────────────
 async function doSearch() {
     const query      = document.getElementById('search-input').value.trim()
     const resultsBox = document.getElementById('search-results')
     if (!query) return
-
     const res = await fetch('/api/profile/' + encodeURIComponent(query))
-
     if (res.ok) {
         const data = await res.json()
         resultsBox.style.display = 'block'
-        resultsBox.innerHTML = `
-            <div class="search-result-item" onclick="window.location='/profile/${encodeURIComponent(data.profile.username)}'">
-                👤 ${escHtml(data.profile.username)}
-            </div>`
+        resultsBox.innerHTML = `<div class="search-result-item" onclick="window.location='/profile/${encodeURIComponent(data.profile.username)}'">👤 ${escHtml(data.profile.username)}</div>`
     } else {
         resultsBox.style.display = 'block'
         resultsBox.innerHTML = `<div class="search-result-item" style="color:#999;font-weight:normal;">No user found.</div>`
     }
-
-    document.addEventListener('click', function closeSearch(e) {
-        if (!resultsBox.contains(e.target) && e.target.id !== 'search-input') {
-            resultsBox.style.display = 'none'
-            document.removeEventListener('click', closeSearch)
-        }
-    })
 }
 
-// ── Auth ──────────────────────────────────────
 async function logOut() {
     await fetch('/api/logout', { method: 'POST' })
     localStorage.removeItem('token')
@@ -777,17 +366,11 @@ async function logOut() {
     window.location.href = '/login.html'
 }
 
-// ── Utils ─────────────────────────────────────
 function escHtml(str) {
-    return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 }
 
 loadProfile()
 </script>
-
 </body>
 </html>
