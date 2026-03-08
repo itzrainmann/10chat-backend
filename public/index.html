@@ -18,7 +18,7 @@
         border-bottom: 2px solid #0f2547;
         display: flex;
         align-items: stretch;
-        height: 44px;
+        height: 48px;
         position: sticky;
         top: 0;
         z-index: 100;
@@ -27,10 +27,10 @@
 
     .global-nav .brand {
         font-weight: bold;
-        font-size: 18px;
+        font-size: 20px;
         letter-spacing: 2px;
         color: #fff;
-        padding: 0 20px;
+        padding: 0 22px;
         display: flex;
         align-items: center;
         border-right: 1px solid #4a7aaa;
@@ -43,7 +43,7 @@
     .nav-tab {
         display: flex;
         align-items: center;
-        padding: 0 20px;
+        padding: 0 22px;
         color: #cce0ff;
         text-decoration: none;
         font-size: 13px;
@@ -86,12 +86,12 @@
     }
 
     .nav-search input {
-        padding: 5px 10px;
+        padding: 6px 12px;
         border: 1px solid #7599bc;
         background: #f0f5ff;
         font-family: Arial;
         font-size: 12px;
-        width: 200px;
+        width: 220px;
         color: #000;
         outline: none;
         border-radius: 2px;
@@ -103,7 +103,7 @@
         background: linear-gradient(180deg, #7599bc, #4a77a8);
         color: #fff;
         border: 1px solid #336699;
-        padding: 5px 12px;
+        padding: 6px 14px;
         cursor: pointer;
         font-family: Arial;
         font-size: 12px;
@@ -116,7 +116,7 @@
     .signout-btn {
         display: flex;
         align-items: center;
-        padding: 0 16px;
+        padding: 0 18px;
         background: linear-gradient(180deg, #c45050, #8b2020);
         color: #fff;
         font-size: 12px;
@@ -129,34 +129,51 @@
 
     .signout-btn:hover { background: linear-gradient(180deg, #a83333, #6e1515); }
 
-    .search-results {
+    /* ─── Search dropdown ─── */
+    .search-dropdown {
         position: absolute;
-        top: 44px; right: 60px;
-        width: 220px;
+        top: 48px;
+        right: 60px;
+        width: 240px;
         background: #fff;
         border: 1px solid #336699;
-        z-index: 200;
+        z-index: 300;
         display: none;
-        box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+        box-shadow: 2px 4px 12px rgba(0,0,0,0.25);
+    }
+
+    .search-dropdown-section {
+        padding: 5px 10px 3px;
+        font-size: 10px;
+        color: #999;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        background: #f5f8fd;
+        border-bottom: 1px solid #dde5f0;
     }
 
     .search-result-item {
-        padding: 7px 12px;
-        border-bottom: 1px solid #dde5f0;
+        padding: 8px 12px;
+        border-bottom: 1px solid #edf2f8;
         cursor: pointer;
         color: #336699;
         font-weight: bold;
         font-size: 12px;
+        display: flex;
+        align-items: center;
+        gap: 7px;
     }
 
     .search-result-item:last-child { border-bottom: none; }
     .search-result-item:hover { background: #eef2f8; }
+    .search-result-item .sri-icon { font-size: 14px; }
+    .search-no-result { padding: 8px 12px; color: #999; font-size: 12px; font-style: italic; }
 
     /* ═══ WELCOME BAR ═══ */
     .welcome-bar {
         background: linear-gradient(180deg, #5580aa, #3a6699);
         border-bottom: 1px solid #2a5080;
-        padding: 7px 16px;
+        padding: 8px 18px;
         color: #fff;
         font-size: 15px;
         font-weight: bold;
@@ -167,21 +184,21 @@
 
     /* ═══ LAYOUT ═══ */
     .page-wrapper {
-        max-width: 1000px;
-        margin: 12px auto;
-        padding: 0 10px;
+        max-width: 1060px;
+        margin: 14px auto;
+        padding: 0 12px;
         display: flex;
-        gap: 10px;
+        gap: 12px;
     }
 
-    .left-col { width: 210px; flex-shrink: 0; }
+    .left-col { width: 230px; flex-shrink: 0; }
     .right-col { flex: 1; min-width: 0; }
 
     /* ═══ BOXES ═══ */
     .myspace-box {
         background: #fff;
         border: 1px solid #336699;
-        margin-bottom: 10px;
+        margin-bottom: 12px;
     }
 
     .myspace-box .box-header {
@@ -189,18 +206,18 @@
         color: #fff;
         font-weight: bold;
         font-size: 12px;
-        padding: 5px 10px;
+        padding: 7px 12px;
         text-transform: uppercase;
         letter-spacing: 1px;
     }
 
-    .myspace-box .box-body { padding: 10px; line-height: 1.6; }
+    .myspace-box .box-body { padding: 12px; line-height: 1.6; }
 
     /* ═══ MINI PROFILE ═══ */
     .mini-profile-card {
         background: #fff;
         border: 1px solid #336699;
-        margin-bottom: 10px;
+        margin-bottom: 12px;
         text-align: center;
     }
 
@@ -209,42 +226,42 @@
         color: #fff;
         font-weight: bold;
         font-size: 12px;
-        padding: 5px 10px;
+        padding: 7px 12px;
         text-transform: uppercase;
         letter-spacing: 1px;
     }
 
-    .mini-profile-card .card-body { padding: 12px 10px; }
+    .mini-profile-card .card-body { padding: 14px 12px; }
 
     .mini-avatar-placeholder {
-        width: 96px; height: 96px;
+        width: 100px; height: 100px;
         background: linear-gradient(180deg, #7599bc, #4a77a8);
         border: 2px solid #336699;
         display: flex;
         align-items: center;
         justify-content: center;
         color: #fff;
-        font-size: 38px;
+        font-size: 40px;
         font-weight: bold;
-        margin: 0 auto 8px;
+        margin: 0 auto 10px;
     }
 
     .mini-avatar {
-        width: 96px; height: 96px;
+        width: 100px; height: 100px;
         object-fit: cover;
         border: 2px solid #336699;
         display: block;
-        margin: 0 auto 8px;
+        margin: 0 auto 10px;
     }
 
-    .mini-username { font-weight: bold; font-size: 14px; color: #336699; margin-bottom: 3px; }
-    .mini-status { font-size: 11px; color: #888; margin-bottom: 10px; font-style: italic; }
+    .mini-username { font-weight: bold; font-size: 15px; color: #336699; margin-bottom: 3px; }
+    .mini-status { font-size: 11px; color: #888; margin-bottom: 12px; font-style: italic; }
 
     .update-btn {
         display: block;
         width: 100%;
-        padding: 6px 8px;
-        margin-bottom: 5px;
+        padding: 7px 10px;
+        margin-bottom: 6px;
         background: linear-gradient(180deg, #eef2f8, #dde5f0);
         border: 1px solid #7599bc;
         color: #336699;
@@ -258,26 +275,26 @@
 
     .update-btn:hover { background: linear-gradient(180deg, #dde5f0, #ccd8eb); color: #1a3a6b; }
 
-    .inline-edit { display: none; margin-top: 8px; }
+    .inline-edit { display: none; margin-top: 10px; }
 
     .inline-edit input {
-        width: 100%; padding: 5px 7px;
+        width: 100%; padding: 6px 8px;
         border: 1px solid #7599bc;
         font-family: Arial; font-size: 12px;
-        margin-bottom: 5px; outline: none;
+        margin-bottom: 6px; outline: none;
     }
 
     .inline-edit button {
         background: linear-gradient(180deg, #7599bc, #4a77a8);
         color: #fff; border: none;
-        padding: 4px 12px; cursor: pointer;
+        padding: 5px 14px; cursor: pointer;
         font-family: Arial; font-size: 12px; width: 100%;
     }
 
     /* nav buttons */
     .nav-btn {
-        display: flex; align-items: center; gap: 8px;
-        padding: 7px 10px;
+        display: flex; align-items: center; gap: 10px;
+        padding: 9px 12px;
         border-bottom: 1px solid #dde5f0;
         text-decoration: none; color: #333;
         font-size: 12px; cursor: pointer;
@@ -302,22 +319,22 @@
     .post-bar {
         background: #fff;
         border: 1px solid #336699;
-        margin-bottom: 10px;
+        margin-bottom: 12px;
     }
 
     .post-bar .bar-header {
         background: linear-gradient(180deg, #5d8ab0, #3a6699);
         color: #fff; font-weight: bold;
-        font-size: 12px; padding: 5px 10px;
+        font-size: 12px; padding: 7px 12px;
         text-transform: uppercase; letter-spacing: 1px;
     }
 
-    .post-bar .bar-body { padding: 10px; }
+    .post-bar .bar-body { padding: 12px; }
 
-    .post-input-row { display: flex; gap: 8px; margin-bottom: 8px; }
+    .post-input-row { display: flex; gap: 8px; margin-bottom: 10px; }
 
     .post-input-row input {
-        flex: 1; padding: 6px 10px;
+        flex: 1; padding: 7px 12px;
         border: 1px solid #7599bc;
         font-family: Arial; font-size: 13px;
         color: #000; outline: none;
@@ -330,10 +347,10 @@
     .post-body-row { display: flex; gap: 8px; }
 
     .post-body-row textarea {
-        flex: 1; padding: 6px 10px;
+        flex: 1; padding: 7px 12px;
         border: 1px solid #7599bc;
         font-family: Arial; font-size: 13px;
-        resize: vertical; height: 70px; outline: none;
+        resize: vertical; height: 78px; outline: none;
     }
 
     .post-body-row textarea:focus { border-color: #336699; }
@@ -341,7 +358,7 @@
     .post-send-btn {
         background: linear-gradient(180deg, #7599bc, #4a77a8);
         color: #fff; border: 1px solid #336699;
-        padding: 0 20px; cursor: pointer;
+        padding: 0 22px; cursor: pointer;
         font-family: Arial; font-size: 13px;
         font-weight: bold; align-self: stretch;
     }
@@ -360,7 +377,7 @@
     }
 
     .tag-dropdown-item {
-        padding: 6px 10px;
+        padding: 7px 12px;
         cursor: pointer;
         color: #336699;
         font-weight: bold;
@@ -377,28 +394,28 @@
     .feed-box .box-header {
         background: linear-gradient(180deg, #5d8ab0, #3a6699);
         color: #fff; font-weight: bold;
-        font-size: 12px; padding: 5px 10px;
+        font-size: 12px; padding: 7px 12px;
         text-transform: uppercase; letter-spacing: 1px;
     }
 
-    .feed-empty { padding: 24px; text-align: center; color: #999; font-style: italic; }
+    .feed-empty { padding: 28px; text-align: center; color: #999; font-style: italic; }
 
-    .feed-post { border-bottom: 1px solid #dde5f0; padding: 12px 14px; }
+    .feed-post { border-bottom: 1px solid #dde5f0; padding: 14px 16px; }
     .feed-post:last-child { border-bottom: none; }
 
-    .feed-post-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+    .feed-post-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 8px; }
 
     .feed-avatar {
-        width: 40px; height: 40px;
+        width: 44px; height: 44px;
         object-fit: cover; border: 1px solid #336699; flex-shrink: 0;
     }
 
     .feed-avatar-placeholder {
-        width: 40px; height: 40px;
+        width: 44px; height: 44px;
         background: linear-gradient(180deg, #7599bc, #4a77a8);
         border: 1px solid #336699;
         display: flex; align-items: center; justify-content: center;
-        color: #fff; font-weight: bold; font-size: 16px; flex-shrink: 0;
+        color: #fff; font-weight: bold; font-size: 18px; flex-shrink: 0;
     }
 
     .feed-post-meta { flex: 1; text-align: left; }
@@ -412,15 +429,15 @@
 
     .feed-post-date { font-size: 11px; color: #999; display: inline; margin-left: 7px; }
 
-    .feed-post-title { font-weight: bold; font-size: 14px; color: #222; margin-bottom: 4px; text-align: left; }
+    .feed-post-title { font-weight: bold; font-size: 15px; color: #222; margin-bottom: 5px; text-align: left; margin-top: 4px; }
     .feed-post-body { color: #333; line-height: 1.6; font-size: 13px; text-align: left; }
 
     .post-tag { color: #336699; font-weight: bold; text-decoration: none; }
     .post-tag:hover { text-decoration: underline; }
 
     .feed-post-footer {
-        margin-top: 8px; font-size: 12px;
-        display: flex; gap: 14px; align-items: center;
+        margin-top: 10px; font-size: 12px;
+        display: flex; gap: 16px; align-items: center;
     }
 
     .like-btn {
@@ -449,25 +466,34 @@
     .delete-btn:hover { text-decoration: underline; }
 
     /* ═══ COMMENTS ═══ */
-    .comments-section { margin-top: 10px; border-top: 1px solid #eee; padding-top: 10px; }
+    .comments-section { margin-top: 12px; border-top: 1px solid #eee; padding-top: 10px; }
     .comments-list { margin-bottom: 10px; }
 
-    .comment-item { display: flex; gap: 8px; margin-bottom: 8px; align-items: flex-start; }
+    .comment-item {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 10px;
+        align-items: flex-start;
+        text-align: left;
+    }
 
     .comment-avatar {
-        width: 26px; height: 26px;
+        width: 30px; height: 30px;
         background: linear-gradient(180deg, #7599bc, #4a77a8);
         border: 1px solid #336699;
         display: flex; align-items: center; justify-content: center;
-        color: #fff; font-size: 12px; font-weight: bold; flex-shrink: 0;
+        color: #fff; font-size: 13px; font-weight: bold; flex-shrink: 0;
     }
 
-    .comment-body-wrap { flex: 1; }
+    .comment-body-wrap {
+        flex: 1;
+        text-align: left;
+    }
 
     .comment-author { font-weight: bold; color: #336699; font-size: 12px; text-decoration: none; }
     .comment-author:hover { text-decoration: underline; }
-    .comment-text { color: #333; font-size: 12px; line-height: 1.5; }
-    .comment-date { font-size: 10px; color: #999; margin-top: 2px; }
+    .comment-text { color: #333; font-size: 12px; line-height: 1.5; margin-top: 2px; text-align: left; }
+    .comment-date { font-size: 10px; color: #999; margin-top: 3px; }
 
     .comment-delete {
         color: #cc0000; font-size: 10px; cursor: pointer;
@@ -475,10 +501,20 @@
         padding: 0; margin-left: 7px;
     }
 
+    .comment-like-btn {
+        background: none; border: none;
+        font-family: Arial; font-size: 11px;
+        color: #999; cursor: pointer;
+        padding: 0; margin-left: 6px;
+    }
+
+    .comment-like-btn:hover { color: #e0245e; }
+    .comment-like-btn.liked { color: #e0245e; }
+
     .comment-input-row { display: flex; gap: 6px; }
 
     .comment-input-row input {
-        flex: 1; padding: 5px 10px;
+        flex: 1; padding: 6px 12px;
         border: 1px solid #7599bc;
         font-family: Arial; font-size: 12px; outline: none;
     }
@@ -488,11 +524,11 @@
     .comment-input-row button {
         background: linear-gradient(180deg, #7599bc, #4a77a8);
         color: #fff; border: 1px solid #336699;
-        padding: 5px 12px; cursor: pointer;
+        padding: 6px 14px; cursor: pointer;
         font-family: Arial; font-size: 12px; font-weight: bold;
     }
 
-    .not-logged-in { padding: 24px; text-align: center; color: #555; }
+    .not-logged-in { padding: 28px; text-align: center; color: #555; }
     .not-logged-in a { color: #336699; font-weight: bold; }
 </style>
 </head>
@@ -506,16 +542,19 @@
             Messages
             <span class="notif-dot" id="dot-messages"></span>
         </a>
-        <a class="nav-tab" href="#" id="nav-friends-tab">
+        <a class="nav-tab" href="/friends.html" id="nav-friends-tab">
             Friends
             <span class="notif-dot" id="dot-friends"></span>
         </a>
         <a class="nav-tab" href="#" id="nav-account">Account</a>
     </div>
     <div class="nav-search">
-        <input type="text" id="search-input" placeholder="Search for users..." onkeydown="if(event.key==='Enter') doSearch()" />
+        <input type="text" id="search-input" placeholder="Search for users..." autocomplete="off"
+            oninput="liveSearch(this.value)"
+            onkeydown="if(event.key==='Enter') doSearch()"
+            onfocus="showSearchDropdown()" />
         <button onclick="doSearch()">Search</button>
-        <div class="search-results" id="search-results"></div>
+        <div class="search-dropdown" id="search-dropdown"></div>
     </div>
     <a class="signout-btn" href="#" onclick="logOut()">Sign Out</a>
 </div>
@@ -553,14 +592,18 @@
                     <span class="nav-btn-label">Inbox</span>
                     <span class="nav-btn-badge" id="badge-inbox"></span>
                 </a>
-                <a class="nav-btn" id="link-friend-requests" href="#">
+                <a class="nav-btn" href="/friends.html" id="link-friend-requests">
                     <span class="nav-btn-icon">👥</span>
-                    <span class="nav-btn-label">Friend Requests</span>
+                    <span class="nav-btn-label">Friends</span>
                     <span class="nav-btn-badge" id="badge-requests"></span>
                 </a>
                 <a class="nav-btn" id="link-profile" href="#">
                     <span class="nav-btn-icon">🪪</span>
                     <span class="nav-btn-label">Profile</span>
+                </a>
+                <a class="nav-btn" id="link-admin" href="/admin.html" style="display:none;">
+                    <span class="nav-btn-icon">🛡️</span>
+                    <span class="nav-btn-label">Admin Tools</span>
                 </a>
             </div>
         </div>
@@ -604,15 +647,19 @@
 const loggedInUser   = localStorage.getItem('username')
 const loggedInUserId = localStorage.getItem('userId')
 
+// ── ADMIN CHECK ──────────────────────────────
+const ADMIN_USERNAME = 'torin' // Change to your username
+if (loggedInUser && loggedInUser.toLowerCase() === ADMIN_USERNAME.toLowerCase()) {
+    document.getElementById('link-admin').style.display = 'flex'
+}
+
 if (loggedInUser) {
     document.getElementById('welcome-name').innerText = loggedInUser
     document.getElementById('mini-username').innerText = loggedInUser
     document.getElementById('mini-avatar-placeholder').innerText = loggedInUser.charAt(0).toUpperCase()
-    document.getElementById('nav-account').href          = '/profile/' + loggedInUser
-    document.getElementById('btn-my-profile').href       = '/profile/' + loggedInUser
-    document.getElementById('link-profile').href         = '/profile/' + loggedInUser
-    document.getElementById('link-friend-requests').href = '/profile/' + loggedInUser
-    document.getElementById('nav-friends-tab').href      = '/profile/' + loggedInUser
+    document.getElementById('nav-account').href    = '/profile/' + loggedInUser
+    document.getElementById('btn-my-profile').href = '/profile/' + loggedInUser
+    document.getElementById('link-profile').href   = '/profile/' + loggedInUser
     loadMiniProfile()
     loadFeed()
     checkPendingRequests()
@@ -753,7 +800,7 @@ async function loadFeed() {
                 <div class="feed-post-body">${renderTextWithTags(post.body)}</div>
             </div>
             <div class="feed-post-footer">
-                <button class="like-btn ${liked ? 'liked' : ''}" onclick="toggleLike('${post.id}')">
+                <button class="like-btn ${liked ? 'liked' : ''}" id="like-btn-${post.id}" onclick="toggleLike('${post.id}')">
                     ${liked ? '❤️' : '🤍'} ${post.likes}
                 </button>
                 <button class="comment-toggle-btn" onclick="toggleComments('${post.id}')">💬 Comments</button>
@@ -798,7 +845,11 @@ async function toggleLike(id) {
 
 async function deletePost(id) {
     if (!confirm('Delete this post?')) return
-    await fetch('/api/posts/' + id, { method: 'DELETE' })
+    await fetch('/api/posts/' + id, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: loggedInUserId })
+    })
     loadFeed()
 }
 
@@ -819,27 +870,56 @@ async function loadComments(postId) {
     const list = document.getElementById('comments-list-' + postId)
 
     if (!data.comments || data.comments.length === 0) {
-        list.innerHTML = '<div style="color:#999;font-size:12px;font-style:italic;">No comments yet.</div>'
+        list.innerHTML = '<div style="color:#999;font-size:12px;font-style:italic;text-align:left;">No comments yet.</div>'
         return
+    }
+
+    // Fetch which comments the user has liked
+    let likedIds = []
+    if (loggedInUserId) {
+        const commentIds = data.comments.map(c => c.id)
+        const likedRes = await fetch('/api/comments/liked-by-user', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId: loggedInUserId, commentIds })
+        })
+        const likedData = await likedRes.json()
+        likedIds = likedData.likedIds || []
     }
 
     list.innerHTML = ''
     data.comments.forEach(comment => {
         const initial   = comment.username.charAt(0).toUpperCase()
         const isOwn     = comment.user_id === loggedInUserId
+        const isLiked   = likedIds.includes(comment.id)
         const deleteBtn = isOwn ? `<button class="comment-delete" onclick="deleteComment('${comment.id}', '${postId}')">✕</button>` : ''
+        const likeBtn   = loggedInUserId ? `<button class="comment-like-btn ${isLiked ? 'liked' : ''}" id="clbtn-${comment.id}" onclick="toggleCommentLike('${comment.id}', '${postId}')">❤ ${comment.likes || 0}</button>` : (comment.likes ? `<span style="font-size:11px;color:#999;margin-left:6px;">❤ ${comment.likes}</span>` : '')
 
-        list.innerHTML += `
-            <div class="comment-item">
-                <div class="comment-avatar">${initial}</div>
-                <div class="comment-body-wrap">
-                    <a class="comment-author" href="/profile/${encodeURIComponent(comment.username)}">${escHtml(comment.username)}</a>
-                    ${deleteBtn}
-                    <div class="comment-text">${renderTextWithTags(comment.body)}</div>
-                    <div class="comment-date">${new Date(comment.created_at).toLocaleDateString('en-GB')}</div>
-                </div>
+        const item = document.createElement('div')
+        item.className = 'comment-item'
+        item.innerHTML = `
+            <div class="comment-avatar">${initial}</div>
+            <div class="comment-body-wrap">
+                <a class="comment-author" href="/profile/${encodeURIComponent(comment.username)}">${escHtml(comment.username)}</a>
+                ${deleteBtn}
+                ${likeBtn}
+                <div class="comment-text">${renderTextWithTags(comment.body)}</div>
+                <div class="comment-date">${new Date(comment.created_at).toLocaleDateString('en-GB')}</div>
             </div>`
+        list.appendChild(item)
     })
+}
+
+async function toggleCommentLike(commentId, postId) {
+    const btn    = document.getElementById('clbtn-' + commentId)
+    const isLiked = btn && btn.classList.contains('liked')
+    const action = isLiked ? 'unlike' : 'like'
+    await fetch(`/api/comments/${commentId}/${action}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: loggedInUserId })
+    })
+    loadComments(postId)
 }
 
 async function submitComment(postId) {
@@ -879,29 +959,97 @@ async function checkPendingRequests() {
     }
 }
 
-// ── Search ────────────────────────────────────
-async function doSearch() {
-    const query      = document.getElementById('search-input').value.trim()
-    const resultsBox = document.getElementById('search-results')
-    if (!query) return
+// ── SEARCH ────────────────────────────────────
+let searchTimeout = null
+const RECENT_SEARCHES_KEY = '10chat_recent_searches'
 
-    const res = await fetch('/api/profile/' + encodeURIComponent(query))
-    if (res.ok) {
-        const data = await res.json()
-        resultsBox.style.display = 'block'
-        resultsBox.innerHTML = `<div class="search-result-item" onclick="window.location='/profile/${encodeURIComponent(data.profile.username)}'">👤 ${escHtml(data.profile.username)}</div>`
-    } else {
-        resultsBox.style.display = 'block'
-        resultsBox.innerHTML = `<div class="search-result-item" style="color:#999;font-weight:normal;">No user found.</div>`
+function getRecentSearches() {
+    try { return JSON.parse(localStorage.getItem(RECENT_SEARCHES_KEY)) || [] } catch { return [] }
+}
+
+function addRecentSearch(username) {
+    let recent = getRecentSearches().filter(u => u.toLowerCase() !== username.toLowerCase())
+    recent.unshift(username)
+    recent = recent.slice(0, 5)
+    localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(recent))
+}
+
+function showSearchDropdown() {
+    const input = document.getElementById('search-input')
+    if (!input.value.trim()) showRecentSearches()
+}
+
+function showRecentSearches() {
+    const recent = getRecentSearches()
+    const dropdown = document.getElementById('search-dropdown')
+    if (recent.length === 0) { dropdown.style.display = 'none'; return }
+
+    dropdown.innerHTML = `<div class="search-dropdown-section">Recently Searched</div>`
+    recent.forEach(username => {
+        const item = document.createElement('div')
+        item.className = 'search-result-item'
+        item.innerHTML = `<span class="sri-icon">🕐</span> ${escHtml(username)}`
+        item.onclick = () => {
+            window.location.href = '/profile/' + encodeURIComponent(username)
+        }
+        dropdown.appendChild(item)
+    })
+    dropdown.style.display = 'block'
+}
+
+async function liveSearch(query) {
+    const dropdown = document.getElementById('search-dropdown')
+    clearTimeout(searchTimeout)
+
+    if (!query.trim()) {
+        showRecentSearches()
+        return
     }
 
-    document.addEventListener('click', function closeSearch(e) {
-        if (!resultsBox.contains(e.target) && e.target.id !== 'search-input') {
-            resultsBox.style.display = 'none'
-            document.removeEventListener('click', closeSearch)
+    searchTimeout = setTimeout(async () => {
+        const res  = await fetch('/api/users/search?q=' + encodeURIComponent(query))
+        const data = await res.json()
+
+        dropdown.innerHTML = ''
+        if (!data.users || data.users.length === 0) {
+            dropdown.innerHTML = `<div class="search-no-result">No users found for "${escHtml(query)}"</div>`
+        } else {
+            data.users.forEach(user => {
+                const item = document.createElement('div')
+                item.className = 'search-result-item'
+                item.innerHTML = `<span class="sri-icon">👤</span> ${escHtml(user.username)}`
+                item.onclick = () => {
+                    addRecentSearch(user.username)
+                    window.location.href = '/profile/' + encodeURIComponent(user.username)
+                }
+                dropdown.appendChild(item)
+            })
         }
-    })
+        dropdown.style.display = 'block'
+    }, 200)
 }
+
+async function doSearch() {
+    const query = document.getElementById('search-input').value.trim()
+    if (!query) return
+    // Navigate directly to the best match
+    const res  = await fetch('/api/users/search?q=' + encodeURIComponent(query))
+    const data = await res.json()
+    if (data.users && data.users.length > 0) {
+        addRecentSearch(data.users[0].username)
+        window.location.href = '/profile/' + encodeURIComponent(data.users[0].username)
+    }
+}
+
+// Close search dropdown on outside click
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.nav-search')) {
+        document.getElementById('search-dropdown').style.display = 'none'
+    }
+    if (!e.target.closest('.post-body-wrap')) {
+        document.getElementById('tag-dropdown').style.display = 'none'
+    }
+})
 
 // ── Visitors ──────────────────────────────────
 async function trackVisit() {
@@ -928,13 +1076,6 @@ function escHtml(str) {
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
 }
-
-// Close tag dropdown when clicking outside
-document.addEventListener('click', (e) => {
-    if (!e.target.closest('.post-body-wrap')) {
-        document.getElementById('tag-dropdown').style.display = 'none'
-    }
-})
 </script>
 
 </body>

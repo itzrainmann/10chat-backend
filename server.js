@@ -23,15 +23,23 @@ const supabaseAdmin = createClient(
     }
 )
 
+// ── ADMIN CONFIG ──────────────────────────────
+// Set your username here — only this user gets admin access
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'torin'
+
 // ── Page routes ──────────────────────────────
 app.get('/profile/:username', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'profile.html'))
 })
-
+app.get('/friends', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'friends.html'))
+})
+app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'admin.html'))
+})
 app.get('/messages', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'messages.html'))
 })
-
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'))
 })
@@ -75,6 +83,19 @@ app.post('/api/posts/:id/unlike', async (req, res) => {
 
 app.delete('/api/posts/:id', async (req, res) => {
     const { id } = req.params
+    const { userId } = req.body || {}
+    // Allow admin OR post owner to delete
+    const { data: post } = await supabase.from('posts').select('user_id').eq('id', id).single()
+    if (!post) return res.status(404).json({ error: 'Post not found.' })
+
+    if (userId) {
+        const { data: profile } = await supabase.from('profiles').select('username').eq('id', userId).single()
+        const isAdmin = profile && profile.username.toLowerCase() === ADMIN_USERNAME.toLowerCase()
+        if (!isAdmin && post.user_id !== userId) return res.status(403).json({ error: 'Not authorised.' })
+    }
+
+    // Also delete associated comments
+    await supabase.from('comments').delete().eq('post_id', id)
     const { error } = await supabase.from('posts').delete().eq('id', id)
     if (error) return res.status(500).json({ error })
     res.json({ success: true })
@@ -105,7 +126,7 @@ app.post('/api/posts/:id/comments', async (req, res) => {
     const { id } = req.params
     const { userId, body } = req.body
     if (!userId || !body) return res.status(400).json({ error: 'Missing fields.' })
-    const { error } = await supabase.from('comments').insert([{ post_id: id, user_id: userId, body }])
+    const { error } = await supabase.from('comments').insert([{ post_id: id, user_id: userId, body, likes: 0 }])
     if (error) return res.status(500).json({ error: error.message })
     res.json({ success: true })
 })
@@ -115,10 +136,54 @@ app.delete('/api/comments/:id', async (req, res) => {
     const { userId } = req.body
     const { data: comment } = await supabase.from('comments').select('user_id').eq('id', id).single()
     if (!comment) return res.status(404).json({ error: 'Comment not found.' })
-    if (comment.user_id !== userId) return res.status(403).json({ error: 'Not authorised.' })
+
+    // Allow admin OR comment owner
+    const { data: profile } = await supabase.from('profiles').select('username').eq('id', userId).single()
+    const isAdmin = profile && profile.username.toLowerCase() === ADMIN_USERNAME.toLowerCase()
+    if (!isAdmin && comment.user_id !== userId) return res.status(403).json({ error: 'Not authorised.' })
+
     const { error } = await supabase.from('comments').delete().eq('id', id)
     if (error) return res.status(500).json({ error: error.message })
     res.json({ success: true })
+})
+
+// ── Comment Likes ────────────────────────────
+app.post('/api/comments/:id/like', async (req, res) => {
+    const { id } = req.params
+    const { userId } = req.body
+    if (!userId) return res.status(400).json({ error: 'Missing userId.' })
+
+    // Check if already liked
+    const { data: existing } = await supabase.from('comment_likes')
+        .select('id').eq('comment_id', id).eq('user_id', userId).single()
+    if (existing) return res.json({ success: true, action: 'already_liked' })
+
+    await supabase.from('comment_likes').insert([{ comment_id: id, user_id: userId }])
+
+    const { data: comment } = await supabase.from('comments').select('likes').eq('id', id).single()
+    await supabase.from('comments').update({ likes: (comment?.likes || 0) + 1 }).eq('id', id)
+    res.json({ success: true, action: 'liked' })
+})
+
+app.post('/api/comments/:id/unlike', async (req, res) => {
+    const { id } = req.params
+    const { userId } = req.body
+    if (!userId) return res.status(400).json({ error: 'Missing userId.' })
+
+    await supabase.from('comment_likes').delete().eq('comment_id', id).eq('user_id', userId)
+
+    const { data: comment } = await supabase.from('comments').select('likes').eq('id', id).single()
+    await supabase.from('comments').update({ likes: Math.max(0, (comment?.likes || 1) - 1) }).eq('id', id)
+    res.json({ success: true, action: 'unliked' })
+})
+
+// Get which comments a user has liked (batch)
+app.post('/api/comments/liked-by-user', async (req, res) => {
+    const { userId, commentIds } = req.body
+    if (!userId || !commentIds || commentIds.length === 0) return res.json({ likedIds: [] })
+    const { data } = await supabase.from('comment_likes')
+        .select('comment_id').eq('user_id', userId).in('comment_id', commentIds)
+    res.json({ likedIds: (data || []).map(r => r.comment_id) })
 })
 
 // ── Visitors ─────────────────────────────────
@@ -178,7 +243,9 @@ app.post('/api/logout', async (req, res) => {
 // ── Profiles ─────────────────────────────────
 app.get('/api/profile/:username', async (req, res) => {
     const { username } = req.params
-    const { data: profile, error } = await supabase.from('profiles').select('*').eq('username', username).single()
+    // Case-insensitive lookup
+    const { data: profile, error } = await supabase
+        .from('profiles').select('*').ilike('username', username).single()
     if (error || !profile) return res.status(404).json({ error: 'User not found' })
 
     const { data: posts } = await supabase.from('posts').select('*').eq('user_id', profile.id).order('created_at', { ascending: false })
@@ -202,7 +269,7 @@ app.post('/api/profile/update', async (req, res) => {
     res.json({ success: true })
 })
 
-// Search users by username prefix
+// Search users by username prefix — case-insensitive, includes recent
 app.get('/api/users/search', async (req, res) => {
     const { q } = req.query
     if (!q || q.length < 1) return res.json({ users: [] })
@@ -210,7 +277,7 @@ app.get('/api/users/search', async (req, res) => {
     const { data, error } = await supabase
         .from('profiles')
         .select('id, username, avatar_url')
-        .ilike('username', `${q}%`)
+        .ilike('username', `%${q}%`)
         .limit(8)
 
     if (error) return res.status(500).json({ error: error.message })
@@ -268,6 +335,18 @@ app.post('/api/friends/remove', async (req, res) => {
     res.json({ success: true })
 })
 
+// Set BFF status
+app.post('/api/friends/bff', async (req, res) => {
+    const { requestId, userId, isBff } = req.body
+    const { data: request } = await supabase.from('friend_requests').select('*').eq('id', requestId).single()
+    if (!request) return res.status(404).json({ error: 'Request not found.' })
+    if (request.sender_id !== userId && request.receiver_id !== userId) return res.status(403).json({ error: 'Not authorised.' })
+
+    const { error } = await supabase.from('friend_requests').update({ is_bff: isBff }).eq('id', requestId)
+    if (error) return res.status(500).json({ error: error.message })
+    res.json({ success: true })
+})
+
 app.get('/api/friends/:userId', async (req, res) => {
     const { userId } = req.params
     const { data: requests, error } = await supabase.from('friend_requests').select('*')
@@ -278,7 +357,13 @@ app.get('/api/friends/:userId', async (req, res) => {
     if (friendIds.length === 0) return res.json({ friends: [] })
 
     const { data: profiles } = await supabase.from('profiles').select('id, username, avatar_url, status').in('id', friendIds)
-    res.json({ friends: profiles || [] })
+
+    // attach bff info
+    const enriched = (profiles || []).map(p => {
+        const req = requests.find(r => r.sender_id === p.id || r.receiver_id === p.id)
+        return { ...p, requestId: req?.id, isBff: req?.is_bff || false }
+    })
+    res.json({ friends: enriched || [] })
 })
 
 app.get('/api/friends/pending/:userId', async (req, res) => {
@@ -299,7 +384,6 @@ app.get('/api/friends/pending/:userId', async (req, res) => {
 })
 
 // ── Messages ─────────────────────────────────
-// IMPORTANT: inbox route must come before /:userId/:otherUserId
 app.get('/api/messages/inbox/:userId', async (req, res) => {
     const { userId } = req.params
     const { data, error } = await supabase.from('messages').select('*')
@@ -350,6 +434,109 @@ app.get('/api/messages/:userId/:otherUserId', async (req, res) => {
     res.json({ messages: data || [] })
 })
 
+// ── Admin APIs ───────────────────────────────
+// Verify admin middleware
+async function requireAdmin(req, res, next) {
+    const userId = req.body?.userId || req.query?.userId
+    if (!userId) return res.status(401).json({ error: 'Not authorised.' })
+    const { data: profile } = await supabase.from('profiles').select('username').eq('id', userId).single()
+    if (!profile || profile.username.toLowerCase() !== ADMIN_USERNAME.toLowerCase()) {
+        return res.status(403).json({ error: 'Admin access required.' })
+    }
+    next()
+}
+
+// Admin: get all posts with author info
+app.get('/api/admin/posts', async (req, res) => {
+    const { userId } = req.query
+    if (!userId) return res.status(401).json({ error: 'Not authorised.' })
+    const { data: profile } = await supabase.from('profiles').select('username').eq('id', userId).single()
+    if (!profile || profile.username.toLowerCase() !== ADMIN_USERNAME.toLowerCase())
+        return res.status(403).json({ error: 'Admin access required.' })
+
+    const { data: posts, error } = await supabase
+        .from('posts').select('*').order('created_at', { ascending: false })
+    if (error) return res.status(500).json({ error: error.message })
+    if (!posts || posts.length === 0) return res.json({ posts: [] })
+
+    const userIds = [...new Set(posts.map(p => p.user_id))]
+    const { data: profiles } = await supabase.from('profiles').select('id, username').in('id', userIds)
+    const profileMap = {}
+    ;(profiles || []).forEach(p => { profileMap[p.id] = p })
+
+    const enriched = posts.map(p => ({ ...p, username: profileMap[p.user_id]?.username || 'Unknown' }))
+    res.json({ posts: enriched })
+})
+
+// Admin: get all comments with author info
+app.get('/api/admin/comments', async (req, res) => {
+    const { userId } = req.query
+    if (!userId) return res.status(401).json({ error: 'Not authorised.' })
+    const { data: profile } = await supabase.from('profiles').select('username').eq('id', userId).single()
+    if (!profile || profile.username.toLowerCase() !== ADMIN_USERNAME.toLowerCase())
+        return res.status(403).json({ error: 'Admin access required.' })
+
+    const { data: comments, error } = await supabase
+        .from('comments').select('*').order('created_at', { ascending: false })
+    if (error) return res.status(500).json({ error: error.message })
+    if (!comments || comments.length === 0) return res.json({ comments: [] })
+
+    const userIds = [...new Set(comments.map(c => c.user_id))]
+    const postIds = [...new Set(comments.map(c => c.post_id))]
+    const { data: profiles } = await supabase.from('profiles').select('id, username').in('id', userIds)
+    const { data: posts } = await supabase.from('posts').select('id, title').in('id', postIds)
+    const profileMap = {}; (profiles || []).forEach(p => { profileMap[p.id] = p })
+    const postMap = {}; (posts || []).forEach(p => { postMap[p.id] = p })
+
+    const enriched = comments.map(c => ({
+        ...c,
+        username: profileMap[c.user_id]?.username || 'Unknown',
+        postTitle: postMap[c.post_id]?.title || 'Unknown post'
+    }))
+    res.json({ comments: enriched })
+})
+
+// Admin: get all users
+app.get('/api/admin/users', async (req, res) => {
+    const { userId } = req.query
+    if (!userId) return res.status(401).json({ error: 'Not authorised.' })
+    const { data: profile } = await supabase.from('profiles').select('username').eq('id', userId).single()
+    if (!profile || profile.username.toLowerCase() !== ADMIN_USERNAME.toLowerCase())
+        return res.status(403).json({ error: 'Admin access required.' })
+
+    const { data: users, error } = await supabase
+        .from('profiles').select('id, username, bio, status, created_at').order('created_at', { ascending: false })
+    if (error) return res.status(500).json({ error: error.message })
+    res.json({ users: users || [] })
+})
+
+// Admin: delete any post
+app.delete('/api/admin/posts/:id', async (req, res) => {
+    const { userId } = req.body
+    if (!userId) return res.status(401).json({ error: 'Not authorised.' })
+    const { data: profile } = await supabase.from('profiles').select('username').eq('id', userId).single()
+    if (!profile || profile.username.toLowerCase() !== ADMIN_USERNAME.toLowerCase())
+        return res.status(403).json({ error: 'Admin access required.' })
+
+    await supabase.from('comments').delete().eq('post_id', req.params.id)
+    const { error } = await supabase.from('posts').delete().eq('id', req.params.id)
+    if (error) return res.status(500).json({ error: error.message })
+    res.json({ success: true })
+})
+
+// Admin: delete any comment
+app.delete('/api/admin/comments/:id', async (req, res) => {
+    const { userId } = req.body
+    if (!userId) return res.status(401).json({ error: 'Not authorised.' })
+    const { data: profile } = await supabase.from('profiles').select('username').eq('id', userId).single()
+    if (!profile || profile.username.toLowerCase() !== ADMIN_USERNAME.toLowerCase())
+        return res.status(403).json({ error: 'Admin access required.' })
+
+    const { error } = await supabase.from('comments').delete().eq('id', req.params.id)
+    if (error) return res.status(500).json({ error: error.message })
+    res.json({ success: true })
+})
+
 // ── Socket.io ────────────────────────────────
 const server = http.createServer(app)
 const io = new Server(server, { cors: { origin: '*' } })
@@ -362,18 +549,26 @@ io.on('connection', (socket) => {
 
     socket.on('send_message', async ({ senderId, receiverId, body }) => {
         const { data, error } = await supabase.from('messages')
-            .insert([{ sender_id: senderId, receiver_id: receiverId, body }])
+            .insert([{ sender_id: senderId, receiver_id: receiverId, body, read: false }])
             .select().single()
         if (error) return
 
         const receiverSocketId = onlineUsers[receiverId]
-        if (receiverSocketId) io.to(receiverSocketId).emit('new_message', data)
+        if (receiverSocketId) {
+            io.to(receiverSocketId).emit('new_message', data)
+        }
         socket.emit('message_sent', data)
     })
 
     socket.on('mark_read', async ({ userId, otherUserId }) => {
         await supabase.from('messages').update({ read: true })
             .eq('receiver_id', userId).eq('sender_id', otherUserId)
+
+        // Notify the sender that their messages have been seen
+        const senderSocketId = onlineUsers[otherUserId]
+        if (senderSocketId) {
+            io.to(senderSocketId).emit('messages_seen', { byUserId: userId, fromUserId: otherUserId })
+        }
     })
 
     socket.on('typing', ({ senderId, receiverId }) => {

@@ -6,46 +6,49 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background-color: #c8d5e8; font-family: Arial, sans-serif; font-size: 13px; color: #000; }
 
-    .global-nav { background: linear-gradient(180deg, #3a6aaa, #1a3a6b); border-bottom: 2px solid #0f2547; display: flex; align-items: stretch; height: 44px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
-    .global-nav .brand { font-weight: bold; font-size: 18px; letter-spacing: 2px; color: #fff; padding: 0 20px; display: flex; align-items: center; border-right: 1px solid #4a7aaa; text-decoration: none; background: linear-gradient(180deg, #4a7aaa, #1a3a6b); }
+    .global-nav { background: linear-gradient(180deg, #3a6aaa, #1a3a6b); border-bottom: 2px solid #0f2547; display: flex; align-items: stretch; height: 48px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
+    .global-nav .brand { font-weight: bold; font-size: 20px; letter-spacing: 2px; color: #fff; padding: 0 22px; display: flex; align-items: center; border-right: 1px solid #4a7aaa; text-decoration: none; background: linear-gradient(180deg, #4a7aaa, #1a3a6b); }
     .nav-tabs { display: flex; align-items: stretch; }
-    .nav-tab { display: flex; align-items: center; padding: 0 20px; color: #cce0ff; text-decoration: none; font-size: 13px; font-weight: bold; border-right: 1px solid #3a5580; position: relative; cursor: pointer; letter-spacing: 0.5px; transition: background 0.1s; }
+    .nav-tab { display: flex; align-items: center; padding: 0 22px; color: #cce0ff; text-decoration: none; font-size: 13px; font-weight: bold; border-right: 1px solid #3a5580; position: relative; cursor: pointer; letter-spacing: 0.5px; transition: background 0.1s; }
     .nav-tab:hover { background: rgba(255,255,255,0.12); color: #fff; }
     .nav-tab.active { background: rgba(255,255,255,0.18); color: #fff; border-bottom: 3px solid #7eb3e8; }
     .notif-dot { width: 8px; height: 8px; background: #ff3b3b; border-radius: 50%; position: absolute; top: 8px; right: 9px; display: none; animation: pulse 1.5s infinite; }
     @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.3); opacity: 0.7; } }
     .notif-dot.visible { display: block; }
     .nav-search { margin-left: auto; display: flex; align-items: center; gap: 6px; padding: 0 12px; position: relative; }
-    .nav-search input { padding: 5px 10px; border: 1px solid #7599bc; background: #f0f5ff; font-family: Arial; font-size: 12px; width: 200px; color: #000; outline: none; border-radius: 2px; }
+    .nav-search input { padding: 6px 12px; border: 1px solid #7599bc; background: #f0f5ff; font-family: Arial; font-size: 12px; width: 220px; color: #000; outline: none; border-radius: 2px; }
     .nav-search input:focus { border-color: #336699; background: #fff; }
-    .nav-search button { background: linear-gradient(180deg, #7599bc, #4a77a8); color: #fff; border: 1px solid #336699; padding: 5px 12px; cursor: pointer; font-family: Arial; font-size: 12px; font-weight: bold; border-radius: 2px; }
-    .signout-btn { display: flex; align-items: center; padding: 0 16px; background: linear-gradient(180deg, #c45050, #8b2020); color: #fff; font-size: 12px; font-weight: bold; cursor: pointer; border: none; border-left: 1px solid #0f2547; text-decoration: none; }
+    .nav-search button { background: linear-gradient(180deg, #7599bc, #4a77a8); color: #fff; border: 1px solid #336699; padding: 6px 14px; cursor: pointer; font-family: Arial; font-size: 12px; font-weight: bold; border-radius: 2px; }
+    .signout-btn { display: flex; align-items: center; padding: 0 18px; background: linear-gradient(180deg, #c45050, #8b2020); color: #fff; font-size: 12px; font-weight: bold; cursor: pointer; border: none; border-left: 1px solid #0f2547; text-decoration: none; }
     .signout-btn:hover { background: linear-gradient(180deg, #a83333, #6e1515); }
-    .search-results { position: absolute; top: 44px; right: 60px; width: 220px; background: #fff; border: 1px solid #336699; z-index: 200; display: none; box-shadow: 2px 2px 8px rgba(0,0,0,0.2); }
-    .search-result-item { padding: 7px 12px; border-bottom: 1px solid #dde5f0; cursor: pointer; color: #336699; font-weight: bold; font-size: 12px; }
+    .search-dropdown { position: absolute; top: 48px; right: 60px; width: 240px; background: #fff; border: 1px solid #336699; z-index: 300; display: none; box-shadow: 2px 4px 12px rgba(0,0,0,0.25); }
+    .search-dropdown-section { padding: 5px 10px 3px; font-size: 10px; color: #999; text-transform: uppercase; letter-spacing: 0.8px; background: #f5f8fd; border-bottom: 1px solid #dde5f0; }
+    .search-result-item { padding: 8px 12px; border-bottom: 1px solid #edf2f8; cursor: pointer; color: #336699; font-weight: bold; font-size: 12px; display: flex; align-items: center; gap: 7px; }
+    .search-result-item:last-child { border-bottom: none; }
     .search-result-item:hover { background: #eef2f8; }
+    .search-no-result { padding: 8px 12px; color: #999; font-size: 12px; font-style: italic; }
 
-    .page-wrapper { max-width: 1000px; margin: 12px auto; padding: 0 10px; }
-    .profile-banner { background: linear-gradient(180deg, #5d8ab0, #3a6699); padding: 10px 14px; color: #fff; font-size: 20px; font-weight: bold; border: 1px solid #336699; margin-bottom: 10px; }
-    .main-layout { display: flex; gap: 10px; }
-    .left-col { width: 230px; flex-shrink: 0; }
+    .page-wrapper { max-width: 1060px; margin: 14px auto; padding: 0 12px; }
+    .profile-banner { background: linear-gradient(180deg, #5d8ab0, #3a6699); padding: 11px 16px; color: #fff; font-size: 20px; font-weight: bold; border: 1px solid #336699; margin-bottom: 12px; }
+    .main-layout { display: flex; gap: 12px; }
+    .left-col { width: 240px; flex-shrink: 0; }
     .right-col { flex: 1; min-width: 0; }
 
-    .myspace-box { background: #fff; border: 1px solid #336699; margin-bottom: 10px; }
-    .myspace-box .box-header { background: linear-gradient(180deg, #5d8ab0, #3a6699); color: #fff; font-weight: bold; padding: 5px 10px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
-    .myspace-box .box-body { padding: 10px; line-height: 1.7; }
+    .myspace-box { background: #fff; border: 1px solid #336699; margin-bottom: 12px; }
+    .myspace-box .box-header { background: linear-gradient(180deg, #5d8ab0, #3a6699); color: #fff; font-weight: bold; padding: 7px 12px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+    .myspace-box .box-body { padding: 12px; line-height: 1.7; }
 
-    .profile-pic-box { background: #fff; border: 1px solid #336699; margin-bottom: 10px; text-align: center; padding: 12px; }
-    .profile-avatar-placeholder { width: 130px; height: 130px; background: linear-gradient(180deg, #7599bc, #4a77a8); border: 2px solid #336699; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 52px; font-weight: bold; margin: 0 auto 8px; }
-    .profile-avatar-img { width: 130px; height: 130px; object-fit: cover; border: 2px solid #336699; display: block; margin: 0 auto 8px; }
-    .screen-name { font-weight: bold; font-size: 15px; color: #336699; margin-top: 6px; }
+    .profile-pic-box { background: #fff; border: 1px solid #336699; margin-bottom: 12px; text-align: center; padding: 14px; }
+    .profile-avatar-placeholder { width: 140px; height: 140px; background: linear-gradient(180deg, #7599bc, #4a77a8); border: 2px solid #336699; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 56px; font-weight: bold; margin: 0 auto 10px; }
+    .profile-avatar-img { width: 140px; height: 140px; object-fit: cover; border: 2px solid #336699; display: block; margin: 0 auto 10px; }
+    .screen-name { font-weight: bold; font-size: 16px; color: #336699; margin-top: 6px; }
     .join-date { font-size: 11px; color: #999; margin-top: 4px; }
     .friend-count { font-size: 12px; color: #336699; margin-top: 4px; font-weight: bold; }
 
-    .status-bar { background: #eef2f8; border: 1px solid #336699; padding: 6px 10px; font-size: 12px; margin-bottom: 10px; color: #333; }
+    .status-bar { background: #eef2f8; border: 1px solid #336699; padding: 7px 12px; font-size: 12px; margin-bottom: 12px; color: #333; }
     .status-bar span { color: #336699; font-weight: bold; }
 
-    .friend-btn { display: block; margin-top: 8px; padding: 6px 14px; font-size: 12px; font-family: Arial; font-weight: bold; border: 1px solid #336699; cursor: pointer; text-align: center; width: 100%; }
+    .friend-btn { display: block; margin-top: 8px; padding: 7px 16px; font-size: 12px; font-family: Arial; font-weight: bold; border: 1px solid #336699; cursor: pointer; text-align: center; width: 100%; }
     .friend-btn.add { background: linear-gradient(180deg, #7599bc, #4a77a8); color: #fff; }
     .friend-btn.add:hover { background: linear-gradient(180deg, #5d86af, #2e5a88); }
     .friend-btn.pending { background: #eef2f8; color: #888; border-color: #aaa; cursor: default; }
@@ -54,41 +57,41 @@
     .friend-btn.unfriend { background: #eef2f8; color: #a83333; border-color: #a83333; margin-top: 5px; }
     .friend-btn.unfriend:hover { background: #fdeaea; }
 
-    .friends-grid { display: flex; flex-wrap: wrap; gap: 10px; padding: 10px; }
-    .friend-tile { text-align: center; width: 72px; }
-    .friend-tile img { width: 62px; height: 62px; object-fit: cover; border: 2px solid #336699; display: block; margin: 0 auto; }
-    .friend-avatar-placeholder { width: 62px; height: 62px; background: linear-gradient(180deg, #7599bc, #4a77a8); border: 2px solid #336699; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 24px; font-weight: bold; margin: 0 auto; }
-    .friend-tile a { display: block; font-size: 11px; color: #336699; text-decoration: none; margin-top: 3px; word-break: break-word; }
+    .friends-grid { display: flex; flex-wrap: wrap; gap: 10px; padding: 12px; }
+    .friend-tile { text-align: center; width: 76px; }
+    .friend-tile img { width: 66px; height: 66px; object-fit: cover; border: 2px solid #336699; display: block; margin: 0 auto; }
+    .friend-avatar-placeholder { width: 66px; height: 66px; background: linear-gradient(180deg, #7599bc, #4a77a8); border: 2px solid #336699; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 26px; font-weight: bold; margin: 0 auto; }
+    .friend-tile a { display: block; font-size: 11px; color: #336699; text-decoration: none; margin-top: 4px; word-break: break-word; }
     .friend-tile a:hover { text-decoration: underline; }
 
-    .pending-request-row { display: flex; align-items: center; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #dde5f0; }
+    .pending-request-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #dde5f0; }
     .pending-request-row:last-child { border-bottom: none; }
     .req-name { color: #336699; font-weight: bold; font-size: 13px; text-decoration: none; }
     .req-name:hover { text-decoration: underline; }
     .req-actions { display: flex; gap: 6px; }
-    .req-btn { padding: 4px 12px; font-size: 12px; font-family: Arial; font-weight: bold; border: 1px solid; cursor: pointer; }
+    .req-btn { padding: 5px 14px; font-size: 12px; font-family: Arial; font-weight: bold; border: 1px solid; cursor: pointer; }
     .req-btn.accept-small { background: linear-gradient(180deg, #77bc87, #3a9950); color: #fff; border-color: #2e7d3e; }
     .req-btn.decline-small { background: #eef2f8; color: #a83333; border-color: #a83333; }
 
-    .edit-section { background: #fff; border: 1px solid #336699; margin-bottom: 10px; display: none; }
-    .edit-section .box-header { background: linear-gradient(180deg, #5d8ab0, #3a6699); color: #fff; font-weight: bold; padding: 5px 10px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
-    .edit-section .edit-body { padding: 10px; }
-    .edit-section label { display: block; font-weight: bold; font-size: 12px; color: #336699; margin-bottom: 3px; margin-top: 10px; }
+    .edit-section { background: #fff; border: 1px solid #336699; margin-bottom: 12px; display: none; }
+    .edit-section .box-header { background: linear-gradient(180deg, #5d8ab0, #3a6699); color: #fff; font-weight: bold; padding: 7px 12px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+    .edit-section .edit-body { padding: 12px; }
+    .edit-section label { display: block; font-weight: bold; font-size: 12px; color: #336699; margin-bottom: 3px; margin-top: 12px; }
     .edit-section label:first-child { margin-top: 0; }
-    .edit-section input, .edit-section textarea { width: 100%; padding: 6px 10px; border: 1px solid #7599bc; font-family: Arial; font-size: 13px; outline: none; }
+    .edit-section input, .edit-section textarea { width: 100%; padding: 7px 12px; border: 1px solid #7599bc; font-family: Arial; font-size: 13px; outline: none; }
     .edit-section input:focus, .edit-section textarea:focus { border-color: #336699; }
-    .edit-section button { background: linear-gradient(180deg, #7599bc, #4a77a8); color: #fff; border: 1px solid #336699; padding: 6px 18px; cursor: pointer; font-family: Arial; font-size: 13px; font-weight: bold; margin-top: 10px; }
+    .edit-section button { background: linear-gradient(180deg, #7599bc, #4a77a8); color: #fff; border: 1px solid #336699; padding: 7px 20px; cursor: pointer; font-family: Arial; font-size: 13px; font-weight: bold; margin-top: 12px; }
     .edit-section button:hover { background: linear-gradient(180deg, #5d86af, #2e5a88); }
     .save-msg { font-size: 11px; color: #336699; margin-left: 8px; }
 
-    .blog-entry { border-bottom: 1px solid #ddd; padding: 10px 0; }
+    .blog-entry { border-bottom: 1px solid #ddd; padding: 12px 0; }
     .blog-entry:last-child { border-bottom: none; }
-    .entry-title { font-weight: bold; color: #336699; font-size: 14px; margin-bottom: 4px; }
+    .entry-title { font-weight: bold; color: #336699; font-size: 15px; margin-bottom: 4px; }
     .entry-date { font-size: 11px; color: #999; margin-bottom: 6px; }
     .entry-body { color: #333; line-height: 1.7; font-size: 13px; }
     .post-tag { color: #336699; font-weight: bold; text-decoration: none; }
     .post-tag:hover { text-decoration: underline; }
-    .no-friends-msg { color: #999; font-style: italic; font-size: 12px; padding: 10px; display: block; }
+    .no-friends-msg { color: #999; font-style: italic; font-size: 12px; padding: 12px; display: block; }
 </style>
 </head>
 <body>
@@ -98,13 +101,16 @@
     <div class="nav-tabs">
         <a class="nav-tab" href="/">Home</a>
         <a class="nav-tab" href="/messages.html" id="nav-messages">Messages<span class="notif-dot" id="dot-messages"></span></a>
-        <a class="nav-tab" href="#" id="nav-friends-tab">Friends<span class="notif-dot" id="dot-friends"></span></a>
+        <a class="nav-tab" href="/friends.html" id="nav-friends-tab">Friends<span class="notif-dot" id="dot-friends"></span></a>
         <a class="nav-tab active" id="nav-account" href="#">Account</a>
     </div>
     <div class="nav-search">
-        <input type="text" id="search-input" placeholder="Search for users..." onkeydown="if(event.key==='Enter') doSearch()" />
+        <input type="text" id="search-input" placeholder="Search for users..." autocomplete="off"
+            oninput="liveSearch(this.value)"
+            onkeydown="if(event.key==='Enter') doSearch()"
+            onfocus="showSearchDropdown()" />
         <button onclick="doSearch()">Search</button>
-        <div class="search-results" id="search-results"></div>
+        <div class="search-dropdown" id="search-dropdown"></div>
     </div>
     <a class="signout-btn" href="#" onclick="logOut()">Sign Out</a>
 </div>
@@ -162,13 +168,12 @@ const loggedInUser   = localStorage.getItem('username')
 const loggedInUserId = localStorage.getItem('userId')
 
 if (loggedInUser) {
-    document.getElementById('nav-account').href     = '/profile/' + loggedInUser
-    document.getElementById('nav-friends-tab').href = '/profile/' + loggedInUser
+    document.getElementById('nav-account').href = '/profile/' + loggedInUser
 }
 
 const pathParts       = window.location.pathname.split('/')
 const profileUsername = pathParts[pathParts.length - 1]
-const isOwnProfile    = loggedInUser === profileUsername
+const isOwnProfile    = loggedInUser && loggedInUser.toLowerCase() === profileUsername.toLowerCase()
 
 let currentProfileId = null
 let currentRequestId = null
@@ -343,20 +348,75 @@ async function checkPendingRequests() {
     if (data.pending && data.pending.length > 0) document.getElementById('dot-friends').classList.add('visible')
 }
 
-async function doSearch() {
-    const query      = document.getElementById('search-input').value.trim()
-    const resultsBox = document.getElementById('search-results')
-    if (!query) return
-    const res = await fetch('/api/profile/' + encodeURIComponent(query))
-    if (res.ok) {
+// ── Search ────────────────────────────────────
+let searchTimeout = null
+const RECENT_SEARCHES_KEY = '10chat_recent_searches'
+
+function getRecentSearches() {
+    try { return JSON.parse(localStorage.getItem(RECENT_SEARCHES_KEY)) || [] } catch { return [] }
+}
+function addRecentSearch(username) {
+    let recent = getRecentSearches().filter(u => u.toLowerCase() !== username.toLowerCase())
+    recent.unshift(username)
+    recent = recent.slice(0, 5)
+    localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(recent))
+}
+function showSearchDropdown() {
+    if (!document.getElementById('search-input').value.trim()) showRecentSearches()
+}
+function showRecentSearches() {
+    const recent = getRecentSearches()
+    const dropdown = document.getElementById('search-dropdown')
+    if (recent.length === 0) { dropdown.style.display = 'none'; return }
+    dropdown.innerHTML = `<div class="search-dropdown-section">Recently Searched</div>`
+    recent.forEach(username => {
+        const item = document.createElement('div')
+        item.className = 'search-result-item'
+        item.innerHTML = `<span>🕐</span> ${escHtml(username)}`
+        item.onclick = () => { window.location.href = '/profile/' + encodeURIComponent(username) }
+        dropdown.appendChild(item)
+    })
+    dropdown.style.display = 'block'
+}
+async function liveSearch(query) {
+    const dropdown = document.getElementById('search-dropdown')
+    clearTimeout(searchTimeout)
+    if (!query.trim()) { showRecentSearches(); return }
+    searchTimeout = setTimeout(async () => {
+        const res  = await fetch('/api/users/search?q=' + encodeURIComponent(query))
         const data = await res.json()
-        resultsBox.style.display = 'block'
-        resultsBox.innerHTML = `<div class="search-result-item" onclick="window.location='/profile/${encodeURIComponent(data.profile.username)}'">👤 ${escHtml(data.profile.username)}</div>`
-    } else {
-        resultsBox.style.display = 'block'
-        resultsBox.innerHTML = `<div class="search-result-item" style="color:#999;font-weight:normal;">No user found.</div>`
+        dropdown.innerHTML = ''
+        if (!data.users || data.users.length === 0) {
+            dropdown.innerHTML = `<div class="search-no-result">No users found</div>`
+        } else {
+            data.users.forEach(user => {
+                const item = document.createElement('div')
+                item.className = 'search-result-item'
+                item.innerHTML = `<span>👤</span> ${escHtml(user.username)}`
+                item.onclick = () => {
+                    addRecentSearch(user.username)
+                    window.location.href = '/profile/' + encodeURIComponent(user.username)
+                }
+                dropdown.appendChild(item)
+            })
+        }
+        dropdown.style.display = 'block'
+    }, 200)
+}
+async function doSearch() {
+    const query = document.getElementById('search-input').value.trim()
+    if (!query) return
+    const res  = await fetch('/api/users/search?q=' + encodeURIComponent(query))
+    const data = await res.json()
+    if (data.users && data.users.length > 0) {
+        addRecentSearch(data.users[0].username)
+        window.location.href = '/profile/' + encodeURIComponent(data.users[0].username)
     }
 }
+
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.nav-search')) document.getElementById('search-dropdown').style.display = 'none'
+})
 
 async function logOut() {
     await fetch('/api/logout', { method: 'POST' })
