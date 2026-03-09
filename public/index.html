@@ -415,8 +415,7 @@ async function loadFeed() {
         const liked  = localStorage.getItem('liked_' + post.id)
         const avatarHTML = avatar ? `<img class="feed-avatar" src="${avatar}" />` : `<div class="feed-avatar-placeholder">${author.charAt(0).toUpperCase()}</div>`
         const editedLabel = post.edited ? `<span class="edited-label">(edited)</span>` : ''
-        const ageMin = (Date.now() - new Date(post.created_at).getTime()) / 60000
-        const canEdit = isOwn && ageMin < 10
+        const canEdit = isOwn
 
         const div = document.createElement('div')
         div.className = 'feed-post'
