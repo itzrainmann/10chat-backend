@@ -101,16 +101,14 @@ app.delete('/api/posts/:id', async (req, res) => {
     res.json({ success: true })
 })
 
-// Edit post — owner only, within 10 minutes
+// Edit post — owner only
 app.patch('/api/posts/:id', async (req, res) => {
     const { id } = req.params
     const { userId, title, body } = req.body
     if (!userId) return res.status(401).json({ error: 'Not authorised.' })
-
-    const { data: post } = await supabase.from('posts').select('user_id, created_at').eq('id', id).single()
+    const { data: post } = await supabase.from('posts').select('user_id').eq('id', id).single()
     if (!post) return res.status(404).json({ error: 'Post not found.' })
     if (post.user_id !== userId) return res.status(403).json({ error: 'Not authorised.' })
-
     const { error } = await supabase.from('posts').update({ title, body }).eq('id', id)
     if (error) return res.status(500).json({ error: error.message })
     res.json({ success: true })
@@ -283,6 +281,14 @@ app.post('/api/profile/update', async (req, res) => {
     const { error } = await supabase.from('profiles').update(updateData).eq('id', userId)
     if (error) return res.status(500).json({ error: error.message })
     res.json({ success: true })
+})
+
+// Get user profile by ID (for world feed)
+app.get('/api/user-profile/:id', async (req, res) => {
+    const { id } = req.params
+    const { data, error } = await supabase.from('profiles').select('id, username, avatar_url').eq('id', id).single()
+    if (error || !data) return res.status(404).json({ error: 'Not found' })
+    res.json(data)
 })
 
 // Search users by username prefix — case-insensitive, includes recent

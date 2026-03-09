@@ -112,7 +112,12 @@
 
     /* ═══ FEED ═══ */
     .feed-box { background:#fff; border:1px solid #336699; }
-    .feed-box .box-header { background:linear-gradient(180deg,#5d8ab0,#3a6699); color:#fff; font-weight:bold; font-size:12px; padding:7px 12px; text-transform:uppercase; letter-spacing:1px; }
+    .feed-box .box-header { background:linear-gradient(180deg,#5d8ab0,#3a6699); color:#fff; font-weight:bold; font-size:12px; padding:7px 12px; text-transform:uppercase; letter-spacing:1px; display:flex; align-items:center; justify-content:space-between; }
+    .feed-toggle { display:flex; border:1px solid #2a5a8a; border-radius:2px; overflow:hidden; flex-shrink:0; }
+    .feed-toggle-btn { padding:3px 10px; font-size:11px; font-family:Arial; font-weight:bold; cursor:pointer; border:none; background:rgba(0,0,0,0.2); color:#cce0ff; letter-spacing:0.3px; transition:background 0.15s; }
+    .feed-toggle-btn.active { background:rgba(255,255,255,0.25); color:#fff; }
+    .feed-toggle-btn:hover:not(.active) { background:rgba(255,255,255,0.12); }
+    body.dark .feed-toggle { border-color:#3a4a6a; }
     .feed-empty { padding:28px; text-align:center; color:#999; font-style:italic; }
     .feed-post { border-bottom:1px solid #dde5f0; padding:14px 16px; }
     .feed-post:last-child { border-bottom:none; }
@@ -269,7 +274,13 @@
         </div>
 
         <div class="feed-box">
-            <div class="box-header">📰 Your Feed</div>
+            <div class="box-header">
+                <span id="feed-header-label">📰 My Feed</span>
+                <div class="feed-toggle">
+                    <button class="feed-toggle-btn active" id="btn-my-feed"    onclick="switchFeed('my')">My Feed</button>
+                    <button class="feed-toggle-btn"        id="btn-world-feed" onclick="switchFeed('world')">🌍 World</button>
+                </div>
+            </div>
             <div id="feed-container" class="feed-empty">Loading feed...</div>
         </div>
     </div>
@@ -391,21 +402,52 @@ function renderTextWithTags(text) {
 }
 
 // ── Feed ──────────────────────────────────────
+let currentFeedMode = 'my'
+
+function switchFeed(mode) {
+    currentFeedMode = mode
+    document.getElementById('btn-my-feed').classList.toggle('active', mode === 'my')
+    document.getElementById('btn-world-feed').classList.toggle('active', mode === 'world')
+    document.getElementById('feed-header-label').textContent = mode === 'my' ? '📰 My Feed' : '🌍 World Feed'
+    loadFeed()
+}
+
 async function loadFeed() {
     const [friendsRes, postsRes] = await Promise.all([fetch('/api/friends/'+loggedInUserId), fetch('/api/posts')])
     const friends  = (await friendsRes.json()).friends || []
     const allPosts = await postsRes.json()
     const friendIds = friends.map(f => f.id)
-    const feedPosts = allPosts.filter(p => p.user_id === loggedInUserId || friendIds.includes(p.user_id))
+
+    const feedPosts = currentFeedMode === 'world'
+        ? allPosts.filter(p => p.user_id !== loggedInUserId && !friendIds.includes(p.user_id))
+        : allPosts.filter(p => p.user_id === loggedInUserId || friendIds.includes(p.user_id))
+
     const container = document.getElementById('feed-container')
 
     if (!feedPosts.length) {
-        container.innerHTML = `<div class="feed-empty">Nothing here yet — add some friends to see their posts!</div>`
+        const msg = currentFeedMode === 'world'
+            ? 'No posts from other users yet — check back later!'
+            : 'Nothing here yet — add some friends to see their posts!'
+        container.innerHTML = `<div class="feed-empty">${msg}</div>`
         return
     }
 
     const userMap = {}
     friends.forEach(f => { userMap[f.id] = f })
+
+    // For world feed, fetch profiles for unknown users
+    if (currentFeedMode === 'world') {
+        const unknownIds = [...new Set(feedPosts.map(p => p.user_id).filter(id => id !== loggedInUserId && !userMap[id]))]
+        if (unknownIds.length) {
+            await Promise.all(unknownIds.map(async id => {
+                try {
+                    const r = await fetch('/api/user-profile/' + id)
+                    if (r.ok) { const d = await r.json(); userMap[id] = d }
+                } catch(e) {}
+            }))
+        }
+    }
+
     container.innerHTML = ''
 
     feedPosts.forEach(post => {
