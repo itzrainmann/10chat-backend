@@ -440,27 +440,59 @@ function escHtml(str) {
 }
 
 loadProfile()
-async function checkNotifications() {
+// ── Notification Sound ────────────────────────
+function playNotifSound() {
+    try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)()
+        const oscillator = ctx.createOscillator()
+        const gainNode = ctx.createGain()
+
+        oscillator.connect(gainNode)
+        gainNode.connect(ctx.destination)
+
+        oscillator.type = 'sine'
+        oscillator.frequency.setValueAtTime(880, ctx.currentTime)
+        oscillator.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.2)
+
+        gainNode.gain.setValueAtTime(0.3, ctx.currentTime)
+        gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4)
+
+        oscillator.start(ctx.currentTime)
+        oscillator.stop(ctx.currentTime + 0.4)
+    } catch (e) {}
+}
+
+async function checkNotificationsWithSound() {
     if (!loggedInUserId) return
 
-    // Check unread messages
     const msgRes  = await fetch('/api/messages/unread/' + loggedInUserId)
     const msgData = await msgRes.json()
-    if (msgData.count > 0) {
-        const tab = document.getElementById('nav-messages')
-        if (tab) tab.classList.add('tab-alert')
-    }
 
-    // Check pending friend requests
     const frRes  = await fetch('/api/friends/pending/' + loggedInUserId)
     const frData = await frRes.json()
-    if (frData.pending && frData.pending.length > 0) {
-        const tab = document.getElementById('nav-friends-tab')
-        if (tab) tab.classList.add('tab-alert')
+
+    const hasNotif = msgData.count > 0 || (frData.pending && frData.pending.length > 0)
+
+    if (hasNotif) {
+        // Only play sound once per session so it doesnt replay on every page load
+        if (!sessionStorage.getItem('notif_sound_played')) {
+            playNotifSound()
+            sessionStorage.setItem('notif_sound_played', 'true')
+        }
+
+        if (msgData.count > 0) {
+            const tab = document.getElementById('nav-messages')
+            if (tab) tab.classList.add('tab-alert')
+        }
+
+        if (frData.pending && frData.pending.length > 0) {
+            const tab = document.getElementById('nav-friends-tab')
+            if (tab) tab.classList.add('tab-alert')
+        }
     }
 }
 
-checkNotifications()
+checkNotificationsWithSound()
 </script>
 </body>
 </html>
