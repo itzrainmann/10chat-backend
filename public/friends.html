@@ -434,22 +434,24 @@ async function checkNotificationsWithSound() {
 
     const hasNotif = msgData.count > 0 || (frData.pending && frData.pending.length > 0)
 
-    if (hasNotif) {
-        // Only play sound once per session so it doesnt replay on every page load
-        if (!sessionStorage.getItem('notif_sound_played')) {
+    if (msgData.count > 0) {
+        const tab = document.getElementById('nav-messages')
+        if (tab) tab.classList.add('tab-alert')
+    }
+
+    if (frData.pending && frData.pending.length > 0) {
+        const tab = document.getElementById('nav-friends-tab')
+        if (tab) tab.classList.add('tab-alert')
+    }
+
+    // Wait for first click then play sound once
+    if (hasNotif && !sessionStorage.getItem('notif_sound_played')) {
+        const playOnClick = () => {
             playNotifSound()
             sessionStorage.setItem('notif_sound_played', 'true')
+            document.removeEventListener('click', playOnClick)
         }
-
-        if (msgData.count > 0) {
-            const tab = document.getElementById('nav-messages')
-            if (tab) tab.classList.add('tab-alert')
-        }
-
-        if (frData.pending && frData.pending.length > 0) {
-            const tab = document.getElementById('nav-friends-tab')
-            if (tab) tab.classList.add('tab-alert')
-        }
+        document.addEventListener('click', playOnClick)
     }
 }
 
