@@ -530,6 +530,16 @@
 
     .not-logged-in { padding: 28px; text-align: center; color: #555; }
     .not-logged-in a { color: #336699; font-weight: bold; }
+    
+    .nav-tab.tab-alert {
+    color: #ff4444 !important;
+    animation: tabPulse 2s ease-in-out infinite;
+}
+
+@keyframes tabPulse {
+    0%, 100% { color: #ff4444; text-shadow: none; }
+    50% { color: #ff8888; text-shadow: 0 0 8px rgba(255,60,60,0.6); }
+}
 </style>
 </head>
 <body>
@@ -1076,6 +1086,27 @@ function escHtml(str) {
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
 }
+async function checkNotifications() {
+    if (!loggedInUserId) return
+
+    // Check unread messages
+    const msgRes  = await fetch('/api/messages/unread/' + loggedInUserId)
+    const msgData = await msgRes.json()
+    if (msgData.count > 0) {
+        const tab = document.getElementById('nav-messages')
+        if (tab) tab.classList.add('tab-alert')
+    }
+
+    // Check pending friend requests
+    const frRes  = await fetch('/api/friends/pending/' + loggedInUserId)
+    const frData = await frRes.json()
+    if (frData.pending && frData.pending.length > 0) {
+        const tab = document.getElementById('nav-friends-tab')
+        if (tab) tab.classList.add('tab-alert')
+    }
+}
+
+checkNotifications()
 </script>
 
 </body>

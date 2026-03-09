@@ -75,6 +75,15 @@
     .link a {
         color: #336699;
     }
+    .nav-tab.tab-alert {
+    color: #ff4444 !important;
+    animation: tabPulse 2s ease-in-out infinite;
+}
+
+@keyframes tabPulse {
+    0%, 100% { color: #ff4444; text-shadow: none; }
+    50% { color: #ff8888; text-shadow: 0 0 8px rgba(255,60,60,0.6); }
+}
 </style>
 </head>
 <body>
