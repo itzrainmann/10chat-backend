@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>10Chat — Profile</title>
 <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -136,6 +137,33 @@
     .no-friends-msg { color:#999; font-style:italic; font-size:12px; padding:12px; display:block; }
     .nav-tab.tab-alert { color:#ff4444 !important; animation:tabPulse 2s ease-in-out infinite; }
     @keyframes tabPulse { 0%,100%{color:#ff4444;text-shadow:none;} 50%{color:#ff8888;text-shadow:0 0 8px rgba(255,60,60,0.6);} }
+
+    /* ═══ MOBILE RESPONSIVE ═══ */
+    @media (max-width: 700px) {
+        .global-nav { flex-wrap: wrap; height: auto; }
+        .global-nav .brand { font-size: 16px; padding: 0 14px; }
+        .nav-tabs { overflow-x: auto; flex-wrap: nowrap; width: 100%; border-top: 1px solid #2a4a7a; order: 5; }
+        .nav-tab { padding: 0 12px; font-size: 11px; white-space: nowrap; height: 38px; }
+        .nav-search { width: 100%; padding: 6px 10px; border-top: 1px solid #2a4a7a; order: 10; }
+        .nav-search input { width: 100%; }
+        .dark-toggle { padding: 0 10px; }
+        .signout-btn { padding: 0 10px; font-size: 11px; }
+        .search-dropdown { right: 0; width: 100%; }
+        .page-wrapper { padding: 0 8px; }
+        .profile-banner { font-size: 15px; padding: 8px 12px; margin-bottom: 8px; }
+        .main-layout { flex-direction: column; gap: 8px; }
+        .left-col { width: 100%; }
+        .right-col { width: 100%; }
+        .profile-pic-box { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 12px; text-align: left; }
+        .profile-avatar-placeholder, .profile-avatar-img { width: 80px !important; height: 80px !important; font-size: 32px !important; margin: 0 !important; flex-shrink: 0; }
+        .screen-name { font-size: 15px; }
+        .friend-btn { padding: 9px 12px; font-size: 13px; }
+        .friends-grid { gap: 8px; padding: 8px; }
+        .friend-tile { width: 68px; }
+        .edit-section input, .edit-section textarea { font-size: 14px; }
+        .blog-entry { padding: 10px 0; }
+        .youtube-embed-box iframe { max-width: 100%; height: 160px; }
+    }
 </style>
 </head>
 <body>

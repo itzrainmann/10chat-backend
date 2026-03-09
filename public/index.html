@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>10Chat — Home</title>
 <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -178,6 +179,40 @@
     .not-logged-in a { color:#336699; font-weight:bold; }
     .nav-tab.tab-alert { color:#ff4444 !important; animation:tabPulse 2s ease-in-out infinite; }
     @keyframes tabPulse { 0%,100%{color:#ff4444;text-shadow:none;} 50%{color:#ff8888;text-shadow:0 0 8px rgba(255,60,60,0.6);} }
+
+    /* ═══ MOBILE RESPONSIVE ═══ */
+    @media (max-width: 700px) {
+        .global-nav { flex-wrap: wrap; height: auto; }
+        .global-nav .brand { font-size: 16px; padding: 0 14px; }
+        .nav-tabs { overflow-x: auto; flex-wrap: nowrap; width: 100%; border-top: 1px solid #2a4a7a; order: 5; }
+        .nav-tab { padding: 0 12px; font-size: 11px; white-space: nowrap; height: 38px; }
+        .nav-search { width: 100%; padding: 6px 10px; border-top: 1px solid #2a4a7a; order: 10; }
+        .nav-search input { width: 100%; }
+        .dark-toggle { padding: 0 10px; }
+        .signout-btn { padding: 0 10px; font-size: 11px; }
+        .search-dropdown { right: 0; width: 100%; }
+        .welcome-bar { font-size: 13px; padding: 6px 12px; }
+        .page-wrapper { flex-direction: column; margin: 8px auto; padding: 0 8px; gap: 8px; }
+        .left-col { width: 100%; }
+        .right-col { width: 100%; }
+        .mini-profile-card .card-body { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 10px; text-align: left; }
+        .mini-avatar-placeholder, .mini-avatar { width: 60px !important; height: 60px !important; font-size: 24px !important; margin: 0 !important; flex-shrink: 0; }
+        .mini-username { font-size: 14px; }
+        .mini-status { margin-bottom: 4px; }
+        .update-btn { padding: 5px 8px; font-size: 11px; }
+        .post-input-row input { font-size: 14px; }
+        .post-body-row textarea { font-size: 14px; }
+        .post-body-row { flex-direction: column; }
+        .post-send-btn { width: 100%; padding: 10px; align-self: auto; }
+        .feed-post { padding: 10px 12px; }
+        .feed-post-footer { gap: 10px; flex-wrap: wrap; }
+        .feed-box .box-header { flex-wrap: wrap; gap: 6px; }
+        .comment-input-row { flex-direction: column; }
+        .comment-input-row button { width: 100%; padding: 9px; }
+        .comment-input-row input { font-size: 14px; }
+        .nav-btn { padding: 11px 12px; }
+        .tag-dropdown { width: 100%; }
+    }
 </style>
 </head>
 <body>

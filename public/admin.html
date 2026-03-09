@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>10Chat — Admin Tools</title>
 <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -87,6 +88,24 @@
     .loading-msg { padding: 18px; text-align: center; color: #999; }
 
     #access-denied { padding: 40px; text-align: center; color: #a83333; font-size: 16px; font-weight: bold; display: none; }
+
+    /* ═══ MOBILE RESPONSIVE ═══ */
+    @media (max-width: 700px) {
+        .global-nav { flex-wrap: wrap; height: auto; }
+        .global-nav .brand { font-size: 16px; padding: 0 14px; }
+        .nav-tabs { overflow-x: auto; flex-wrap: nowrap; width: 100%; border-top: 1px solid #2a4a7a; order: 5; }
+        .nav-tab { padding: 0 12px; font-size: 11px; white-space: nowrap; height: 38px; }
+        .nav-search { width: 100%; padding: 6px 10px; border-top: 1px solid #2a4a7a; order: 10; }
+        .nav-search input { width: 100%; }
+        .signout-btn { padding: 0 10px; font-size: 11px; }
+        .search-dropdown { right: 0; width: 100%; }
+        .page-wrapper { margin: 8px auto; padding: 0 8px; }
+        .admin-tabs { flex-wrap: wrap; }
+        .admin-tab { flex: 1; text-align: center; padding: 7px 8px; font-size: 11px; }
+        .stats-row { flex-wrap: wrap; gap: 8px; }
+        .stat-box { flex: 1; min-width: 80px; }
+        .admin-item { flex-wrap: wrap; gap: 6px; }
+    }
 </style>
 </head>
 <body>
