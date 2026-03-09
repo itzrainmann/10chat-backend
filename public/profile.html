@@ -4,103 +4,138 @@
 <title>10Chat — Profile</title>
 <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background-color: #c8d5e8; font-family: Arial, sans-serif; font-size: 13px; color: #000; }
+    body { background-color: #c8d5e8; font-family: Arial, sans-serif; font-size: 13px; color: #000; transition: background-color 0.3s, color 0.3s; }
 
-    .global-nav { background: linear-gradient(180deg, #3a6aaa, #1a3a6b); border-bottom: 2px solid #0f2547; display: flex; align-items: stretch; height: 48px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
-    .global-nav .brand { font-weight: bold; font-size: 20px; letter-spacing: 2px; color: #fff; padding: 0 22px; display: flex; align-items: center; border-right: 1px solid #4a7aaa; text-decoration: none; background: linear-gradient(180deg, #4a7aaa, #1a3a6b); }
-    .nav-tabs { display: flex; align-items: stretch; }
-    .nav-tab { display: flex; align-items: center; padding: 0 22px; color: #cce0ff; text-decoration: none; font-size: 13px; font-weight: bold; border-right: 1px solid #3a5580; position: relative; cursor: pointer; letter-spacing: 0.5px; transition: background 0.1s; }
-    .nav-tab:hover { background: rgba(255,255,255,0.12); color: #fff; }
-    .nav-tab.active { background: rgba(255,255,255,0.18); color: #fff; border-bottom: 3px solid #7eb3e8; }
-    .notif-dot { width: 8px; height: 8px; background: #ff3b3b; border-radius: 50%; position: absolute; top: 8px; right: 9px; display: none; animation: pulse 1.5s infinite; }
-    @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.3); opacity: 0.7; } }
-    .notif-dot.visible { display: block; }
-    .nav-search { margin-left: auto; display: flex; align-items: center; gap: 6px; padding: 0 12px; position: relative; }
-    .nav-search input { padding: 6px 12px; border: 1px solid #7599bc; background: #f0f5ff; font-family: Arial; font-size: 12px; width: 220px; color: #000; outline: none; border-radius: 2px; }
-    .nav-search input:focus { border-color: #336699; background: #fff; }
-    .nav-search button { background: linear-gradient(180deg, #7599bc, #4a77a8); color: #fff; border: 1px solid #336699; padding: 6px 14px; cursor: pointer; font-family: Arial; font-size: 12px; font-weight: bold; border-radius: 2px; }
-    .signout-btn { display: flex; align-items: center; padding: 0 18px; background: linear-gradient(180deg, #c45050, #8b2020); color: #fff; font-size: 12px; font-weight: bold; cursor: pointer; border: none; border-left: 1px solid #0f2547; text-decoration: none; }
-    .signout-btn:hover { background: linear-gradient(180deg, #a83333, #6e1515); }
-    .search-dropdown { position: absolute; top: 48px; right: 60px; width: 240px; background: #fff; border: 1px solid #336699; z-index: 300; display: none; box-shadow: 2px 4px 12px rgba(0,0,0,0.25); }
-    .search-dropdown-section { padding: 5px 10px 3px; font-size: 10px; color: #999; text-transform: uppercase; letter-spacing: 0.8px; background: #f5f8fd; border-bottom: 1px solid #dde5f0; }
-    .search-result-item { padding: 8px 12px; border-bottom: 1px solid #edf2f8; cursor: pointer; color: #336699; font-weight: bold; font-size: 12px; display: flex; align-items: center; gap: 7px; }
-    .search-result-item:last-child { border-bottom: none; }
-    .search-result-item:hover { background: #eef2f8; }
-    .search-no-result { padding: 8px 12px; color: #999; font-size: 12px; font-style: italic; }
+    /* ═══ DARK MODE ═══ */
+    body.dark { background-color: #1a1e2e; color: #e0e6f0; }
+    body.dark .myspace-box,
+    body.dark .profile-pic-box,
+    body.dark .edit-section { background: #252a3a; border-color: #3a4a6a; }
+    body.dark .myspace-box .box-body { color: #c8d5e8; }
+    body.dark .screen-name { color: #7eb3e8; }
+    body.dark .join-date, body.dark .entry-date { color: #6a7a8a; }
+    body.dark .friend-count { color: #7eb3e8; }
+    body.dark .status-bar { background: #1e2538; border-color: #3a4a6a; color: #c8d5e8; }
+    body.dark .status-bar span { color: #7eb3e8; }
+    body.dark .friend-btn.pending { background: #2a3048; color: #6a7a8a; border-color: #3a4a6a; }
+    body.dark .friend-btn.unfriend { background: #2a3048; }
+    body.dark .friend-tile a { color: #7eb3e8; }
+    body.dark .blog-entry { border-bottom-color: #3a4a6a; }
+    body.dark .entry-title { color: #7eb3e8; }
+    body.dark .entry-body { color: #b0bdd0; }
+    body.dark .profile-banner { background: linear-gradient(180deg,#2a3a5a,#1a2a4a); border-color: #3a4a6a; }
+    body.dark .edit-section label { color: #7eb3e8; }
+    body.dark .edit-section input,
+    body.dark .edit-section textarea { background: #1e2538; border-color: #3a4a6a; color: #e0e6f0; }
+    body.dark .pending-request-row { border-bottom-color: #3a4a6a; }
+    body.dark .req-name { color: #7eb3e8; }
+    body.dark .search-dropdown { background: #252a3a; border-color: #3a4a6a; }
+    body.dark .search-result-item { color: #7eb3e8; border-bottom-color: #3a4a6a; }
+    body.dark .search-result-item:hover { background: #2a3048; }
+    body.dark .search-dropdown-section { background: #1e2538; color: #6a7a8a; border-color: #3a4a6a; }
+    body.dark .youtube-embed-box { background: #1e2538; border-color: #3a4a6a; }
 
-    .page-wrapper { max-width: 1060px; margin: 14px auto; padding: 0 12px; }
-    .profile-banner { background: linear-gradient(180deg, #5d8ab0, #3a6699); padding: 11px 16px; color: #fff; font-size: 20px; font-weight: bold; border: 1px solid #336699; margin-bottom: 12px; }
-    .main-layout { display: flex; gap: 12px; }
-    .left-col { width: 240px; flex-shrink: 0; }
-    .right-col { flex: 1; min-width: 0; }
+    /* ═══ NAV ═══ */
+    .global-nav { background:linear-gradient(180deg,#3a6aaa,#1a3a6b); border-bottom:2px solid #0f2547; display:flex; align-items:stretch; height:48px; position:sticky; top:0; z-index:100; box-shadow:0 2px 8px rgba(0,0,0,0.4); }
+    .global-nav .brand { font-weight:bold; font-size:20px; letter-spacing:2px; color:#fff; padding:0 22px; display:flex; align-items:center; border-right:1px solid #4a7aaa; text-decoration:none; background:linear-gradient(180deg,#4a7aaa,#1a3a6b); }
+    .nav-tabs { display:flex; align-items:stretch; }
+    .nav-tab { display:flex; align-items:center; padding:0 22px; color:#cce0ff; text-decoration:none; font-size:13px; font-weight:bold; border-right:1px solid #3a5580; position:relative; cursor:pointer; letter-spacing:0.5px; transition:background 0.1s; }
+    .nav-tab:hover { background:rgba(255,255,255,0.12); color:#fff; }
+    .nav-tab.active { background:rgba(255,255,255,0.18); color:#fff; border-bottom:3px solid #7eb3e8; }
+    .notif-dot { width:8px; height:8px; background:#ff3b3b; border-radius:50%; position:absolute; top:8px; right:9px; display:none; animation:pulse 1.5s infinite; }
+    @keyframes pulse { 0%,100%{transform:scale(1);opacity:1;} 50%{transform:scale(1.3);opacity:0.7;} }
+    .notif-dot.visible { display:block; }
+    .tab-badge { background:#cc0000; color:#fff; font-size:10px; font-weight:bold; padding:1px 5px; border-radius:8px; margin-left:5px; display:none; }
+    .tab-badge.visible { display:inline-block; }
+    .nav-search { margin-left:auto; display:flex; align-items:center; gap:6px; padding:0 12px; position:relative; }
+    .nav-search input { padding:6px 12px; border:1px solid #7599bc; background:#f0f5ff; font-family:Arial; font-size:12px; width:220px; color:#000; outline:none; border-radius:2px; }
+    .nav-search input:focus { border-color:#336699; background:#fff; }
+    .nav-search button { background:linear-gradient(180deg,#7599bc,#4a77a8); color:#fff; border:1px solid #336699; padding:6px 14px; cursor:pointer; font-family:Arial; font-size:12px; font-weight:bold; border-radius:2px; }
+    .signout-btn { display:flex; align-items:center; padding:0 18px; background:linear-gradient(180deg,#c45050,#8b2020); color:#fff; font-size:12px; font-weight:bold; cursor:pointer; border:none; border-left:1px solid #0f2547; text-decoration:none; }
+    .signout-btn:hover { background:linear-gradient(180deg,#a83333,#6e1515); }
+    .dark-toggle { display:flex; align-items:center; padding:0 14px; cursor:pointer; background:none; border:none; border-left:1px solid #3a5580; color:#cce0ff; font-size:17px; }
+    .dark-toggle:hover { color:#fff; background:rgba(255,255,255,0.1); }
+    .search-dropdown { position:absolute; top:48px; right:60px; width:240px; background:#fff; border:1px solid #336699; z-index:300; display:none; box-shadow:2px 4px 12px rgba(0,0,0,0.25); }
+    .search-dropdown-section { padding:5px 10px 3px; font-size:10px; color:#999; text-transform:uppercase; letter-spacing:0.8px; background:#f5f8fd; border-bottom:1px solid #dde5f0; }
+    .search-result-item { padding:8px 12px; border-bottom:1px solid #edf2f8; cursor:pointer; color:#336699; font-weight:bold; font-size:12px; display:flex; align-items:center; gap:7px; }
+    .search-result-item:last-child { border-bottom:none; }
+    .search-result-item:hover { background:#eef2f8; }
+    .search-no-result { padding:8px 12px; color:#999; font-size:12px; font-style:italic; }
 
-    .myspace-box { background: #fff; border: 1px solid #336699; margin-bottom: 12px; }
-    .myspace-box .box-header { background: linear-gradient(180deg, #5d8ab0, #3a6699); color: #fff; font-weight: bold; padding: 7px 12px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
-    .myspace-box .box-body { padding: 12px; line-height: 1.7; }
+    /* ═══ LAYOUT ═══ */
+    .page-wrapper { max-width:1060px; margin:14px auto; padding:0 12px; }
+    .profile-banner { background:linear-gradient(180deg,#5d8ab0,#3a6699); padding:11px 16px; color:#fff; font-size:20px; font-weight:bold; border:1px solid #336699; margin-bottom:12px; }
+    .main-layout { display:flex; gap:12px; }
+    .left-col { width:240px; flex-shrink:0; }
+    .right-col { flex:1; min-width:0; }
 
-    .profile-pic-box { background: #fff; border: 1px solid #336699; margin-bottom: 12px; text-align: center; padding: 14px; }
-    .profile-avatar-placeholder { width: 140px; height: 140px; background: linear-gradient(180deg, #7599bc, #4a77a8); border: 2px solid #336699; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 56px; font-weight: bold; margin: 0 auto 10px; }
-    .profile-avatar-img { width: 140px; height: 140px; object-fit: cover; border: 2px solid #336699; display: block; margin: 0 auto 10px; }
-    .screen-name { font-weight: bold; font-size: 16px; color: #336699; margin-top: 6px; }
-    .join-date { font-size: 11px; color: #999; margin-top: 4px; }
-    .friend-count { font-size: 12px; color: #336699; margin-top: 4px; font-weight: bold; }
+    .myspace-box { background:#fff; border:1px solid #336699; margin-bottom:12px; }
+    .myspace-box .box-header { background:linear-gradient(180deg,#5d8ab0,#3a6699); color:#fff; font-weight:bold; padding:7px 12px; font-size:12px; text-transform:uppercase; letter-spacing:1px; }
+    .myspace-box .box-body { padding:12px; line-height:1.7; }
 
-    .status-bar { background: #eef2f8; border: 1px solid #336699; padding: 7px 12px; font-size: 12px; margin-bottom: 12px; color: #333; }
-    .status-bar span { color: #336699; font-weight: bold; }
+    .profile-pic-box { background:#fff; border:1px solid #336699; margin-bottom:12px; text-align:center; padding:14px; }
+    .profile-avatar-placeholder { width:140px; height:140px; background:linear-gradient(180deg,#7599bc,#4a77a8); border:2px solid #336699; display:flex; align-items:center; justify-content:center; color:#fff; font-size:56px; font-weight:bold; margin:0 auto 10px; }
+    .profile-avatar-img { width:140px; height:140px; object-fit:cover; border:2px solid #336699; display:block; margin:0 auto 10px; }
+    .screen-name { font-weight:bold; font-size:16px; color:#336699; margin-top:6px; }
+    .join-date { font-size:11px; color:#999; margin-top:4px; }
+    .friend-count { font-size:12px; color:#336699; margin-top:4px; font-weight:bold; }
 
-    .friend-btn { display: block; margin-top: 8px; padding: 7px 16px; font-size: 12px; font-family: Arial; font-weight: bold; border: 1px solid #336699; cursor: pointer; text-align: center; width: 100%; }
-    .friend-btn.add { background: linear-gradient(180deg, #7599bc, #4a77a8); color: #fff; }
-    .friend-btn.add:hover { background: linear-gradient(180deg, #5d86af, #2e5a88); }
-    .friend-btn.pending { background: #eef2f8; color: #888; border-color: #aaa; cursor: default; }
-    .friend-btn.accept { background: linear-gradient(180deg, #77bc87, #3a9950); color: #fff; border-color: #2e7d3e; }
-    .friend-btn.decline { background: linear-gradient(180deg, #c97070, #a83333); color: #fff; border-color: #7d2e2e; margin-top: 5px; }
-    .friend-btn.unfriend { background: #eef2f8; color: #a83333; border-color: #a83333; margin-top: 5px; }
-    .friend-btn.unfriend:hover { background: #fdeaea; }
+    .status-bar { background:#eef2f8; border:1px solid #336699; padding:7px 12px; font-size:12px; margin-bottom:12px; color:#333; }
+    .status-bar span { color:#336699; font-weight:bold; }
 
-    .friends-grid { display: flex; flex-wrap: wrap; gap: 10px; padding: 12px; }
-    .friend-tile { text-align: center; width: 76px; }
-    .friend-tile img { width: 66px; height: 66px; object-fit: cover; border: 2px solid #336699; display: block; margin: 0 auto; }
-    .friend-avatar-placeholder { width: 66px; height: 66px; background: linear-gradient(180deg, #7599bc, #4a77a8); border: 2px solid #336699; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 26px; font-weight: bold; margin: 0 auto; }
-    .friend-tile a { display: block; font-size: 11px; color: #336699; text-decoration: none; margin-top: 4px; word-break: break-word; }
-    .friend-tile a:hover { text-decoration: underline; }
+    .friend-btn { display:block; margin-top:8px; padding:7px 16px; font-size:12px; font-family:Arial; font-weight:bold; border:1px solid #336699; cursor:pointer; text-align:center; width:100%; }
+    .friend-btn.add { background:linear-gradient(180deg,#7599bc,#4a77a8); color:#fff; }
+    .friend-btn.add:hover { background:linear-gradient(180deg,#5d86af,#2e5a88); }
+    .friend-btn.pending { background:#eef2f8; color:#888; border-color:#aaa; cursor:default; }
+    .friend-btn.accept { background:linear-gradient(180deg,#77bc87,#3a9950); color:#fff; border-color:#2e7d3e; }
+    .friend-btn.decline { background:linear-gradient(180deg,#c97070,#a83333); color:#fff; border-color:#7d2e2e; margin-top:5px; }
+    .friend-btn.unfriend { background:#eef2f8; color:#a83333; border-color:#a83333; margin-top:5px; }
+    .friend-btn.unfriend:hover { background:#fdeaea; }
 
-    .pending-request-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #dde5f0; }
-    .pending-request-row:last-child { border-bottom: none; }
-    .req-name { color: #336699; font-weight: bold; font-size: 13px; text-decoration: none; }
-    .req-name:hover { text-decoration: underline; }
-    .req-actions { display: flex; gap: 6px; }
-    .req-btn { padding: 5px 14px; font-size: 12px; font-family: Arial; font-weight: bold; border: 1px solid; cursor: pointer; }
-    .req-btn.accept-small { background: linear-gradient(180deg, #77bc87, #3a9950); color: #fff; border-color: #2e7d3e; }
-    .req-btn.decline-small { background: #eef2f8; color: #a83333; border-color: #a83333; }
+    /* YouTube embed box */
+    .youtube-embed-box { background:#f5f8fd; border:1px solid #dde5f0; padding:10px; margin-bottom:12px; text-align:center; }
+    .youtube-embed-box .yt-label { font-size:11px; color:#336699; font-weight:bold; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:8px; }
+    .youtube-embed-box iframe { width:100%; max-width:220px; height:124px; border:none; display:block; margin:0 auto; }
+    .youtube-embed-box .no-song { font-size:11px; color:#999; font-style:italic; }
 
-    .edit-section { background: #fff; border: 1px solid #336699; margin-bottom: 12px; display: none; }
-    .edit-section .box-header { background: linear-gradient(180deg, #5d8ab0, #3a6699); color: #fff; font-weight: bold; padding: 7px 12px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
-    .edit-section .edit-body { padding: 12px; }
-    .edit-section label { display: block; font-weight: bold; font-size: 12px; color: #336699; margin-bottom: 3px; margin-top: 12px; }
-    .edit-section label:first-child { margin-top: 0; }
-    .edit-section input, .edit-section textarea { width: 100%; padding: 7px 12px; border: 1px solid #7599bc; font-family: Arial; font-size: 13px; outline: none; }
-    .edit-section input:focus, .edit-section textarea:focus { border-color: #336699; }
-    .edit-section button { background: linear-gradient(180deg, #7599bc, #4a77a8); color: #fff; border: 1px solid #336699; padding: 7px 20px; cursor: pointer; font-family: Arial; font-size: 13px; font-weight: bold; margin-top: 12px; }
-    .edit-section button:hover { background: linear-gradient(180deg, #5d86af, #2e5a88); }
-    .save-msg { font-size: 11px; color: #336699; margin-left: 8px; }
+    .friends-grid { display:flex; flex-wrap:wrap; gap:10px; padding:12px; }
+    .friend-tile { text-align:center; width:76px; }
+    .friend-tile img { width:66px; height:66px; object-fit:cover; border:2px solid #336699; display:block; margin:0 auto; }
+    .friend-avatar-placeholder { width:66px; height:66px; background:linear-gradient(180deg,#7599bc,#4a77a8); border:2px solid #336699; display:flex; align-items:center; justify-content:center; color:#fff; font-size:26px; font-weight:bold; margin:0 auto; }
+    .friend-tile a { display:block; font-size:11px; color:#336699; text-decoration:none; margin-top:4px; word-break:break-word; }
+    .friend-tile a:hover { text-decoration:underline; }
 
-    .blog-entry { border-bottom: 1px solid #ddd; padding: 12px 0; }
-    .blog-entry:last-child { border-bottom: none; }
-    .entry-title { font-weight: bold; color: #336699; font-size: 15px; margin-bottom: 4px; }
-    .entry-date { font-size: 11px; color: #999; margin-bottom: 6px; }
-    .entry-body { color: #333; line-height: 1.7; font-size: 13px; }
-    .post-tag { color: #336699; font-weight: bold; text-decoration: none; }
-    .post-tag:hover { text-decoration: underline; }
-    .no-friends-msg { color: #999; font-style: italic; font-size: 12px; padding: 12px; display: block; }
-    .nav-tab.tab-alert {
-    color: #ff4444 !important;
-    animation: tabPulse 2s ease-in-out infinite;
-}
+    .pending-request-row { display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid #dde5f0; }
+    .pending-request-row:last-child { border-bottom:none; }
+    .req-name { color:#336699; font-weight:bold; font-size:13px; text-decoration:none; }
+    .req-name:hover { text-decoration:underline; }
+    .req-actions { display:flex; gap:6px; }
+    .req-btn { padding:5px 14px; font-size:12px; font-family:Arial; font-weight:bold; border:1px solid; cursor:pointer; }
+    .req-btn.accept-small { background:linear-gradient(180deg,#77bc87,#3a9950); color:#fff; border-color:#2e7d3e; }
+    .req-btn.decline-small { background:#eef2f8; color:#a83333; border-color:#a83333; }
 
-@keyframes tabPulse {
-    0%, 100% { color: #ff4444; text-shadow: none; }
-    50% { color: #ff8888; text-shadow: 0 0 8px rgba(255,60,60,0.6); }
-}
+    .edit-section { background:#fff; border:1px solid #336699; margin-bottom:12px; display:none; }
+    .edit-section .box-header { background:linear-gradient(180deg,#5d8ab0,#3a6699); color:#fff; font-weight:bold; padding:7px 12px; font-size:12px; text-transform:uppercase; letter-spacing:1px; }
+    .edit-section .edit-body { padding:12px; }
+    .edit-section label { display:block; font-weight:bold; font-size:12px; color:#336699; margin-bottom:3px; margin-top:12px; }
+    .edit-section label:first-child { margin-top:0; }
+    .edit-section input, .edit-section textarea { width:100%; padding:7px 12px; border:1px solid #7599bc; font-family:Arial; font-size:13px; outline:none; }
+    .edit-section input:focus, .edit-section textarea:focus { border-color:#336699; }
+    .edit-section button { background:linear-gradient(180deg,#7599bc,#4a77a8); color:#fff; border:1px solid #336699; padding:7px 20px; cursor:pointer; font-family:Arial; font-size:13px; font-weight:bold; margin-top:12px; }
+    .edit-section button:hover { background:linear-gradient(180deg,#5d86af,#2e5a88); }
+    .save-msg { font-size:11px; color:#336699; margin-left:8px; }
+    .yt-hint { font-size:10px; color:#999; margin-top:3px; }
+
+    .blog-entry { border-bottom:1px solid #ddd; padding:12px 0; }
+    .blog-entry:last-child { border-bottom:none; }
+    .entry-title { font-weight:bold; color:#336699; font-size:15px; margin-bottom:4px; }
+    .entry-date { font-size:11px; color:#999; margin-bottom:6px; }
+    .entry-body { color:#333; line-height:1.7; font-size:13px; }
+    .post-tag { color:#336699; font-weight:bold; text-decoration:none; }
+    .post-tag:hover { text-decoration:underline; }
+    .no-friends-msg { color:#999; font-style:italic; font-size:12px; padding:12px; display:block; }
+    .nav-tab.tab-alert { color:#ff4444 !important; animation:tabPulse 2s ease-in-out infinite; }
+    @keyframes tabPulse { 0%,100%{color:#ff4444;text-shadow:none;} 50%{color:#ff8888;text-shadow:0 0 8px rgba(255,60,60,0.6);} }
 </style>
 </head>
 <body>
@@ -109,18 +144,21 @@
     <a href="/" class="brand">10Chat</a>
     <div class="nav-tabs">
         <a class="nav-tab" href="/">Home</a>
-        <a class="nav-tab" href="/messages.html" id="nav-messages">Messages<span class="notif-dot" id="dot-messages"></span></a>
+        <a class="nav-tab" href="/messages.html" id="nav-messages">
+            Messages
+            <span class="tab-badge" id="tab-badge-messages"></span>
+            <span class="notif-dot" id="dot-messages"></span>
+        </a>
         <a class="nav-tab" href="/friends.html" id="nav-friends-tab">Friends<span class="notif-dot" id="dot-friends"></span></a>
         <a class="nav-tab active" id="nav-account" href="#">Account</a>
     </div>
     <div class="nav-search">
         <input type="text" id="search-input" placeholder="Search for users..." autocomplete="off"
-            oninput="liveSearch(this.value)"
-            onkeydown="if(event.key==='Enter') doSearch()"
-            onfocus="showSearchDropdown()" />
+            oninput="liveSearch(this.value)" onkeydown="if(event.key==='Enter') doSearch()" onfocus="showSearchDropdown()" />
         <button onclick="doSearch()">Search</button>
         <div class="search-dropdown" id="search-dropdown"></div>
     </div>
+    <button class="dark-toggle" onclick="toggleDark()" id="dark-btn" title="Toggle dark mode">🌙</button>
     <a class="signout-btn" href="#" onclick="logOut()">Sign Out</a>
 </div>
 
@@ -135,6 +173,17 @@
                 <div class="friend-count" id="profile-friend-count"></div>
                 <div id="friend-action-area"></div>
             </div>
+
+            <!-- YouTube embed -->
+            <div class="myspace-box" id="youtube-box">
+                <div class="box-header">🎵 Favourite Song</div>
+                <div class="box-body" style="padding:10px;">
+                    <div class="youtube-embed-box" id="youtube-embed-area">
+                        <div class="no-song" id="youtube-placeholder">No song set.</div>
+                    </div>
+                </div>
+            </div>
+
             <div class="status-bar">Status: <span id="profile-status">—</span></div>
             <div class="myspace-box"><div class="box-header">About Me</div><div class="box-body" id="profile-bio">—</div></div>
             <div class="myspace-box" id="interests-box" style="display:none;"><div class="box-header">Interests</div><div class="box-body" id="profile-interests">—</div></div>
@@ -159,6 +208,9 @@
                     <textarea id="edit-bio" placeholder="Tell people about yourself..." rows="3"></textarea>
                     <label>Interests</label>
                     <textarea id="edit-interests" placeholder="Music, gaming, movies..." rows="2"></textarea>
+                    <label>🎵 Favourite Song (YouTube URL)</label>
+                    <input id="edit-youtube" placeholder="https://www.youtube.com/watch?v=..." />
+                    <div class="yt-hint">Paste any YouTube link — it'll show on your profile like MySpace!</div>
                     <button onclick="saveProfile()">Save Changes</button>
                     <span class="save-msg" id="save-msg"></span>
                 </div>
@@ -176,8 +228,17 @@
 const loggedInUser   = localStorage.getItem('username')
 const loggedInUserId = localStorage.getItem('userId')
 
-if (loggedInUser) {
-    document.getElementById('nav-account').href = '/profile/' + loggedInUser
+if (loggedInUser) document.getElementById('nav-account').href = '/profile/' + loggedInUser
+
+// ── DARK MODE ─────────────────────────────────
+function toggleDark() {
+    const isDark = document.body.classList.toggle('dark')
+    localStorage.setItem('darkMode', isDark ? '1' : '0')
+    document.getElementById('dark-btn').textContent = isDark ? '☀️' : '🌙'
+}
+if (localStorage.getItem('darkMode') === '1') {
+    document.body.classList.add('dark')
+    document.getElementById('dark-btn').textContent = '☀️'
 }
 
 const pathParts       = window.location.pathname.split('/')
@@ -186,6 +247,44 @@ const isOwnProfile    = loggedInUser && loggedInUser.toLowerCase() === profileUs
 
 let currentProfileId = null
 let currentRequestId = null
+
+// ── TIME AGO ──────────────────────────────────
+function timeAgo(dateStr) {
+    const diff = Date.now() - new Date(dateStr).getTime()
+    const s = Math.floor(diff/1000), m = Math.floor(s/60), h = Math.floor(m/60), d = Math.floor(h/24)
+    if (s < 60)  return 'just now'
+    if (m < 60)  return m + ' minute' + (m===1?'':'s') + ' ago'
+    if (h < 24)  return h + ' hour'   + (h===1?'':'s') + ' ago'
+    if (d < 7)   return d + ' day'    + (d===1?'':'s') + ' ago'
+    return new Date(dateStr).toLocaleDateString('en-GB')
+}
+
+// ── YOUTUBE EMBED ─────────────────────────────
+function getYouTubeId(url) {
+    if (!url) return null
+    const patterns = [
+        /youtube\.com\/watch\?v=([^&]+)/,
+        /youtu\.be\/([^?]+)/,
+        /youtube\.com\/embed\/([^?]+)/
+    ]
+    for (const p of patterns) {
+        const m = url.match(p)
+        if (m) return m[1]
+    }
+    return null
+}
+
+function renderYouTubeEmbed(url) {
+    const area = document.getElementById('youtube-embed-area')
+    const id   = getYouTubeId(url)
+    if (!id) {
+        area.innerHTML = `<div class="no-song">No song set.</div>`
+        return
+    }
+    area.innerHTML = `
+        <div class="yt-label">🎵 Now Playing</div>
+        <iframe src="https://www.youtube.com/embed/${id}?autoplay=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+}
 
 async function loadProfile() {
     const res = await fetch('/api/profile/' + profileUsername)
@@ -196,69 +295,74 @@ async function loadProfile() {
         return
     }
 
-    const data = await res.json()
+    const data    = await res.json()
     const profile = data.profile
     const posts   = data.posts
     currentProfileId = profile.id
 
-    document.getElementById('profile-banner').innerText       = profile.username + "'s Profile"
-    document.getElementById('profile-username').innerText     = profile.username
-    document.getElementById('profile-joindate').innerText     = 'Member since ' + new Date(profile.created_at).toLocaleDateString('en-GB')
-    document.getElementById('profile-status').innerText       = profile.status || '—'
-    document.getElementById('profile-bio').innerText          = profile.bio    || 'No bio yet.'
-    document.getElementById('posts-header').innerText         = profile.username + "'s Posts"
-    document.getElementById('friends-box-header').innerText   = profile.username + "'s Friends (" + (data.friendCount || 0) + ")"
-    document.getElementById('profile-friend-count').innerText = (data.friendCount || 0) + (data.friendCount === 1 ? ' friend' : ' friends')
+    document.getElementById('profile-banner').innerText     = profile.username + "'s Profile"
+    document.getElementById('profile-username').innerText   = profile.username
+    document.getElementById('profile-joindate').innerText   = 'Member since ' + new Date(profile.created_at).toLocaleDateString('en-GB')
+    document.getElementById('profile-status').innerText     = profile.status || '—'
+    document.getElementById('profile-bio').innerText        = profile.bio    || 'No bio yet.'
+    document.getElementById('posts-header').innerText       = profile.username + "'s Posts"
+    document.getElementById('friends-box-header').innerText = profile.username + "'s Friends (" + (data.friendCount||0) + ")"
+    document.getElementById('profile-friend-count').innerText = (data.friendCount||0) + (data.friendCount===1?' friend':' friends')
 
     if (profile.interests) {
         document.getElementById('profile-interests').innerText = profile.interests
         document.getElementById('interests-box').style.display = 'block'
     }
 
+    // Avatar
     const avatarWrap = document.getElementById('avatar-wrap')
-    if (profile.avatar_url) {
-        avatarWrap.innerHTML = `<img class="profile-avatar-img" src="${profile.avatar_url}" />`
-    } else {
-        document.getElementById('avatar-placeholder').innerText = profile.username.charAt(0).toUpperCase()
-    }
+    if (profile.avatar_url) avatarWrap.innerHTML = `<img class="profile-avatar-img" src="${profile.avatar_url}" />`
+    else document.getElementById('avatar-placeholder').innerText = profile.username.charAt(0).toUpperCase()
+
+    // YouTube embed
+    renderYouTubeEmbed(profile.youtube_url || '')
 
     if (isOwnProfile) {
         document.getElementById('edit-box').style.display   = 'block'
-        document.getElementById('edit-status').value        = profile.status    || ''
-        document.getElementById('edit-bio').value           = profile.bio       || ''
-        document.getElementById('edit-interests').value     = profile.interests || ''
+        document.getElementById('edit-status').value        = profile.status      || ''
+        document.getElementById('edit-bio').value           = profile.bio         || ''
+        document.getElementById('edit-interests').value     = profile.interests   || ''
+        document.getElementById('edit-youtube').value       = profile.youtube_url || ''
         loadPendingRequests()
     } else if (loggedInUserId) {
         loadFriendStatus()
     }
 
     loadFriendsList(profile.id)
-    checkPendingRequests()
+    checkNotifications()
 
+    // Posts
     const container = document.getElementById('posts-container')
-    if (!posts || posts.length === 0) { container.innerText = 'No posts yet.'; return }
+    if (!posts?.length) { container.innerText = 'No posts yet.'; return }
     container.innerHTML = ''
     posts.forEach(post => {
         container.innerHTML += `
             <div class="blog-entry">
                 <div class="entry-title">${escHtml(post.title)}</div>
-                <div class="entry-date">${new Date(post.created_at).toLocaleDateString('en-GB')}</div>
+                <div class="entry-date" title="${new Date(post.created_at).toLocaleString('en-GB')}">${timeAgo(post.created_at)}</div>
                 <div class="entry-body">${renderTextWithTags(post.body)}</div>
             </div>`
     })
 }
 
 function renderTextWithTags(text) {
-    return escHtml(text).replace(/@(\w+)/g, (match, username) => `<a class="post-tag" href="/profile/${encodeURIComponent(username)}">@${username}</a>`)
+    return escHtml(text).replace(/@(\w+)/g, (m,u) => `<a class="post-tag" href="/profile/${encodeURIComponent(u)}">@${u}</a>`)
 }
 
 async function saveProfile() {
-    const bio       = document.getElementById('edit-bio').value
-    const status    = document.getElementById('edit-status').value
-    const interests = document.getElementById('edit-interests').value
+    const bio         = document.getElementById('edit-bio').value
+    const status      = document.getElementById('edit-status').value
+    const interests   = document.getElementById('edit-interests').value
+    const youtube_url = document.getElementById('edit-youtube').value.trim()
+
     await fetch('/api/profile/update', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: loggedInUserId, bio, status, interests })
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ userId: loggedInUserId, bio, status, interests, youtube_url })
     })
     const msg = document.getElementById('save-msg')
     msg.innerText = 'Saved!'
@@ -282,32 +386,26 @@ function renderFriendButton(status) {
 }
 
 async function sendFriendRequest() {
-    const res  = await fetch('/api/friends/request', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ senderId: loggedInUserId, receiverId: currentProfileId }) })
-    const data = await res.json()
+    const data = await (await fetch('/api/friends/request', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ senderId: loggedInUserId, receiverId: currentProfileId }) })).json()
     if (data.error) return alert(data.error)
     loadFriendStatus()
 }
-
 async function acceptRequest() {
-    const res  = await fetch('/api/friends/accept', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ requestId: currentRequestId, userId: loggedInUserId }) })
-    const data = await res.json()
+    const data = await (await fetch('/api/friends/accept', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ requestId: currentRequestId, userId: loggedInUserId }) })).json()
     if (data.error) return alert(data.error)
     loadProfile()
 }
-
 async function declineRequest() { await removeRequest(currentRequestId, loggedInUserId); loadFriendStatus() }
 async function cancelRequest()  { await removeRequest(currentRequestId, loggedInUserId); loadFriendStatus() }
 async function unfriend()       { if (!confirm('Remove this friend?')) return; await removeRequest(currentRequestId, loggedInUserId); loadProfile() }
-
 async function removeRequest(requestId, userId) {
-    await fetch('/api/friends/remove', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ requestId, userId }) })
+    await fetch('/api/friends/remove', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ requestId, userId }) })
 }
 
 async function loadFriendsList(userId) {
-    const res  = await fetch('/api/friends/' + userId)
-    const data = await res.json()
+    const data = await (await fetch('/api/friends/'+userId)).json()
     const grid = document.getElementById('friends-grid-container')
-    if (!data.friends || data.friends.length === 0) { grid.innerHTML = `<span class="no-friends-msg">No friends yet.</span>`; return }
+    if (!data.friends?.length) { grid.innerHTML=`<span class="no-friends-msg">No friends yet.</span>`; return }
     grid.innerHTML = ''
     data.friends.forEach(friend => {
         const initial    = friend.username.charAt(0).toUpperCase()
@@ -317,11 +415,10 @@ async function loadFriendsList(userId) {
 }
 
 async function loadPendingRequests() {
-    const res  = await fetch('/api/friends/pending/' + loggedInUserId)
-    const data = await res.json()
+    const data = await (await fetch('/api/friends/pending/'+loggedInUserId)).json()
     const box  = document.getElementById('pending-box')
     const cont = document.getElementById('pending-container')
-    if (!data.pending || data.pending.length === 0) { box.style.display = 'none'; return }
+    if (!data.pending?.length) { box.style.display='none'; return }
     box.style.display = 'block'
     cont.innerHTML = ''
     data.pending.forEach(req => {
@@ -334,175 +431,125 @@ async function loadPendingRequests() {
 }
 
 async function acceptPendingRequest(requestId) {
-    const res  = await fetch('/api/friends/accept', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ requestId, userId: loggedInUserId }) })
-    const data = await res.json()
+    const data = await (await fetch('/api/friends/accept', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ requestId, userId: loggedInUserId }) })).json()
     if (data.error) return alert(data.error)
-    const row = document.getElementById('req-row-' + requestId)
-    if (row) row.remove()
-    if (document.getElementById('pending-container').children.length === 0) document.getElementById('pending-box').style.display = 'none'
+    document.getElementById('req-row-'+requestId)?.remove()
+    if (!document.getElementById('pending-container').children.length) document.getElementById('pending-box').style.display='none'
     loadProfile()
 }
-
 async function declinePendingRequest(requestId) {
     await removeRequest(requestId, loggedInUserId)
-    const row = document.getElementById('req-row-' + requestId)
-    if (row) row.remove()
-    if (document.getElementById('pending-container').children.length === 0) document.getElementById('pending-box').style.display = 'none'
-}
-
-async function checkPendingRequests() {
-    if (!loggedInUserId) return
-    const res  = await fetch('/api/friends/pending/' + loggedInUserId)
-    const data = await res.json()
-    if (data.pending && data.pending.length > 0) document.getElementById('dot-friends').classList.add('visible')
+    document.getElementById('req-row-'+requestId)?.remove()
+    if (!document.getElementById('pending-container').children.length) document.getElementById('pending-box').style.display='none'
 }
 
 // ── Search ────────────────────────────────────
 let searchTimeout = null
 const RECENT_SEARCHES_KEY = '10chat_recent_searches'
-
-function getRecentSearches() {
-    try { return JSON.parse(localStorage.getItem(RECENT_SEARCHES_KEY)) || [] } catch { return [] }
+function getRecentSearches() { try { return JSON.parse(localStorage.getItem(RECENT_SEARCHES_KEY))||[] } catch { return [] } }
+function addRecentSearch(u) {
+    let r = getRecentSearches().filter(x=>x.toLowerCase()!==u.toLowerCase())
+    r.unshift(u); r=r.slice(0,5); localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(r))
 }
-function addRecentSearch(username) {
-    let recent = getRecentSearches().filter(u => u.toLowerCase() !== username.toLowerCase())
-    recent.unshift(username)
-    recent = recent.slice(0, 5)
-    localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(recent))
-}
-function showSearchDropdown() {
-    if (!document.getElementById('search-input').value.trim()) showRecentSearches()
-}
+function showSearchDropdown() { if (!document.getElementById('search-input').value.trim()) showRecentSearches() }
 function showRecentSearches() {
-    const recent = getRecentSearches()
-    const dropdown = document.getElementById('search-dropdown')
-    if (recent.length === 0) { dropdown.style.display = 'none'; return }
-    dropdown.innerHTML = `<div class="search-dropdown-section">Recently Searched</div>`
-    recent.forEach(username => {
+    const recent = getRecentSearches(), dd = document.getElementById('search-dropdown')
+    if (!recent.length) { dd.style.display='none'; return }
+    dd.innerHTML = `<div class="search-dropdown-section">Recently Searched</div>`
+    recent.forEach(u => {
         const item = document.createElement('div')
         item.className = 'search-result-item'
-        item.innerHTML = `<span>🕐</span> ${escHtml(username)}`
-        item.onclick = () => { window.location.href = '/profile/' + encodeURIComponent(username) }
-        dropdown.appendChild(item)
+        item.innerHTML = `<span>🕐</span> ${escHtml(u)}`
+        item.onclick = () => { window.location.href='/profile/'+encodeURIComponent(u) }
+        dd.appendChild(item)
     })
-    dropdown.style.display = 'block'
+    dd.style.display = 'block'
 }
 async function liveSearch(query) {
-    const dropdown = document.getElementById('search-dropdown')
+    const dd = document.getElementById('search-dropdown')
     clearTimeout(searchTimeout)
     if (!query.trim()) { showRecentSearches(); return }
     searchTimeout = setTimeout(async () => {
-        const res  = await fetch('/api/users/search?q=' + encodeURIComponent(query))
-        const data = await res.json()
-        dropdown.innerHTML = ''
-        if (!data.users || data.users.length === 0) {
-            dropdown.innerHTML = `<div class="search-no-result">No users found</div>`
-        } else {
-            data.users.forEach(user => {
-                const item = document.createElement('div')
-                item.className = 'search-result-item'
-                item.innerHTML = `<span>👤</span> ${escHtml(user.username)}`
-                item.onclick = () => {
-                    addRecentSearch(user.username)
-                    window.location.href = '/profile/' + encodeURIComponent(user.username)
-                }
-                dropdown.appendChild(item)
-            })
-        }
-        dropdown.style.display = 'block'
+        const data = await (await fetch('/api/users/search?q='+encodeURIComponent(query))).json()
+        dd.innerHTML = ''
+        if (!data.users?.length) { dd.innerHTML=`<div class="search-no-result">No users found</div>` }
+        else data.users.forEach(user => {
+            const item = document.createElement('div')
+            item.className = 'search-result-item'
+            item.innerHTML = `<span>👤</span> ${escHtml(user.username)}`
+            item.onclick = () => { addRecentSearch(user.username); window.location.href='/profile/'+encodeURIComponent(user.username) }
+            dd.appendChild(item)
+        })
+        dd.style.display = 'block'
     }, 200)
 }
 async function doSearch() {
     const query = document.getElementById('search-input').value.trim()
     if (!query) return
-    const res  = await fetch('/api/users/search?q=' + encodeURIComponent(query))
-    const data = await res.json()
-    if (data.users && data.users.length > 0) {
-        addRecentSearch(data.users[0].username)
-        window.location.href = '/profile/' + encodeURIComponent(data.users[0].username)
-    }
+    const data = await (await fetch('/api/users/search?q='+encodeURIComponent(query))).json()
+    if (data.users?.length) { addRecentSearch(data.users[0].username); window.location.href='/profile/'+encodeURIComponent(data.users[0].username) }
 }
-
-document.addEventListener('click', (e) => {
-    if (!e.target.closest('.nav-search')) document.getElementById('search-dropdown').style.display = 'none'
+document.addEventListener('click', e => {
+    if (!e.target.closest('.nav-search')) document.getElementById('search-dropdown').style.display='none'
 })
 
 async function logOut() {
-    await fetch('/api/logout', { method: 'POST' })
-    localStorage.removeItem('token')
-    localStorage.removeItem('username')
-    localStorage.removeItem('userId')
+    await fetch('/api/logout',{method:'POST'})
+    localStorage.removeItem('token'); localStorage.removeItem('username'); localStorage.removeItem('userId')
     window.location.href = '/login.html'
 }
-
-function escHtml(str) {
-    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
-}
+function escHtml(str) { return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') }
 
 loadProfile()
-// ── Notification Sound ────────────────────────
+
+// ── NOTIFICATIONS + SOUND ─────────────────────
 function playNotifSound() {
     try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)()
-        const oscillator = ctx.createOscillator()
-        const gainNode = ctx.createGain()
-        oscillator.connect(gainNode)
-        gainNode.connect(ctx.destination)
-        oscillator.type = 'sine'
-        oscillator.frequency.setValueAtTime(880, ctx.currentTime)
-        oscillator.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.2)
-        gainNode.gain.setValueAtTime(0.3, ctx.currentTime)
-        gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4)
-        oscillator.start(ctx.currentTime)
-        oscillator.stop(ctx.currentTime + 0.4)
-    } catch (e) {}
+        const ctx = new (window.AudioContext||window.webkitAudioContext)()
+        const osc = ctx.createOscillator(), gain = ctx.createGain()
+        osc.connect(gain); gain.connect(ctx.destination)
+        osc.type = 'sine'
+        osc.frequency.setValueAtTime(880, ctx.currentTime)
+        osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime+0.2)
+        gain.gain.setValueAtTime(0.3, ctx.currentTime)
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+0.4)
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime+0.4)
+    } catch(e) {}
 }
 
-let lastMsgCount = 0
-let lastFriendCount = 0
-let soundUnlocked = false
-
-// Unlock audio on first interaction
-document.addEventListener('click', () => { soundUnlocked = true }, { once: true })
+let lastMsgCount=0, lastFriendCount=0, soundUnlocked=false
+document.addEventListener('click', ()=>{soundUnlocked=true}, {once:true})
 
 async function checkNotifications() {
     if (!loggedInUserId) return
-
-    const msgRes  = await fetch('/api/messages/unread/' + loggedInUserId)
-    const msgData = await msgRes.json()
-
-    const frRes  = await fetch('/api/friends/pending/' + loggedInUserId)
-    const frData = await frRes.json()
-
+    const [msgData, frData] = await Promise.all([
+        fetch('/api/messages/unread/'+loggedInUserId).then(r=>r.json()),
+        fetch('/api/friends/pending/'+loggedInUserId).then(r=>r.json())
+    ])
     const newMsgCount    = msgData.count || 0
-    const newFriendCount = frData.pending ? frData.pending.length : 0
+    const newFriendCount = frData.pending?.length || 0
 
-    // Play sound if counts went up
-    if (soundUnlocked && (newMsgCount > lastMsgCount || newFriendCount > lastFriendCount)) {
-        playNotifSound()
-    }
+    if (soundUnlocked && (newMsgCount > lastMsgCount || newFriendCount > lastFriendCount)) playNotifSound()
+    lastMsgCount = newMsgCount; lastFriendCount = newFriendCount
 
-    lastMsgCount    = newMsgCount
-    lastFriendCount = newFriendCount
-
+    const msgTab   = document.getElementById('nav-messages')
+    const msgBadge = document.getElementById('tab-badge-messages')
     if (newMsgCount > 0) {
-        const tab = document.getElementById('nav-messages')
-        if (tab) tab.classList.add('tab-alert')
+        if (msgTab) msgTab.classList.add('tab-alert')
+        if (msgBadge) { msgBadge.textContent=newMsgCount; msgBadge.classList.add('visible') }
     } else {
-        const tab = document.getElementById('nav-messages')
-        if (tab) tab.classList.remove('tab-alert')
+        if (msgTab) msgTab.classList.remove('tab-alert')
+        if (msgBadge) msgBadge.classList.remove('visible')
     }
 
+    const frTab = document.getElementById('nav-friends-tab')
     if (newFriendCount > 0) {
-        const tab = document.getElementById('nav-friends-tab')
-        if (tab) tab.classList.add('tab-alert')
+        if (frTab) frTab.classList.add('tab-alert')
+        document.getElementById('dot-friends').classList.add('visible')
     } else {
-        const tab = document.getElementById('nav-friends-tab')
-        if (tab) tab.classList.remove('tab-alert')
+        if (frTab) frTab.classList.remove('tab-alert')
     }
 }
-
-// Check on load then every 30 seconds
 checkNotifications()
 setInterval(checkNotifications, 30000)
 </script>

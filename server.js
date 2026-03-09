@@ -101,6 +101,24 @@ app.delete('/api/posts/:id', async (req, res) => {
     res.json({ success: true })
 })
 
+// Edit post — owner only, within 10 minutes
+app.patch('/api/posts/:id', async (req, res) => {
+    const { id } = req.params
+    const { userId, title, body } = req.body
+    if (!userId) return res.status(401).json({ error: 'Not authorised.' })
+
+    const { data: post } = await supabase.from('posts').select('user_id, created_at').eq('id', id).single()
+    if (!post) return res.status(404).json({ error: 'Post not found.' })
+    if (post.user_id !== userId) return res.status(403).json({ error: 'Not authorised.' })
+
+    const ageMinutes = (Date.now() - new Date(post.created_at).getTime()) / 60000
+    if (ageMinutes > 10) return res.status(403).json({ error: 'Posts can only be edited within 10 minutes of posting.' })
+
+    const { error } = await supabase.from('posts').update({ title, body }).eq('id', id)
+    if (error) return res.status(500).json({ error: error.message })
+    res.json({ success: true })
+})
+
 // ── Comments ─────────────────────────────────
 app.get('/api/posts/:id/comments', async (req, res) => {
     const { id } = req.params
@@ -258,11 +276,12 @@ app.get('/api/profile/:username', async (req, res) => {
 })
 
 app.post('/api/profile/update', async (req, res) => {
-    const { userId, bio, status, interests } = req.body
+    const { userId, bio, status, interests, youtube_url } = req.body
     const updateData = {}
     if (bio !== undefined) updateData.bio = bio
     if (status !== undefined) updateData.status = status
     if (interests !== undefined) updateData.interests = interests
+    if (youtube_url !== undefined) updateData.youtube_url = youtube_url
 
     const { error } = await supabase.from('profiles').update(updateData).eq('id', userId)
     if (error) return res.status(500).json({ error: error.message })
